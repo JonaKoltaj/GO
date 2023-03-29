@@ -2,8 +2,9 @@
 public class CaptureGo {
 
 	public static void main(String[] args) {
-		// Test commit
-
+		Okno okno = new Okno();
+		okno.pack();
+		okno.setVisible(true);
 	}
 
 }
