@@ -1,5 +1,7 @@
 package logika;
 
+import java.util.HashSet;
+
 public class Plosca {
 	// ploščo predstavimo z n x n matriko
 		protected int velikost;
@@ -24,6 +26,11 @@ public class Plosca {
 						System.out.println();
 					}
 				}
+		}
+		
+		public HashSet<Poteza> indeksiBelih(Plosca p) {
+			
+			
 		}
 		
 		
