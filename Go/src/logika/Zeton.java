@@ -11,4 +11,5 @@ public class Zeton {
 		this.indexStolpec = indexStolpec;
 		this.barva = barva; 
 	}
+
 }

@@ -5,6 +5,7 @@ public class Igra {
 	protected Plosca plosca;
 	
 	public Igra() {
-		plosca = new Plosca();
+		plosca = new Plosca(3);
 	}
+	
 }
