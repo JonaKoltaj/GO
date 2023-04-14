@@ -1,14 +1,14 @@
 package logika;
 
 public class Zeton {
-	
-	protected int indexVrsta;
-	protected int indexStolpec;
+	// Razred Zeton beleži samo tiste kamenčke, ki se trenutno nahajajo na plošči
+	protected int i;
+	protected int j;
 	protected String barva;
 	
 	public Zeton (int indexVrsta, int indexStolpec, String barva) {
-		this.indexVrsta = indexVrsta;
-		this.indexStolpec = indexStolpec;
+		this.i = indexVrsta;
+		this.j = indexStolpec;
 		this.barva = barva; 
 	}
 

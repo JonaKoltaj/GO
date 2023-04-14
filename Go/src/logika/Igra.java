@@ -1,6 +1,7 @@
 package logika;
 
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Set;
 
 import splosno.Poteza;
@@ -11,6 +12,9 @@ public class Igra {
 	protected boolean stanje; // true, če igra ni končana in false sicer
 	protected Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
 	protected String naVrsti; // kateri izmed igralcev mora narediti potezo
+	protected ArrayList<ArrayList<Zeton>> skupineBelih;
+	protected ArrayList<ArrayList<Zeton>> skupineCrnih;
+	
 	
 
 	public Igra() {
@@ -18,6 +22,8 @@ public class Igra {
 		stanje = true;
 		moznePoteze = seznamMoznihPotez();
 		naVrsti = "Black";
+		skupineBelih = new ArrayList<ArrayList<Zeton>>();
+		skupineCrnih = new ArrayList<ArrayList<Zeton>>();
 	}
 	
 	// metoda, ki vrne množico vseh možnih potez 
@@ -43,7 +49,8 @@ public class Igra {
 		int i = poteza.x();
 		int j = poteza.y();
 		if (moznePoteze.contains(poteza)) {
-			plosca.spremeni(i, j, naVrsti);
+			Zeton novZeton = new Zeton(i, j, naVrsti);
+			plosca.postaviZeton(novZeton);
 			moznePoteze.remove(poteza);
 			naVrsti = drugi(naVrsti);
 			return true;
@@ -60,6 +67,11 @@ public class Igra {
 		plosca.izpis();
 		}
 	}
+	
+	// metoda, ki vrne skupine določene barve
+	
+	
+	// metoda, ki vrne "Liberty" vsake od skupin določene barve
 	
 	// metoda, ki preveri ali je igre konec
 	public static void jeKonec() {
