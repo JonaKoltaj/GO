@@ -1,4 +1,6 @@
+import logika.Igra;
 import logika.Plosca;
+import splosno.Poteza;
 
 public class CaptureGo {
 
@@ -7,8 +9,20 @@ public class CaptureGo {
 		Okno okno = new Okno();
 		okno.pack();
 		okno.setVisible(true);
-		Plosca plosca = new Plosca(10);
-		plosca.izpis();
+		// Plosca plosca = new Plosca(10);
+		// plosca.izpis();
+		Igra igra = new Igra();
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(1,1));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(2,2));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(2,1));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(1,1));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(3,3));
+		igra.izpisStanja();
 	}
 
 }

@@ -2,12 +2,15 @@ package logika;
 
 import java.util.HashSet;
 
+// class plošča ima podatke o velikosti in trenutnem stanju plošče, kje je kak žeton
+// razred ima tudi metodo, ki izpiše trenutno stanje na plošči
+// na vsakem mestu matrike se nahaja ena izmed naslednjih vrednosti: "White", "Black" ali null
+
 public class Plosca {
-	// ploščo predstavimo z n x n matriko
 		protected int velikost;
 		protected String[][] mreza;
 		
-		
+		// konstruiramo prazno ploščo velikosti n x n
 		public Plosca(int n) {
 			velikost = n;
 			mreza = new String[n][n];
@@ -18,6 +21,7 @@ public class Plosca {
 			}
 		}
 		
+		// metoda, ki izpiše stanje plošče
 		public void izpis() {
 			if (mreza == null) System.out.println("Prazna plošča");
 			else {
@@ -28,10 +32,10 @@ public class Plosca {
 				}
 		}
 		
-		public HashSet<Poteza> indeksiBelih(Plosca p) {
-			
-			
+		public void spremeni(int i, int j, String niz) {
+			mreza[i][j] = niz;
 		}
+		
 		
 		
 		
