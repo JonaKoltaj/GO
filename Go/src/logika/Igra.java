@@ -49,6 +49,8 @@ public class Igra {
 	public Zeton[] vrniSosede(Zeton z) {
 		int n = plosca.velikost;
 		Zeton[] seznamSosedov = {null, null, null, null};
+		if (z == null) return seznamSosedov;
+		else {
 		if (z.i > 0 & z.i < n - 1 & z.j > 0 & z.j < n - 1) {
 			seznamSosedov[0] = plosca.mreza[z.i + 1][z.j];
 			seznamSosedov[1] = plosca.mreza[z.i][z.j + 1];
@@ -92,6 +94,7 @@ public class Igra {
 			seznamSosedov[3] = plosca.mreza[z.i][z.j - 1];
 		}
 		return seznamSosedov;
+		}
 	}
 	
 	// z uporabo razreda DisjoinSet, žeton z priključimo skupini svoje barve
@@ -112,24 +115,22 @@ public class Igra {
 		else {
 			int i = 0;
 			boolean nadaljuj = true;
-			while (nadaljuj) {
+			while (nadaljuj & i != 4) {
 				if (sosedi[i] != null) {
+					// če se barvi ujemata
 					if (sosedi[i].barva == z.barva) {
-						if (z.barva == "White") {
-							skupineBelih.makeSet(z);
-							skupineBelih.union(z, sosedi[i]);
+						if (z.barva == "White") {skupineBelih.makeSet(z); skupineBelih.union(z, sosedi[i]);}
+						else {skupineCrnih.makeSet(z); skupineCrnih.union(z, sosedi[i]);}
+						nadaljuj = false;
 						}
-						else {
-							skupineCrnih.makeSet(z);
-							skupineCrnih.union(z, sosedi[i]);
-						}
-					}
-					nadaljuj = false;
+					
+					// če se barvi ne ujemata, gremo naprej
+					else ++i;
 				}
 				else ++i;
 			}
 		}
-		}
+	}
 		
 	
 	
