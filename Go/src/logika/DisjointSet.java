@@ -9,7 +9,7 @@ public class DisjointSet {
 	
 	protected ArrayList<Zeton> vsebuje;
 	protected String barva;
-	protected Map<Zeton, Zeton> parent;
+	protected Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
 	protected Map<Zeton, Integer> rank;
 	
 	
@@ -37,6 +37,7 @@ public class DisjointSet {
 	}
 	
 	// združi obstoječi množici, ki sta disjunktni in vsebujeta z in w
+	// preveri, tu nekaj ne dela
 	public void union(Zeton z, Zeton w) {
 		Zeton x = find(z);
 		Zeton y = find(w); // to sta predstavnika množic
