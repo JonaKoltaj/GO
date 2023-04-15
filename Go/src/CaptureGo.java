@@ -1,5 +1,8 @@
+import java.util.ArrayList;
+
 import logika.Igra;
 import logika.Plosca;
+import logika.Zeton;
 import splosno.Poteza;
 
 public class CaptureGo {
@@ -17,12 +20,11 @@ public class CaptureGo {
 		igra.izpisStanja();
 		igra.odigraj(new Poteza(2,2));
 		igra.izpisStanja();
-		igra.odigraj(new Poteza(2,1));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(1,1));
-		igra.izpisStanja();
 		igra.odigraj(new Poteza(3,3));
 		igra.izpisStanja();
+		igra.odigraj(new Poteza(3,2));
+		igra.izpisStanja();
+		
 	}
 
 }
