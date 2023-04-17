@@ -6,44 +6,47 @@ import java.util.Map;
 import java.util.Set;
 
 public class DisjointSet {
-	
+	// podatkovna struktura DisjointSet bo beležila skupine kamenčkov iste barve, ki se dotikajo
+	// vsaka taka skupina bo imela svojega predstavnika
 	protected ArrayList<Zeton> vsebuje;
 	protected String barva;
 	protected Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
 	protected Map<Zeton, Integer> rank;
+	public ArrayList<Zeton> predstavniki;
 	
 	
-	// konstruiramo strukturo disjunktnih množic za določeno barvo
+
 	public DisjointSet(String barva) {
 		this.barva = barva;
 		vsebuje = new ArrayList<>();
 		parent = new HashMap<>();
 		rank = new HashMap<>();
+		predstavniki = new ArrayList<Zeton>();
 	}
 	
-	// ustvarimo enojec, ki ga še ni nikjer
+	
+	// ustvarimo enojec, ki še ne obstaja
 	public void makeSet(Zeton z) {
-		if (z.barva == this.barva) {
-		vsebuje.add(z);
+		if (z.barva == this.barva) vsebuje.add(z);
 		parent.put(z, z);
 		rank.put(z, 0);
 		}
-	}
 	
-	// najde prednika od žetona z
+	
+	// metoda najde prednika od žetona z
 	public Zeton find(Zeton z) {
 		if (parent.get(z) == z) return z;
 		else return find(parent.get(z));
 	}
 	
-	// združi obstoječi množici, ki sta disjunktni in vsebujeta z in w
-	// preveri, tu nekaj ne dela
+	// združi obstoječi množici, ki jima pripadata žetona z in w,, če sta ti množici disjunktni 
 	public void union(Zeton z, Zeton w) {
 		Zeton x = find(z);
 		Zeton y = find(w); // to sta predstavnika množic
 		int rx = rank.get(x);
 		int ry = rank.get(y);
 		if (x.equals(y) == false) {
+			// System.out.println("Združili smo:" + "(" + z.i + " , " + z.j + ") + (" + w.i + " , " + w.j + ")");
 			if (rx < ry) parent.put(x, y);
 			else if  (rx > ry) parent.put(y, x);
 			else {
@@ -53,28 +56,32 @@ public class DisjointSet {
 		}
 	}
 	
-	public void izpisStarsev() {
-		System.out.println("Starši so: ");
-		for (Zeton z: parent.keySet()) {
-			Zeton s = parent.get(z);
-			String k = z.barva + " (" + z.i + " , " + z.j + " )"; 
-			if (s != null) {
-			String v = s.barva + " (" + s.i + " , " + s.j + " )"; 
-			System.out.println(k + ": " + v);
+	
+	// vrne seznam žetonov, ki so v isti skupini kot žeton z
+	public ArrayList<Zeton> vrniSkupino(Zeton z) {
+		ArrayList<Zeton> sez = new ArrayList<Zeton>();
+		sez.add(z);
+		for (Zeton s : vsebuje) {
+			if (s != z) {
+				Zeton starsS = find(s);
+				Zeton starsZ = find(z);
+				if (starsS.enaka(starsZ)) sez.add(s); 
 			}
 		}
-				
+		// ta del bo kasneje nepotreben
+		System.out.println("Disjuntkna množica, kateri pripada žeton" + "(" + z.i + " , " + z.j + ")" + " je: ");
+		sprintaj2(sez);
+		return sez;
+		
 	}
 	
-	public void izpisRanka() {
-		System.out.println("Rang je: ");
-		for (Zeton z: rank.keySet()) {
-			String k = z.barva + " (" + z.i + " , " + z.j + " )"; 
-			int s = rank.get(z);
-			System.out.println(k + ": " + s);
-			
-		}
-				
+	// samo pomožna metoda za izpis, kasneje zbrišem
+	public static void sprintaj2(ArrayList<Zeton> sez) {
+		System.out.print("[");
+		for (Zeton z : sez) System.out.print(" " + z.barva + "(" + z.i+ " , " + z.j + ") ");
+		System.out.print("]");
+		System.out.println("");
+		System.out.println("");
 	}
 	
 
