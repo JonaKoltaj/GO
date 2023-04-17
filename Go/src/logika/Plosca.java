@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 public class Plosca {
 		protected int velikost;
-		protected Zeton[][] mreza;
+		public Zeton[][] mreza;
 		
 		// konstruiramo prazno ploščo velikosti n x n
 		public Plosca(int n) {
@@ -21,22 +21,27 @@ public class Plosca {
 			}
 		}
 		
-		// metoda, ki izpiše stanje plošče
+		// metoda na mrežo postavi žeton
+		public void postaviZeton(Zeton z) {
+			mreza[z.i][z.j] = z;
+		}
+		
+		// metoda, ki izpiše stanje plošče, kasneje izbrišem
 		public void izpis() {
 			if (mreza == null) System.out.println("Prazna plošča");
-			else {
+			else {System.out.println("____________________________________________________________________");
 			for (int i = 0; i < velikost; ++i) {
 						for (int j = 0; j < velikost; ++j) {
 							if (mreza[i][j] == null) System.out.print(mreza[i][j] + "\t");
 							else System.out.print(mreza[i][j].barva + "\t");}
 						System.out.println();
 					}
+			System.out.println("____________________________________________________________________");
+			System.out.println("");
 				}
 		}
 		
-		public void postaviZeton(Zeton z) {
-			mreza[z.i][z.j] = z;
-		}
+	
 		
 		
 		
