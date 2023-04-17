@@ -18,6 +18,7 @@ public class CaptureGo {
 		Okno okno = new Okno();
 		okno.pack();
 		okno.setVisible(true);
+		
 		Igra igra = new Igra();
 		System.out.println("ZAČNEMO IGRO");
 		igra.odigraj(new Poteza(0,0));
