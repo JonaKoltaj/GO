@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import logika.Igra;
+import logika.Par;
 import logika.Plosca;
 import logika.Zeton;
 import splosno.Poteza;
@@ -11,39 +12,46 @@ public class CaptureGo {
 
 	public static void main(String[] args) {
 		
+		// zaenkrat igro lahko igrata dva igralca tako, da izmenjajoče vnašata koordinate
+		// vedno začne črni
+		
 		Okno okno = new Okno();
 		okno.pack();
 		okno.setVisible(true);
-		// Plosca plosca = new Plosca(10);
-		// plosca.izpis();
 		Igra igra = new Igra();
+		System.out.println("ZAČNEMO IGRO");
+		igra.odigraj(new Poteza(0,0));
 		igra.izpisStanja();
-		igra.odigraj(new Poteza(1,1)); // črni
+		igra.odigraj(new Poteza(0,1));
 		igra.izpisStanja();
-		igra.odigraj(new Poteza(2,2)); // beli
+		igra.odigraj(new Poteza(1,0));
 		igra.izpisStanja();
-		igra.odigraj(new Poteza(3,3)); // črni
+		igra.odigraj(new Poteza(1,1));
 		igra.izpisStanja();
-		igra.odigraj(new Poteza(3,2)); // beli
+		igra.odigraj(new Poteza(0,2));
 		igra.izpisStanja();
-		igra.odigraj(new Poteza(1,2)); // črni
+		igra.odigraj(new Poteza(3,0));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(1,2));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(5,1));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(0,3));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(4,0));
+		igra.izpisStanja();
+		igra.odigraj(new Poteza(2,1));
 		igra.izpisStanja();
 		
-		Igra igra2 = new Igra();
-		igra2.odigraj(new Poteza(3,4));
-		igra2.izpisStanja();
-		igra2.odigraj(new Poteza(4,4));
-		igra2.izpisStanja();
-		igra2.odigraj(new Poteza(3,5));
-		igra2.izpisStanja();
-		igra2.odigraj(new Poteza(5,4));
-		igra2.izpisStanja();
-		igra2.odigraj(new Poteza(3,6));
-		igra2.izpisStanja();
-		igra2.odigraj(new Poteza(6,4));
-		igra2.izpisStanja();
+		
+		
+		
+		
+	
 		
 	}
+	
+	
 
 	
 }
