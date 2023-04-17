@@ -11,5 +11,11 @@ public class Zeton {
 		this.j = indexStolpec;
 		this.barva = barva; 
 	}
+	
+	public boolean enaka(Zeton z) {
+		if (z.i == this.i & z.j == this.j & this.barva == z.barva) return true;
+		else return false;
+		
+	}
 
 }
