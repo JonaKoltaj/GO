@@ -23,14 +23,10 @@ public class Okno extends JFrame implements ActionListener {
 	
 	private JMenuItem menuOdpri, menuShrani, menuKoncaj;
 	
-	int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-	int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
-	
 	public Okno() {
 		super();
 		setTitle("Capture Go");
-		setSize(screenWidth - 100, screenHeight - 100);
-		platno = new Platno(800, 800);
+		platno = new Platno(700, 700);
 		platno.setLayout(new BorderLayout());
 		add(platno);
 		

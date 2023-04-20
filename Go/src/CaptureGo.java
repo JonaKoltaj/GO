@@ -19,37 +19,30 @@ public class CaptureGo {
 		okno.pack();
 		okno.setVisible(true);
 		
-		Igra igra = new Igra();
-		System.out.println("ZAČNEMO IGRO");
-		igra.odigraj(new Poteza(0,0));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(0,1));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(1,0));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(1,1));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(0,2));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(3,0));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(1,2));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(5,1));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(0,3));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(4,0));
-		igra.izpisStanja();
-		igra.odigraj(new Poteza(2,1));
-		igra.izpisStanja();
-		
-		
-		
-		
-		
-	
-		
+//		Igra igra = new Igra();
+//		System.out.println("ZAČNEMO IGRO");
+//		igra.odigraj(new Poteza(0,0));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(0,1));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(1,0));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(1,1));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(0,2));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(3,0));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(1,2));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(5,1));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(0,3));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(4,0));
+//		igra.izpisStanja();
+//		igra.odigraj(new Poteza(2,1));
+//		igra.izpisStanja();
 	}
 	
 	
