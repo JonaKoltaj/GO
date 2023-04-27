@@ -45,7 +45,6 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	public void nastaviPlosco(Plosca p) {
 		plosca = p;
 		repaint();
-		
 	}
 	
 	@Override
@@ -53,19 +52,22 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		// izrisan go board tako da se prilagaja oknu ki ga odpremo
 		int sirina = getWidth();
 	    int visina = getHeight();
+	    int velikost = Math.min(sirina, visina) - 200;
+	    int marginSirina = sirina/2 - velikost/2;
+	    int marginVisina = visina/2 - velikost/2;
 	    super.paintComponent(g);
-	    g.drawRect(100, 100, sirina - 200, visina - 200);
+	    g.drawRect(marginSirina, marginVisina, velikost, velikost);
 	    for(int i = 1; i <= 7; i++) {
-	        g.drawLine(100 + i*((sirina - 200)/8), 100, 100 + i*((sirina - 200)/8), visina - 100);
+	        g.drawLine(marginSirina + i*((velikost)/8), marginVisina, marginSirina + i*((velikost)/8), velikost + marginVisina);
 	    }
 	    for(int j = 1; j <= 7; j++) {
-	    	g.drawLine(100, 100 + j*((visina - 200)/8), sirina - 100, 100 + j*((visina - 200)/8));
+	    	g.drawLine(marginSirina, marginVisina + j*((velikost)/8), velikost + marginSirina, marginVisina + j*((velikost)/8));
 	    }
-	    g.fillOval(95 + 2*((sirina - 200)/8), 95 + 2*((visina - 200)/8), 10, 10);
-	    g.fillOval(95 + 6*((sirina - 200)/8), 95 + 2*((visina - 200)/8), 10, 10);
-	    g.fillOval(95 + 2*((sirina - 200)/8), 95 + 6*((visina - 200)/8), 10, 10);
-	    g.fillOval(95 + 6*((sirina - 200)/8), 95 + 6*((visina - 200)/8), 10, 10);
-	    g.fillOval(95 + 4*((sirina - 200)/8), 95 + 4*((visina - 200)/8), 10, 10);
+	    g.fillOval(marginSirina - 5 + 2*((velikost)/8), marginVisina - 5 + 2*((velikost)/8), 10, 10);
+	    g.fillOval(marginSirina - 5 + 6*((velikost)/8), marginVisina - 5 + 2*((velikost)/8), 10, 10);
+	    g.fillOval(marginSirina - 5 + 2*((velikost)/8), marginVisina - 5 + 6*((velikost)/8), 10, 10);
+	    g.fillOval(marginSirina - 5 + 6*((velikost)/8), marginVisina - 5 + 6*((velikost)/8), 10, 10);
+	    g.fillOval(marginSirina - 5 + 4*((velikost)/8), marginVisina - 5 + 4*((velikost)/8), 10, 10);
 	}
 
 	@Override

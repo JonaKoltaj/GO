@@ -1,5 +1,10 @@
 package logika;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashSet;
 
 // class plošča ima podatke o velikosti in trenutnem stanju plošče
@@ -41,10 +46,54 @@ public class Plosca {
 				}
 		}
 		
-	
+		// to sm dodala samo prepisano metodo izpis, ki shrani v datoteko - Jona
+		public void shrani(String ime) {
+			try {
+				PrintWriter dat = new PrintWriter(new FileWriter(ime));
+				if (mreza == null) dat.println("Prazna plošča");
+				else {dat.println("____________________________________________________________________");
+				for (int i = 0; i < velikost; ++i) {
+							for (int j = 0; j < velikost; ++j) {
+								if (mreza[i][j] == null) dat.print(mreza[i][j] + "\t");
+								else dat.print(mreza[i][j].barva + "\t");}
+							dat.println();
+						}
+				dat.println("____________________________________________________________________");
+				}
+				dat.close();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+		}
 		
-		
-		
-		
-		
+		public static Plosca preberi(String ime) {
+	        try {
+	            BufferedReader dat = new BufferedReader(new FileReader(ime));
+	            int stevec = 0;
+	            String line;
+	            while ((line = dat.readLine()) != null) {
+	               if (!line.equals("____________________________________________________________________") && !line.equals("")) {
+	            	   stevec +=1;
+	               }
+	            }
+	            Plosca plosca = new Plosca(stevec);
+	            //to se koncej transformirat za plosco
+	            while (dat.ready()) {
+	                String vrstica = dat.readLine().trim();
+	                if (! vrstica.equals("____________________________________________________________________")) {
+	                	String[] besede = vrstica.split("[ :]+");
+	                	Tocka t = graf.dodajTocko(besede[0]);
+	                	t.x = Double.parseDouble(besede[1]);
+	                	t.y = Double.parseDouble(besede[2]);
+	                }
+	            }
+	            dat.close();
+				return graf;
+	        }
+	        catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
 }

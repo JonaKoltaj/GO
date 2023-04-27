@@ -22,6 +22,7 @@ public class Okno extends JFrame implements ActionListener {
 	protected Platno platno;
 	
 	private JMenuItem menuOdpri, menuShrani, menuKoncaj;
+	private JMenuItem menuIme, menuIgralec, menuAlgoritem;
 	
 	public Okno() {
 		super();
@@ -34,10 +35,14 @@ public class Okno extends JFrame implements ActionListener {
 		setJMenuBar(menubar);
 		
 		JMenu menuDatoteka = dodajMenu(menubar, "Datoteka");
+		JMenu menuNastavitve = dodajMenu(menubar, "Nastavitve");
 		
 		menuOdpri = dodajMenuItem(menuDatoteka, "Odpri ...");
 		menuShrani = dodajMenuItem(menuDatoteka, "Shrani ...");
 		menuKoncaj = dodajMenuItem(menuDatoteka, "Končaj ...");
+		menuIme = dodajMenuItem(menuNastavitve, "Izberi ime ...");
+		menuIgralec = dodajMenuItem(menuNastavitve, "Izberi igralca ...");
+		menuAlgoritem = dodajMenuItem(menuNastavitve, "Izberi algoritem ...");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -62,16 +67,18 @@ public class Okno extends JFrame implements ActionListener {
 //			JFileChooser dialog = new JFileChooser();
 //			int izbira = dialog.showOpenDialog(this);
 //			if (izbira == JFileChooser.APPROVE_OPTION) {
-//				String igra = dialog.getSelectedFile().getPath();
+//				String ime = dialog.getSelectedFile().getPath();
+//				Plosca plosca = Plosca.preberi(ime);
+//				platno.nastaviGraf(graf);
 //			}
 		}
 		else if (objekt == menuShrani) {
-//			JFileChooser dialog = new JFileChooser();
-//			int izbira = dialog.showSaveDialog(this);
-//			if (izbira == JFileChooser.APPROVE_OPTION) {
-//				String ime = dialog.getSelectedFile().getPath();
-//				platno.graf.shrani(ime);
-//			}
+			JFileChooser dialog = new JFileChooser();
+			int izbira = dialog.showSaveDialog(this);
+			if (izbira == JFileChooser.APPROVE_OPTION) {
+				String ime = dialog.getSelectedFile().getPath();
+				platno.plosca.shrani(ime);
+			}
 		}
 		else if (objekt == menuKoncaj) {
 			dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
