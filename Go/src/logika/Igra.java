@@ -4,8 +4,7 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Set;
 
-
-
+import inteligenca.RandomIzbira;
 import splosno.Poteza;
 
 public class Igra {
@@ -13,7 +12,8 @@ public class Igra {
 	public Plosca plosca;
 	protected boolean stanje; // true, če igra ni končana in false sicer
 	protected Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
-	protected String naVrsti; // kateri izmed igralcev mora narediti potezo
+	public static ArrayList<Poteza> moznePotezeSeznam;
+	public String naVrsti; // kateri izmed igralcev mora narediti potezo
 	protected DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
 	protected DisjointSet skupineCrnih; // popravi na protected
 	protected String zmagovalec;
@@ -24,12 +24,20 @@ public class Igra {
 		plosca = new Plosca(9);
 		stanje = true;
 		moznePoteze = seznamMoznihPotez();
+		moznePotezeSeznam = arrayMoznihPotez();
 		naVrsti = "Black";
 		skupineBelih = new DisjointSet("White");
 		skupineCrnih = new DisjointSet("Black");
 		zmagovalec = null;
 		zajetaSkupina = null;
 	}
+	
+	// metoda, ki iz množice možnih potez vrne seznam možnih potez 
+		public ArrayList<Poteza> arrayMoznihPotez() {
+			ArrayList<Poteza> seznam = new ArrayList<Poteza>();
+			seznam.addAll(seznamMoznihPotez());
+			return seznam;
+		}
 	
 	// metoda, ki vrne množico vseh možnih potez 
 	public Set<Poteza> seznamMoznihPotez() {
@@ -43,7 +51,7 @@ public class Igra {
 	}
 	
 	// metoda, ki vrne barvo nasprotnega igralca
-	public static String drugi(String barva) {
+	public String drugi(String barva) {
 		if (barva == "White") return "Black";
 		else return "White";
 	}
@@ -137,7 +145,13 @@ public class Igra {
 			}
 		}
 	}
-		
+	
+	// pomožna metoda, ki bo odigrala naključno 
+	// kasneje zbrišem
+	public void igrajRacunalnik() {
+		Poteza p = RandomIzbira.izberiNakljucno();
+		odigraj(p);
+	}
 	
 	
 	// metoda, ki vzame željeno potezo, jo odigra, če je to mogoče, ter vrne true,
