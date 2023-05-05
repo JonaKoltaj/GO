@@ -71,6 +71,7 @@ public class Plosca {
 	        try {
 	            BufferedReader dat = new BufferedReader(new FileReader(ime));
 	            int stevec = 0;
+	            int stevecVrstica = 0;
 	            String line;
 	            while ((line = dat.readLine()) != null) {
 	               if (!line.equals("____________________________________________________________________") && !line.equals("")) {
@@ -78,18 +79,21 @@ public class Plosca {
 	               }
 	            }
 	            Plosca plosca = new Plosca(stevec);
-	            //to se koncej transformirat za plosco
 	            while (dat.ready()) {
 	                String vrstica = dat.readLine().trim();
-	                if (! vrstica.equals("____________________________________________________________________")) {
-	                	String[] besede = vrstica.split("[ :]+");
-	                	Tocka t = graf.dodajTocko(besede[0]);
-	                	t.x = Double.parseDouble(besede[1]);
-	                	t.y = Double.parseDouble(besede[2]);
+	                if (!vrstica.equals("____________________________________________________________________") && !vrstica.equals("")) {
+	                	String[] besede = vrstica.split(" ");
+	                	int stevecStolpec = 0;
+	                	for (String beseda : besede) {
+	                		if (beseda == null) plosca.mreza[stevecVrstica][stevecStolpec] = null;
+	                		else plosca.postaviZeton(new Zeton(stevecVrstica, stevecStolpec, beseda));
+	                		stevecStolpec +=1;
+	                	}
+	                	stevecVrstica += 1;
 	                }
 	            }
 	            dat.close();
-				return graf;
+				return plosca;
 	        }
 	        catch (Exception e) {
 	            e.printStackTrace();

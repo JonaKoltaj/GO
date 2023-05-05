@@ -16,6 +16,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 
+import logika.Plosca;
+
 @SuppressWarnings("serial")
 public class Okno extends JFrame implements ActionListener {
 	
@@ -64,13 +66,13 @@ public class Okno extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object objekt = e.getSource();
 		if (objekt == menuOdpri) {
-//			JFileChooser dialog = new JFileChooser();
-//			int izbira = dialog.showOpenDialog(this);
-//			if (izbira == JFileChooser.APPROVE_OPTION) {
-//				String ime = dialog.getSelectedFile().getPath();
-//				Plosca plosca = Plosca.preberi(ime);
-//				platno.nastaviGraf(graf);
-//			}
+			JFileChooser dialog = new JFileChooser();
+			int izbira = dialog.showOpenDialog(this);
+			if (izbira == JFileChooser.APPROVE_OPTION) {
+				String ime = dialog.getSelectedFile().getPath();
+				Plosca plosca = Plosca.preberi(ime);
+				platno.nastaviPlosco(plosca);
+			}
 		}
 		else if (objekt == menuShrani) {
 			JFileChooser dialog = new JFileChooser();
