@@ -20,14 +20,14 @@ import splosno.Poteza;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
-	protected Plosca plosca;
+	protected Igra igra;
 	protected Color barvaPrviIgralec;
 	protected Color barvaDrugiIgralec;
 	
 	public Platno(int sirina, int visina) {
 		super();
-		Plosca plosca = new Plosca(9);
-		nastaviPlosco(plosca);
+		igra = new Igra();
+		nastaviPlosco(igra.plosca);
 		setPreferredSize(new Dimension(sirina, visina));
 		
 		barvaPrviIgralec = Color.BLACK;
@@ -40,7 +40,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	}
 	
 	public void nastaviPlosco(Plosca p) {
-		plosca = p;
+		igra.plosca = p;
 		repaint();
 	}
 	
@@ -70,10 +70,10 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    
 	    //izrisemo se zetone
 	    int polmerZetona = velikost/16;
-	    for (int i = 0; i < plosca.velikost; ++i) {
-	    	for (int j = 0; j < plosca.velikost; ++j) {
-	    		if (plosca.mreza[i][j] != null) {
-	    			String barva = plosca.mreza[i][j].barva;
+	    for (int i = 0; i < igra.plosca.velikost; ++i) {
+	    	for (int j = 0; j < igra.plosca.velikost; ++j) {
+	    		if (igra.plosca.mreza[i][j] != null) {
+	    			String barva = igra.plosca.mreza[i][j].barva;
 	    			if (barva == "White") g.setColor(Color.WHITE);
 	    			else g.setColor(Color.BLACK);
 	    			g.fillOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
@@ -116,12 +116,6 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
         int y = e.getY();
         
@@ -132,17 +126,24 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    int marginVisina = visina/2 - velikost/2;
 	    int najmanjsaRazdalja = velikost/16;
         
-        for (int i = 0; i < plosca.velikost; ++i) {
-	    	for (int j = 0; j < plosca.velikost; ++j) {
+        for (int i = 0; i < igra.plosca.velikost; ++i) {
+	    	for (int j = 0; j < igra.plosca.velikost; ++j) {
 	    		int poljex = marginSirina + i*((velikost)/8);
 	    		int poljey = marginVisina + j*((velikost)/8);
 	    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
 	    		
 	    		if (razdalja < najmanjsaRazdalja) {
-	    			Igra.odigraj(new Poteza(i, j));
+	    			igra.odigraj(new Poteza(i, j));
 	    		}
 	    	}
         }
+        repaint();
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override

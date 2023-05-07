@@ -80,7 +80,7 @@ public class Okno extends JFrame implements ActionListener {
 			int izbira = dialog.showSaveDialog(this);
 			if (izbira == JFileChooser.APPROVE_OPTION) {
 				String ime = dialog.getSelectedFile().getPath();
-				platno.plosca.shrani(ime);
+				platno.igra.plosca.shrani(ime);
 			}
 		}
 		else if (objekt == menuKoncaj) {
