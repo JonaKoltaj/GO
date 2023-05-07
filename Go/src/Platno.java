@@ -139,7 +139,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
 	    		
 	    		if (razdalja < najmanjsaRazdalja) {
-//	    			Igra.odigraj(new Poteza(i, j));
+	    			Igra.odigraj(new Poteza(i, j));
 	    		}
 	    	}
         }

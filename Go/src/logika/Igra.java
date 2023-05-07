@@ -9,15 +9,15 @@ import splosno.Poteza;
 
 public class Igra {
 	
-	public Plosca plosca;
+	public static Plosca plosca;
 	protected boolean stanje; // true, če igra ni končana in false sicer
-	protected Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
+	protected static Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
 	public static ArrayList<Poteza> moznePotezeSeznam;
-	public String naVrsti; // kateri izmed igralcev mora narediti potezo
-	protected DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
-	protected DisjointSet skupineCrnih; // popravi na protected
-	protected String zmagovalec;
-	protected ArrayList<Zeton> zajetaSkupina;
+	public static String naVrsti; // kateri izmed igralcev mora narediti potezo
+	protected static DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
+	protected static DisjointSet skupineCrnih; // popravi na protected
+	protected static String zmagovalec;
+	protected static ArrayList<Zeton> zajetaSkupina;
 	
 
 	public Igra() {
@@ -51,14 +51,14 @@ public class Igra {
 	}
 	
 	// metoda, ki vrne barvo nasprotnega igralca
-	public String drugi(String barva) {
+	public static String drugi(String barva) {
 		if (barva == "White") return "Black";
 		else return "White";
 	}
 	
 	// vrne seznam velikosti 4, ki v smeri urinega kazalca beleži sosede
 	// element z indeksom 0 je tisti s koordinatami (i + 1, j)
-	public Zeton[] vrniSosede(Zeton z) {
+	public static Zeton[] vrniSosede(Zeton z) {
 		int n = plosca.velikost;
 		Zeton[] seznamSosedov = {null, null, null, null};
 		if (z == null) return seznamSosedov;
@@ -111,7 +111,7 @@ public class Igra {
 	
 	
 	// z uporabo razreda DisjointSet, ustavimo enojec in naredimo unijo s sosedi iste barve
-	public void prikljuciSkupini(Zeton z) {
+	public static void prikljuciSkupini(Zeton z) {
 		Zeton[] sosedi = vrniSosede(z);
 		boolean aliImaSoseda = false;
 		for (Zeton s : sosedi) {if (s != null) { if (s.barva == z.barva) aliImaSoseda = true; }
@@ -156,7 +156,7 @@ public class Igra {
 	
 	// metoda, ki vzame željeno potezo, jo odigra, če je to mogoče, ter vrne true,
 	// če to ni mogoče, vrne false
-	public boolean odigraj(Poteza poteza) {
+	public static boolean odigraj(Poteza poteza) {
 		int i = poteza.x();
 		int j = poteza.y();
 		if (moznePoteze.contains(poteza)) {
