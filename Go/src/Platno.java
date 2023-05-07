@@ -13,17 +13,16 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import logika.Igra;
 import logika.Plosca;
 import logika.Zeton;
+import splosno.Poteza;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	protected Plosca plosca;
 	protected Color barvaPrviIgralec;
 	protected Color barvaDrugiIgralec;
-	
-	private int klikX, stariX;
-    private int klikY, stariY;
 	
 	public Platno(int sirina, int visina) {
 		super();
@@ -123,8 +122,27 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		int x = e.getX();
+        int y = e.getY();
+        
+        int sirina = getWidth();
+	    int visina = getHeight();
+	    int velikost = Math.min(sirina, visina) - 200;
+	    int marginSirina = sirina/2 - velikost/2;
+	    int marginVisina = visina/2 - velikost/2;
+	    int najmanjsaRazdalja = velikost/16;
+        
+        for (int i = 0; i < plosca.velikost; ++i) {
+	    	for (int j = 0; j < plosca.velikost; ++j) {
+	    		int poljex = marginSirina + i*((velikost)/8);
+	    		int poljey = marginVisina + j*((velikost)/8);
+	    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
+	    		
+	    		if (razdalja < najmanjsaRazdalja) {
+//	    			Igra.odigraj(new Poteza(i, j));
+	    		}
+	    	}
+        }
 	}
 
 	@Override
