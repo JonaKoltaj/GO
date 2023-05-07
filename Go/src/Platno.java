@@ -14,15 +14,16 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import logika.Plosca;
+import logika.Zeton;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	protected Plosca plosca;
-	protected Color barvaMreze;
 	protected Color barvaPrviIgralec;
 	protected Color barvaDrugiIgralec;
-	protected Stroke debelinaMreze;
-	protected double polmerZetona;
+	
+	private int klikX, stariX;
+    private int klikY, stariY;
 	
 	public Platno(int sirina, int visina) {
 		super();
@@ -32,9 +33,6 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		
 		barvaPrviIgralec = Color.BLACK;
 		barvaDrugiIgralec = Color.WHITE;
-		barvaMreze = Color.black;
-		debelinaMreze = new BasicStroke(2);
-		polmerZetona = 5;
 		
 		addMouseListener(this);
         addMouseMotionListener(this);
@@ -63,11 +61,28 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    for(int j = 1; j <= 7; j++) {
 	    	g.drawLine(marginSirina, marginVisina + j*((velikost)/8), velikost + marginSirina, marginVisina + j*((velikost)/8));
 	    }
-	    g.fillOval(marginSirina - 5 + 2*((velikost)/8), marginVisina - 5 + 2*((velikost)/8), 10, 10);
-	    g.fillOval(marginSirina - 5 + 6*((velikost)/8), marginVisina - 5 + 2*((velikost)/8), 10, 10);
-	    g.fillOval(marginSirina - 5 + 2*((velikost)/8), marginVisina - 5 + 6*((velikost)/8), 10, 10);
-	    g.fillOval(marginSirina - 5 + 6*((velikost)/8), marginVisina - 5 + 6*((velikost)/8), 10, 10);
-	    g.fillOval(marginSirina - 5 + 4*((velikost)/8), marginVisina - 5 + 4*((velikost)/8), 10, 10);
+	    //tukej je izrisanih tistih pet pikic na sredini
+	    int polmerPikice = velikost/96;
+	    g.fillOval(marginSirina - polmerPikice + 2*((velikost)/8), marginVisina - polmerPikice + 2*((velikost)/8), polmerPikice*2, polmerPikice*2);
+	    g.fillOval(marginSirina - polmerPikice + 6*((velikost)/8), marginVisina - polmerPikice + 2*((velikost)/8), polmerPikice*2, polmerPikice*2);
+	    g.fillOval(marginSirina - polmerPikice + 2*((velikost)/8), marginVisina - polmerPikice + 6*((velikost)/8), polmerPikice*2, polmerPikice*2);
+	    g.fillOval(marginSirina - polmerPikice + 6*((velikost)/8), marginVisina - polmerPikice + 6*((velikost)/8), polmerPikice*2, polmerPikice*2);
+	    g.fillOval(marginSirina - polmerPikice + 4*((velikost)/8), marginVisina - polmerPikice + 4*((velikost)/8), polmerPikice*2, polmerPikice*2);
+	    
+	    //izrisemo se zetone
+	    int polmerZetona = velikost/16;
+	    for (int i = 0; i < plosca.velikost; ++i) {
+	    	for (int j = 0; j < plosca.velikost; ++j) {
+	    		if (plosca.mreza[i][j] != null) {
+	    			String barva = plosca.mreza[i][j].barva;
+	    			if (barva == "White") g.setColor(Color.WHITE);
+	    			else g.setColor(Color.BLACK);
+	    			g.fillOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+	    			g.setColor(Color.BLACK);
+	    			g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+	    		}
+	    	}
+	    }
 	}
 
 	@Override

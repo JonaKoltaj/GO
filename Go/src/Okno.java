@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import logika.Plosca;
@@ -84,6 +85,16 @@ public class Okno extends JFrame implements ActionListener {
 		}
 		else if (objekt == menuKoncaj) {
 			dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
+		else if (objekt == menuIme) {
+			//to se pol lah napise, samo kako se izpise ime pac
+		}
+		else if (objekt == menuIgralec) {
+			// a bos crn al beu
+		}
+		else if (objekt == menuAlgoritem) {
+			// kateri algoritem igras (to bom pol bl pr algoritmih
+			
 		}
 	}
 	
