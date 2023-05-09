@@ -9,8 +9,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import logika.Igra;
@@ -21,8 +24,8 @@ import splosno.Poteza;
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	protected Igra igra;
-	protected Color barvaPrviIgralec;
-	protected Color barvaDrugiIgralec;
+	protected String prviIgralec;
+	protected String drugiIgralec;
 	
 	public Platno(int sirina, int visina) {
 		super();
@@ -30,8 +33,8 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		nastaviPlosco(igra.plosca);
 		setPreferredSize(new Dimension(sirina, visina));
 		
-		barvaPrviIgralec = Color.BLACK;
-		barvaDrugiIgralec = Color.WHITE;
+		prviIgralec = "Človek";
+		drugiIgralec = "Računalnik";
 		
 		addMouseListener(this);
         addMouseMotionListener(this);
@@ -42,6 +45,32 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	public void nastaviPlosco(Plosca p) {
 		igra.plosca = p;
 		repaint();
+	}
+	
+	//to je samo pomozna funkcija, da se lahko ureja kdo igra prvi/kako igra racunalnik proti racunalniku
+	public void spremeniIgralca() {
+		if (prviIgralec == "Računalnik" && drugiIgralec == "Človek") {
+			igra.igrajRacunalnik();
+			konecIgre();
+			prviIgralec = "Človek";
+			drugiIgralec = "Računalnik";
+		}
+		while (prviIgralec == "Računalnik" && drugiIgralec == "Računalnik" && igra.stanje) {
+			igra.igrajRacunalnik();
+			konecIgre();
+		}
+		repaint();
+	}
+	
+	public void konecIgre() {
+		if (!igra.aliJeKonec()) {
+			JOptionPane.showMessageDialog(null, "ZMAGAL JE IGRALEC BARVE: " + igra.zmagovalec, "IGRE JE KONEC!", JOptionPane.PLAIN_MESSAGE);
+			int odgovor = JOptionPane.showConfirmDialog(null, "ŽELITE ZAČETI NOVO IGRO?");
+			if (odgovor == JOptionPane.YES_OPTION) {
+				this.igra = new Igra();
+				repaint();
+			}
+		}
 	}
 	
 	@Override
@@ -133,7 +162,28 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
 	    		
 	    		if (razdalja < najmanjsaRazdalja) {
-	    			igra.odigraj(new Poteza(i, j));
+	    			if (prviIgralec == "Človek" && drugiIgralec == "Računalnik") {
+	    				boolean moznoClovek = igra.odigraj(new Poteza(i, j));
+	    				if (!moznoClovek) {
+	    					JOptionPane.showMessageDialog(null, "Poteza ni mogoča, izberi drugo polje", "Polje ni prosto", JOptionPane.ERROR_MESSAGE);
+	    					continue;
+	    				}
+	    				konecIgre();
+		    			boolean moznoRac = igra.igrajRacunalnik();
+		    			while (!moznoRac) {
+		    				moznoRac = igra.igrajRacunalnik();
+		    			}
+		    			konecIgre();
+	    			}
+	    			else if (prviIgralec == "Človek" && drugiIgralec == "Človek") {
+	    				boolean moznoClovek = igra.odigraj(new Poteza(i, j));
+	    				if (!moznoClovek) {
+	    					JOptionPane.showMessageDialog(null, "Polje je zapolnjeno, izberi drugega", "Zapolnjeno polje", JOptionPane.ERROR_MESSAGE);
+	    					continue;
+	    				}
+	    				konecIgre();
+	    			}
+	    			else continue;
 	    		}
 	    	}
         }

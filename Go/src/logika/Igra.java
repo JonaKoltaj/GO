@@ -10,13 +10,13 @@ import splosno.Poteza;
 public class Igra {
 	
 	public Plosca plosca;
-	protected boolean stanje; // true, če igra ni končana in false sicer
+	public boolean stanje; // true, če igra ni končana in false sicer
 	protected Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
 	public static ArrayList<Poteza> moznePotezeSeznam;
 	public String naVrsti; // kateri izmed igralcev mora narediti potezo
 	protected DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
 	protected DisjointSet skupineCrnih; // popravi na protected
-	protected String zmagovalec;
+	public String zmagovalec;
 	protected ArrayList<Zeton> zajetaSkupina;
 	
 
@@ -148,9 +148,11 @@ public class Igra {
 	
 	// pomožna metoda, ki bo odigrala naključno 
 	// kasneje zbrišem
-	public void igrajRacunalnik() {
+	// tukej sm ti samo spremenila da tudi racunalnik vrne boolean vrednost, kr rabim pri platnu! - Jona
+	public boolean igrajRacunalnik() {
 		Poteza p = RandomIzbira.izberiNakljucno();
-		odigraj(p);
+		boolean mozno = odigraj(p);
+		return mozno;
 	}
 	
 	

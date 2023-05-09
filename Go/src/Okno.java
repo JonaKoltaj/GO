@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -17,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import logika.Igra;
 import logika.Plosca;
 
 @SuppressWarnings("serial")
@@ -24,7 +26,7 @@ public class Okno extends JFrame implements ActionListener {
 	
 	protected Platno platno;
 	
-	private JMenuItem menuOdpri, menuShrani, menuKoncaj;
+	private JMenuItem menuOdpri, menuShrani, menuRestart;
 	private JMenuItem menuIme, menuIgralec, menuAlgoritem;
 	
 	public Okno() {
@@ -42,7 +44,7 @@ public class Okno extends JFrame implements ActionListener {
 		
 		menuOdpri = dodajMenuItem(menuDatoteka, "Odpri ...");
 		menuShrani = dodajMenuItem(menuDatoteka, "Shrani ...");
-		menuKoncaj = dodajMenuItem(menuDatoteka, "Končaj ...");
+		menuRestart = dodajMenuItem(menuDatoteka, "Začni ponovno ...");
 		menuIme = dodajMenuItem(menuNastavitve, "Izberi ime ...");
 		menuIgralec = dodajMenuItem(menuNastavitve, "Izberi igralca ...");
 		menuAlgoritem = dodajMenuItem(menuNastavitve, "Izberi algoritem ...");
@@ -83,14 +85,22 @@ public class Okno extends JFrame implements ActionListener {
 				platno.igra.plosca.shrani(ime);
 			}
 		}
-		else if (objekt == menuKoncaj) {
-			dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		else if (objekt == menuRestart) {
+			platno.igra = new Igra();
+			platno.repaint();
 		}
 		else if (objekt == menuIme) {
 			//to se pol lah napise, samo kako se izpise ime pac
 		}
 		else if (objekt == menuIgralec) {
-			// a bos crn al beu
+			String[] buttons = {"Igralec", "Računalnik"};
+			int prviIgralec = JOptionPane.showOptionDialog(null, "Izberi ali boš igral ti ali računalnik:", "Človek ali računalnik prvi", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
+			int drugiIgralec = JOptionPane.showOptionDialog(null, "Izberi ali boš igral ti ali računalnik:", "Človek ali računalnik drugi", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
+			if (prviIgralec == 0) platno.prviIgralec = "Človek";
+			else platno.prviIgralec = "Računalnik";
+			if (drugiIgralec == 0) platno.drugiIgralec = "Človek";
+			else platno.drugiIgralec = "Računalnik";
+			platno.spremeniIgralca();
 		}
 		else if (objekt == menuAlgoritem) {
 			// kateri algoritem igras (to bom pol bl pr algoritmih
