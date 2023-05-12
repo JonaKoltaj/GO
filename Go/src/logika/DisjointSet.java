@@ -9,14 +9,14 @@ public class DisjointSet {
 	// podatkovna struktura DisjointSet bo beležila skupine kamenčkov iste barve, ki se dotikajo
 	// vsaka taka skupina bo imela svojega predstavnika
 	protected ArrayList<Zeton> vsebuje;
-	protected String barva;
+	protected Igralec barva;
 	protected Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
 	protected Map<Zeton, Integer> rank;
 	public ArrayList<Zeton> predstavniki;
 	
 	
 
-	public DisjointSet(String barva) {
+	public DisjointSet(Igralec barva) {
 		this.barva = barva;
 		vsebuje = new ArrayList<>();
 		parent = new HashMap<>();

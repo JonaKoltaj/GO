@@ -86,7 +86,8 @@ public class Plosca {
 	                	int stevecStolpec = 0;
 	                	for (String beseda : besede) {
 	                		if (beseda == null) plosca.mreza[stevecVrstica][stevecStolpec] = null;
-	                		else plosca.postaviZeton(new Zeton(stevecVrstica, stevecStolpec, beseda));
+	                		else {Igralec barva = Igralec.pretvoriVIgralca(beseda);
+	                			plosca.postaviZeton(new Zeton(stevecVrstica, stevecStolpec, barva));};
 	                		stevecStolpec +=1;
 	                	}
 	                	stevecVrstica += 1;

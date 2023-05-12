@@ -13,10 +13,10 @@ public class Igra {
 	public boolean stanje; // true, če igra ni končana in false sicer
 	protected Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
 	public static ArrayList<Poteza> moznePotezeSeznam;
-	public String naVrsti; // kateri izmed igralcev mora narediti potezo
+	public Igralec naVrsti; // kateri izmed igralcev mora narediti potezo
 	protected DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
 	protected DisjointSet skupineCrnih; // popravi na protected
-	public String zmagovalec;
+	public Igralec zmagovalec;
 	protected ArrayList<Zeton> zajetaSkupina;
 	
 
@@ -25,9 +25,9 @@ public class Igra {
 		stanje = true;
 		moznePoteze = seznamMoznihPotez();
 		moznePotezeSeznam = arrayMoznihPotez();
-		naVrsti = "Black";
-		skupineBelih = new DisjointSet("White");
-		skupineCrnih = new DisjointSet("Black");
+		naVrsti = Igralec.CRNI;
+		skupineBelih = new DisjointSet(Igralec.BELI);
+		skupineCrnih = new DisjointSet(Igralec.CRNI);
 		zmagovalec = null;
 		zajetaSkupina = null;
 	}
@@ -50,11 +50,12 @@ public class Igra {
 		return seznam;
 	}
 	
-	// metoda, ki vrne barvo nasprotnega igralca
-	public String drugi(String barva) {
-		if (barva == "White") return "Black";
-		else return "White";
-	}
+	// metoda, ki vrne barvo nasprotnega igralca - Sedaj to naredi nasprotnik()
+	public Igralec drugi(Igralec barva) {
+		Igralec nasprotnik = Igralec.BELI; // v primeru, ko je sedaj igralec črni, bo nasprotnik beli
+		if (barva == Igralec.BELI) nasprotnik = Igralec.CRNI;
+			return nasprotnik;
+		}
 	
 	// vrne seznam velikosti 4, ki v smeri urinega kazalca beleži sosede
 	// element z indeksom 0 je tisti s koordinatami (i + 1, j)
@@ -118,7 +119,7 @@ public class Igra {
 		}
 		// če nima nobenega soseda iste barve, bomo samo ustvarili enojec
 		if (aliImaSoseda == false) {
-			if (z.barva == "White") {
+			if (z.barva == Igralec.BELI) {
 				skupineBelih.makeSet(z); 
 				skupineBelih.predstavniki.add(z);
 				}
@@ -132,7 +133,7 @@ public class Igra {
 			for (Zeton s : sosedi) {
 				if (s != null) { // preskočimo prazna polja
 					if (s.barva == z.barva) {  
-						if (z.barva == "White") {
+						if (z.barva == Igralec.BELI) {
 							skupineBelih.makeSet(z); 
 							skupineBelih.union(z, s);
 							}
@@ -215,6 +216,15 @@ public class Igra {
 		return igraVTeku;
 	}
 	
+		// vrnemo stanje igre
+		public Stanje stanje() {
+			Stanje st = Stanje.V_TEKU;
+			if (stanje != true) {
+				if (zmagovalec == Igralec.BELI) st = Stanje.ZMAGA_BELI;
+				else if (zmagovalec == Igralec.CRNI) st = Stanje.ZMAGA_CRNI;
+			}
+			return st;
+		}
 	
 	
 		// metoda za izpis stanja igre - pomembna samo med testiranjem, kasneje izbrišem

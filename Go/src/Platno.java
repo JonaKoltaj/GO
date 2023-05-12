@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import logika.Igra;
+import logika.Igralec;
 import logika.Plosca;
 import logika.Zeton;
 import splosno.Poteza;
@@ -102,8 +103,8 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    for (int i = 0; i < igra.plosca.velikost; ++i) {
 	    	for (int j = 0; j < igra.plosca.velikost; ++j) {
 	    		if (igra.plosca.mreza[i][j] != null) {
-	    			String barva = igra.plosca.mreza[i][j].barva;
-	    			if (barva == "White") g.setColor(Color.WHITE);
+	    			Igralec barva = igra.plosca.mreza[i][j].barva;
+	    			if (barva == Igralec.BELI) g.setColor(Color.WHITE);
 	    			else g.setColor(Color.BLACK);
 	    			g.fillOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
 	    			g.setColor(Color.BLACK);
