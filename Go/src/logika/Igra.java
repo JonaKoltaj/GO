@@ -9,13 +9,13 @@ import splosno.Poteza;
 
 public class Igra {
 	
-	public Plosca plosca;
+	public static Plosca plosca;
 	public boolean stanje; // true, če igra ni končana in false sicer
 	protected Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
 	public static ArrayList<Poteza> moznePotezeSeznam;
 	public Igralec naVrsti; // kateri izmed igralcev mora narediti potezo
-	protected DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
-	protected DisjointSet skupineCrnih; // popravi na protected
+	public DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
+	public DisjointSet skupineCrnih; // popravi na protected
 	public Igralec zmagovalec;
 	protected ArrayList<Zeton> zajetaSkupina;
 	
@@ -50,6 +50,19 @@ public class Igra {
 		return seznam;
 	}
 	
+	// metoda, ki prekopira igro
+	public Igra(Igra igra) {
+		this.plosca = Plosca.kopiraj(igra.plosca);
+		this.stanje = igra.stanje;
+		this.moznePoteze = igra.moznePoteze;
+		this.moznePotezeSeznam = igra.moznePotezeSeznam;
+		this.naVrsti = igra.naVrsti;
+		this.skupineBelih = igra.skupineBelih;
+		this.skupineCrnih = igra.skupineCrnih;
+		this.zmagovalec =  igra.zmagovalec;
+		this.zajetaSkupina = igra.zajetaSkupina;
+	}
+	
 	// metoda, ki vrne barvo nasprotnega igralca - Sedaj to naredi nasprotnik()
 	public Igralec drugi(Igralec barva) {
 		Igralec nasprotnik = Igralec.BELI; // v primeru, ko je sedaj igralec črni, bo nasprotnik beli
@@ -59,7 +72,7 @@ public class Igra {
 	
 	// vrne seznam velikosti 4, ki v smeri urinega kazalca beleži sosede
 	// element z indeksom 0 je tisti s koordinatami (i + 1, j)
-	public Zeton[] vrniSosede(Zeton z) {
+	public static Zeton[] vrniSosede(Zeton z) {
 		int n = plosca.velikost;
 		Zeton[] seznamSosedov = {null, null, null, null};
 		if (z == null) return seznamSosedov;
@@ -190,6 +203,22 @@ public class Igra {
 				}
 			return sez;
 	}
+	
+	public static Integer prestejProsteSosede(Zeton s) {
+		int velikost = 0;
+		int n = velikost;
+		ArrayList<Zeton> sosedi = DisjointSet.vrniSkupino(s);
+		for (Zeton z : sosedi) {
+			Zeton[] sosediZetona = vrniSosede(z);
+			if (sosediZetona[0] == null & z.i - 1 >= 0) velikost += 1;
+			if (sosediZetona[1] == null & z.j + 1 < n) velikost += 1;
+			if (sosediZetona[2] == null & z.i + 1 < n) velikost += 1;
+			if (sosediZetona[3] == null & z.j - 1 > 0) velikost += 1;
+			}
+		return velikost;
+		}
+		
+	
 
 	
 	// metoda, ki preveri ali je igre konec

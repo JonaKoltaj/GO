@@ -8,11 +8,12 @@ import java.util.Set;
 public class DisjointSet {
 	// podatkovna struktura DisjointSet bo beležila skupine kamenčkov iste barve, ki se dotikajo
 	// vsaka taka skupina bo imela svojega predstavnika
-	protected ArrayList<Zeton> vsebuje;
+	protected static ArrayList<Zeton> vsebuje;
 	protected Igralec barva;
-	protected Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
+	protected static Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
 	protected Map<Zeton, Integer> rank;
 	public ArrayList<Zeton> predstavniki;
+	public static Map<Zeton, Integer> steviloProstihSosedov;
 	
 	
 
@@ -22,6 +23,7 @@ public class DisjointSet {
 		parent = new HashMap<>();
 		rank = new HashMap<>();
 		predstavniki = new ArrayList<Zeton>();
+		steviloProstihSosedov = new HashMap<>();
 	}
 	
 	
@@ -30,11 +32,12 @@ public class DisjointSet {
 		if (z.barva == this.barva) vsebuje.add(z);
 		parent.put(z, z);
 		rank.put(z, 0);
+		
 		}
 	
 	
 	// metoda najde prednika od žetona z
-	public Zeton find(Zeton z) {
+	public static Zeton find(Zeton z) {
 		if (parent.get(z) == z) return z;
 		else return find(parent.get(z));
 	}
@@ -58,7 +61,7 @@ public class DisjointSet {
 	
 	
 	// vrne seznam žetonov, ki so v isti skupini kot žeton z
-	public ArrayList<Zeton> vrniSkupino(Zeton z) {
+	public static ArrayList<Zeton> vrniSkupino(Zeton z) {
 		ArrayList<Zeton> sez = new ArrayList<Zeton>();
 		sez.add(z);
 		for (Zeton s : vsebuje) {
