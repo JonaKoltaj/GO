@@ -164,7 +164,7 @@ public class Igra {
 	// kasneje zbrišem
 	// tukej sm ti samo spremenila da tudi racunalnik vrne boolean vrednost, kr rabim pri platnu! - Jona
 	public boolean igrajRacunalnik() {
-		Poteza p = RandomIzbira.izberiNakljucno();
+		Poteza p = RandomIzbira.izberiP();
 		boolean mozno = odigraj(p);
 		return mozno;
 	}

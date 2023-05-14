@@ -1,11 +1,13 @@
 import java.util.HashMap;
 import java.util.Map;
 
+import GUI.Okno;
 import logika.Igra;
 import logika.Par;
 import logika.Plosca;
 import logika.Zeton;
 import splosno.Poteza;
+import vodja.Vodja;
 
 public class CaptureGo {
 
@@ -17,6 +19,7 @@ public class CaptureGo {
 		Okno okno = new Okno();
 		okno.pack();
 		okno.setVisible(true);
+		Vodja.okno = okno;
 		
 //		Igra igra = new Igra();
 //		System.out.println("ZAČNEMO IGRO");

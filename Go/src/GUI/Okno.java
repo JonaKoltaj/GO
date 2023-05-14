@@ -1,3 +1,4 @@
+package GUI;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -29,6 +30,12 @@ public class Okno extends JFrame implements ActionListener {
 	private JMenuItem menuOdpri, menuShrani, menuRestart;
 	private JMenuItem menuIme, menuIgralec, menuAlgoritem;
 	
+	// Izbire v menujih
+	private JMenuItem igraClovekRacunalnik;
+	private JMenuItem igraRacunalnikClovek;
+	private JMenuItem igraClovekClovek;
+	private JMenuItem igraRacunalnikRacunalnik;
+	
 	public Okno() {
 		super();
 		setTitle("Capture Go");
@@ -48,6 +55,8 @@ public class Okno extends JFrame implements ActionListener {
 		menuIme = dodajMenuItem(menuNastavitve, "Izberi ime ...");
 		menuIgralec = dodajMenuItem(menuNastavitve, "Izberi igralca ...");
 		menuAlgoritem = dodajMenuItem(menuNastavitve, "Izberi algoritem ...");
+		
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
