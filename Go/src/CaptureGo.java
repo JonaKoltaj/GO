@@ -19,7 +19,7 @@ public class CaptureGo {
 		Okno okno = new Okno();
 		okno.pack();
 		okno.setVisible(true);
-		Vodja.okno = okno;
+		// Vodja.okno = okno;
 		
 //		Igra igra = new Igra();
 //		System.out.println("ZAČNEMO IGRO");

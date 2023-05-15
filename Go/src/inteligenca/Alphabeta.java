@@ -33,8 +33,11 @@ public class Alphabeta extends Inteligenca {
 		ArrayList<Poteza> moznePoteze = igra.moznePotezeSeznam;
 		Poteza kandidat = moznePoteze.get(0); // Možno je, da se ne spremini vrednost kanditata. Zato ne more biti null.
 		for (Poteza p: moznePoteze) {
+			// verjetno je nekaj narobe pri kopiranju
 			Igra kopijaIgre = new Igra(igra);
-			kopijaIgre.odigraj (p);
+			System.out.println("Poskušamo igrati potezo:" + p.x() + p.y());
+			kopijaIgre.odigraj(p);
+			kopijaIgre.plosca.izpis();
 			int ocenap;
 			switch (kopijaIgre.stanje()) {
 			case ZMAGA_CRNI: ocenap = (jaz == Igralec.CRNI ? ZMAGA : ZGUBA); break;
