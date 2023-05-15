@@ -20,6 +20,7 @@ public class Igra {
 	protected ArrayList<Zeton> zajetaSkupina;
 	
 
+
 	public Igra() {
 		plosca = new Plosca(9);
 		stanje = true;
@@ -30,6 +31,35 @@ public class Igra {
 		skupineCrnih = new DisjointSet(Igralec.CRNI);
 		zmagovalec = null;
 		zajetaSkupina = null;
+	}
+	
+
+	// metoda, ki prekopira igro
+	public Igra(Igra igra) {
+		this.plosca = Plosca.kopiraj(igra.plosca);
+		this.stanje = igra.stanje;
+		Set<Poteza> kopijaMoznePoteze = new HashSet<Poteza>();
+		kopijaMoznePoteze.addAll(igra.moznePoteze);
+		this.moznePoteze = kopijaMoznePoteze;
+		ArrayList<Poteza> kopijaMoznePotezeSeznam = new ArrayList<Poteza>();
+		for (Poteza p: igra.moznePotezeSeznam) {kopijaMoznePotezeSeznam.add(p);};
+		this.moznePotezeSeznam = kopijaMoznePotezeSeznam;
+		this.naVrsti = igra.naVrsti;
+		
+		DisjointSet kopijaSkupineBelih = DisjointSet.kopirajMnozico(igra.skupineBelih);
+		this.skupineBelih = kopijaSkupineBelih;
+		DisjointSet kopijaSkupineCrnih = DisjointSet.kopirajMnozico(igra.skupineCrnih);
+		this.skupineCrnih = kopijaSkupineCrnih;
+		
+		this.zmagovalec =  igra.zmagovalec;
+		
+	
+		// pomožna funkcija za kopiranje
+		ArrayList<Zeton> kopijaZajetaSkupina = null;
+		if (igra.zajetaSkupina != null) {
+			kopijaZajetaSkupina = new ArrayList<Zeton>();
+			for (Zeton z: igra.zajetaSkupina) {kopijaZajetaSkupina.add(z);};
+		}
 	}
 	
 	// metoda, ki iz množice možnih potez vrne seznam možnih potez 
@@ -50,18 +80,7 @@ public class Igra {
 		return seznam;
 	}
 	
-	// metoda, ki prekopira igro
-	public Igra(Igra igra) {
-		this.plosca = Plosca.kopiraj(igra.plosca);
-		this.stanje = igra.stanje;
-		this.moznePoteze = igra.moznePoteze;
-		this.moznePotezeSeznam = igra.moznePotezeSeznam;
-		this.naVrsti = igra.naVrsti;
-		this.skupineBelih = igra.skupineBelih;
-		this.skupineCrnih = igra.skupineCrnih;
-		this.zmagovalec =  igra.zmagovalec;
-		this.zajetaSkupina = igra.zajetaSkupina;
-	}
+	
 	
 	// metoda, ki vrne barvo nasprotnega igralca - Sedaj to naredi nasprotnik()
 	public Igralec drugi(Igralec barva) {
@@ -163,11 +182,11 @@ public class Igra {
 	// pomožna metoda, ki bo odigrala naključno 
 	// kasneje zbrišem
 	// tukej sm ti samo spremenila da tudi racunalnik vrne boolean vrednost, kr rabim pri platnu! - Jona
-	public boolean igrajRacunalnik() {
-		Poteza p = RandomIzbira.izberiP();
-		boolean mozno = odigraj(p);
-		return mozno;
-	}
+//	public boolean igrajRacunalnik() {
+//		Poteza p = RandomIzbira.izberiP();
+//		boolean mozno = odigraj(p);
+//		return mozno;
+//	}
 	
 	
 	// metoda, ki vzame željeno potezo, jo odigra, če je to mogoče, ter vrne true,

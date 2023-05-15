@@ -11,12 +11,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import inteligenca.Alphabeta;
+import inteligenca.Inteligenca;
+import inteligenca.RandomIzbira;
 import logika.Igra;
 import logika.Igralec;
 import logika.Plosca;
@@ -49,16 +53,41 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		repaint();
 	}
 	
+	// **************************************************
+	// verjetno bi ta del moral biti v razredu VODJA (tako je mel prof. narjeno na primeru
+	// mogoče spremenima kasneje, če bo treba
+	
+	
+	public static Inteligenca racunalnikovaInteligenca = new Alphabeta(9);
+	//public static Inteligenca racunalnikovaInteligenca = new RandomIzbira("random");
+	
+//	public boolean igrajRacunalnikovoPotezo() {
+//		Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
+//		try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
+//		boolean vrednost = igra.odigraj(poteza);
+//		return vrednost;
+//	}
+	
+	// ČE ŽELIMO IGRATI PROTI RANDOM IZBRIRI
+	public boolean igrajRacunalnikovoPotezo() {
+		Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
+		try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
+		boolean vrednost = igra.odigraj(poteza);
+		return vrednost;
+	}
+	
+	//*********************************************************************
+	
 	//to je samo pomozna funkcija, da se lahko ureja kdo igra prvi/kako igra racunalnik proti racunalniku
 	public void spremeniIgralca() {
 		if (prviIgralec == "Računalnik" && drugiIgralec == "Človek") {
-			igra.igrajRacunalnik();
+			igrajRacunalnikovoPotezo();
 			konecIgre();
 			prviIgralec = "Človek";
 			drugiIgralec = "Računalnik";
 		}
 		while (prviIgralec == "Računalnik" && drugiIgralec == "Računalnik" && igra.stanje) {
-			igra.igrajRacunalnik();
+			igrajRacunalnikovoPotezo();
 			konecIgre();
 		}
 		repaint();
@@ -171,9 +200,9 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    					continue;
 	    				}
 	    				konecIgre();
-		    			boolean moznoRac = igra.igrajRacunalnik();
+		    			boolean moznoRac = igrajRacunalnikovoPotezo();
 		    			while (!moznoRac) {
-		    				moznoRac = igra.igrajRacunalnik();
+		    				moznoRac = igrajRacunalnikovoPotezo();
 		    			}
 		    			konecIgre();
 	    			}

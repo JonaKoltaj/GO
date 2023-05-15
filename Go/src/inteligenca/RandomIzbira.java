@@ -9,13 +9,10 @@ import splosno.Poteza;
 public class RandomIzbira extends Inteligenca {
 
 	public RandomIzbira(String ime) {
-		super(ime);
-		// TODO Auto-generated constructor stub
-	}
-
-	public static void main(String[] args) {
+		super("random izbira");
 	}
 	
+
 	// izbere naključno potezo
 	@Override
 	public Poteza izberiPotezo(Igra igra) {

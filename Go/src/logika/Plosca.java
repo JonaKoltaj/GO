@@ -35,8 +35,8 @@ public class Plosca {
 		public static Plosca kopiraj(Plosca plosca) {
 			int n = plosca.velikost;
 			Plosca vrni = new Plosca(n);
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; i++) {
+			for (int i = 0; i < n; ++i) {
+				for (int j = 0; j < n; ++j) {
 					if (plosca.mreza[i][j] != null) {
 						vrni.mreza[i][j] = plosca.mreza[i][j];
 					}
