@@ -31,19 +31,25 @@ public class Plosca {
 			mreza[z.i][z.j] = z;
 		}
 		
-		// metoda, ki prekopira ploščo
-		public static Plosca kopiraj(Plosca plosca) {
-			int n = plosca.velikost;
-			Plosca vrni = new Plosca(n);
-			for (int i = 0; i < n; ++i) {
-				for (int j = 0; j < n; ++j) {
-					if (plosca.mreza[i][j] != null) {
-						vrni.mreza[i][j] = plosca.mreza[i][j];
-					}
-				}
-			}
-			return vrni;
+		public Zeton vrniZeton(int i, int j) {
+			return mreza[i][j];
 		}
+		
+		
+		// NE BOM UPORABILA TE METODE
+		// metoda, ki prekopira ploščo
+//		public static Plosca kopiraj(Plosca plosca) {
+//			int n = plosca.velikost;
+//			Plosca vrni = new Plosca(n);
+//			for (int i = 0; i < n; ++i) {
+//				for (int j = 0; j < n; ++j) {
+//					if (plosca.mreza[i][j] != null) {
+//						vrni.mreza[i][j] = plosca.mreza[i][j];
+//					}
+//				}
+//			}
+//			return vrni;
+//		}
 		
 		// metoda, ki izpiše stanje plošče, kasneje izbrišem
 		public void izpis() {

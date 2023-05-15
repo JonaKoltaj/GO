@@ -66,7 +66,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	public boolean igrajRacunalnikovoPotezo() {
 		Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
 		try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
-		boolean vrednost = igra.odigraj(poteza);
+		boolean vrednost = igra.odigraj(poteza, igra.naVrsti);
 		return vrednost;
 	}
 	
@@ -192,7 +192,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
 		    		
 		    		if (razdalja < najmanjsaRazdalja) {
-		    			boolean mozno = Vodja.igra.odigraj(new Poteza(i, j));
+		    			boolean mozno = Vodja.igra.odigraj(new Poteza(i, j), Vodja.igra.naVrsti);
 		    			if (!mozno) {
 	    					JOptionPane.showMessageDialog(null, "Poteza ni mogoča, izberi drugo polje", "Polje ni prosto", JOptionPane.ERROR_MESSAGE);
 	    					continue;}

@@ -2,8 +2,8 @@ package logika;
 
 public class Zeton {
 	// Razred Zeton beleži samo tiste kamenčke, ki se trenutno nahajajo na plošči
-	protected int i;
-	protected int j;
+	public int i;
+	public int j;
 	public Igralec barva;
 	
 	public Zeton (int indexVrsta, int indexStolpec, Igralec barva) {
@@ -16,6 +16,13 @@ public class Zeton {
 		if (z.i == this.i & z.j == this.j & this.barva == z.barva) return true;
 		else return false;
 		
+	}
+	
+	@Override
+	public String toString() {
+		String b = "B";
+		if (barva == Igralec.CRNI) b = "C";
+		return b + "(" + i + " , " + j + ") ";
 	}
 
 }

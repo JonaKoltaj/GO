@@ -1,6 +1,6 @@
 package inteligenca;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import logika.Igra;
@@ -16,20 +16,14 @@ public class RandomIzbira extends Inteligenca {
 	// izbere naključno potezo
 	@Override
 	public Poteza izberiPotezo(Igra igra) {
-		ArrayList<Poteza> seznam = igra.moznePotezeSeznam;
+		LinkedList<Poteza> seznam = igra.moznePoteze;
 		int n = seznam.size();
 		Poteza p = seznam.get(izberiNakljucniIndeks(n));
 		System.out.println("Izbira računalnika je: " + p.x() + " , " + p.y());
 		return p;
 	}
 	
-	public static Poteza izberiP() {
-		ArrayList<Poteza> seznam = Igra.moznePotezeSeznam;
-		int n = seznam.size();
-		Poteza p = seznam.get(izberiNakljucniIndeks(n));
-		System.out.println("Izbira računalnika je: " + p.x() + " , " + p.y());
-		return p;
-	}
+
 	
 	// pomožna funkcija
 	// od števila 0 do vključno n - 1 izbere neko naključno število

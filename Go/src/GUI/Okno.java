@@ -3,6 +3,9 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +26,7 @@ import javax.swing.JScrollPane;
 import logika.Igra;
 import logika.Igralec;
 import logika.Plosca;
+import logika.Stanje;
 import splosno.KdoIgra;
 import vodja.Vodja;
 import vodja.VrstaIgralca;
@@ -41,6 +45,7 @@ public class Okno extends JFrame implements ActionListener {
 	private JMenuItem igraClovekClovek;
 	private JMenuItem igraRacunalnikRacunalnik;
 	
+	// Statusna vrstica v spodnjem delu, ki izpiše stanje
 	private JLabel status;
 	
 	public Okno() {
@@ -84,6 +89,19 @@ public class Okno extends JFrame implements ActionListener {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// statusna vrstica za sporočila
+//		status = new JLabel();
+//		status.setText("Izberite igro!");
+		
+//		status.setFont(new Font(status.getFont().getName(),
+//			status.getFont().getStyle(), 20));
+//		GridBagConstraints status_layout = new GridBagConstraints();
+//		status_layout.gridx = 0;
+//		status_layout.gridy = 1;
+//		status_layout.anchor = GridBagConstraints.CENTER;
+//		getContentPane().add(status, status_layout);
+//		status.setText("Izberite igro!");
 	}
 	
 	private JMenu dodajMenu(JMenuBar menubar, String naslov) {
@@ -165,32 +183,24 @@ public class Okno extends JFrame implements ActionListener {
 			
 		}
 	
+	// popravi to
 	public void osveziGUI() {
-		if (Vodja.igra == null) {
-			status.setText("Igra ni v teku.");
-		}
-		
+//		if (Vodja.igra == null) {
+//			status.setText("Igra ni v teku.");
+//		}
 //		else {
-//			switch(Vodja.igra.stanje) {
-//			case V_TEKU: 
-//				if (Vodja.igra.naVrsti != null) {
-//					status.setText("Na potezi je " + Vodja.igra.naVrsti);
-//							// " - " + Vodja.kdoIgra.get(Vodja.igra.naVrsti)); 
-//				}
-//				break;
-//			case ZMAGA_CRNI: 
-//				status.setText("Zmagal je Črni - ");
-//						// + Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
-//				break;
-//			case ZMAGA_BELI: 
-//				status.setText("Zmagal je BELI - ");
-//						// + Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
-//				break;
+//			if (Vodja.igra.aliJeKonec()) {}
+//			else if (Vodja.igra.stanje == Stanje.ZMAGA_CRNI) {
+//				status.setText("Konec igre, zmagovalec je črni.");
 //			}
-			
-	//	}
-
-		System.out.println("Ali igra še poteka" + Vodja.igra.aliJeKonec());
+//			else if (Vodja.igra.stanje == Stanje.ZMAGA_BELI) {
+//				status.setText("Konec igre, zmagovalec je beli.");
+//			}
+//		}
+		Vodja.igra.konec();
+		Vodja.igra.jeKonec();
+		System.out.println("Ali igra še poteka" + Vodja.igra.jeKonec());
+		Vodja.igra.sprintajIgro();
 		platno.repaint();
 	}
 	
