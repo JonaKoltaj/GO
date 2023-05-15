@@ -80,7 +80,7 @@ public class Igra {
 	
 	
 	// metoda, ki vrne barvo nasprotnega igralca - Sedaj to naredi nasprotnik()
-	public Igralec drugi(Igralec barva) {
+	public static Igralec drugi(Igralec barva) {
 		Igralec nasprotnik = Igralec.BELI; // v primeru, ko je sedaj igralec črni, bo nasprotnik beli
 		if (barva == Igralec.BELI) nasprotnik = Igralec.CRNI;
 			return nasprotnik;
@@ -215,23 +215,24 @@ public class Igra {
 				if (sosediZetona[0] == null & z.i - 1 >= 0) sez.add(new Par(z.i - 1, z.j));
 				if (sosediZetona[1] == null & z.j + 1 < n) sez.add(new Par(z.i, z.j + 1));
 				if (sosediZetona[2] == null & z.i + 1 < n) sez.add(new Par(z.i + 1, z.j));
-				if (sosediZetona[3] == null & z.j - 1 > 0) sez.add(new Par(z.i, z.j - 1));
+				// tu sem popravila >= ,prej ni bilo = ampak nisem opazila napake??
+				if (sosediZetona[3] == null & z.j - 1 >= 0) sez.add(new Par(z.i, z.j - 1));
 				}
 			return sez;
 	}
 	
 	public static Integer prestejProsteSosede(Zeton s) {
-		int velikost = 0;
-		int n = velikost;
+		int v = 0;
+		int n = plosca.velikost;
 		ArrayList<Zeton> sosedi = DisjointSet.vrniSkupino(s);
 		for (Zeton z : sosedi) {
 			Zeton[] sosediZetona = vrniSosede(z);
-			if (sosediZetona[0] == null & z.i - 1 >= 0) velikost += 1;
-			if (sosediZetona[1] == null & z.j + 1 < n) velikost += 1;
-			if (sosediZetona[2] == null & z.i + 1 < n) velikost += 1;
-			if (sosediZetona[3] == null & z.j - 1 > 0) velikost += 1;
+			if (sosediZetona[0] == null & z.i - 1 >= 0) v += 1;
+			if (sosediZetona[1] == null & z.j + 1 < n) v += 1;
+			if (sosediZetona[2] == null & z.i + 1 < n) v += 1;
+			if (sosediZetona[3] == null & z.j - 1 >= 0) v += 1;
 			}
-		return velikost;
+		return v;
 		}
 		
 	
