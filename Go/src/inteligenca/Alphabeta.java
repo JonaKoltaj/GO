@@ -39,7 +39,7 @@ public class Alphabeta extends Inteligenca {
 			kopijaIgre.odigraj(p);
 			kopijaIgre.plosca.izpis();
 			int ocenap;
-			switch (kopijaIgre.stanje()) {
+			switch (kopijaIgre.stanje) {
 			case ZMAGA_CRNI: ocenap = (jaz == Igralec.CRNI ? ZMAGA : ZGUBA); break;
 			case ZMAGA_BELI: ocenap = (jaz == Igralec.BELI ? ZMAGA : ZGUBA); break;
 			case V_TEKU: ocenap = NEODLOC; break;

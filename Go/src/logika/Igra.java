@@ -10,26 +10,24 @@ import splosno.Poteza;
 public class Igra {
 	
 	public static Plosca plosca;
-	public boolean stanje; // true, če igra ni končana in false sicer
+	public Stanje stanje; 
 	protected Set<Poteza> moznePoteze; // beležimo poteze, ki so na voljo
 	public static ArrayList<Poteza> moznePotezeSeznam;
 	public Igralec naVrsti; // kateri izmed igralcev mora narediti potezo
 	public DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
 	public DisjointSet skupineCrnih; // popravi na protected
-	public Igralec zmagovalec;
 	protected ArrayList<Zeton> zajetaSkupina;
 	
 
 
 	public Igra() {
 		plosca = new Plosca(9);
-		stanje = true;
+		stanje = Stanje.V_TEKU;
 		moznePoteze = seznamMoznihPotez();
 		moznePotezeSeznam = arrayMoznihPotez();
 		naVrsti = Igralec.CRNI;
 		skupineBelih = new DisjointSet(Igralec.BELI);
 		skupineCrnih = new DisjointSet(Igralec.CRNI);
-		zmagovalec = null;
 		zajetaSkupina = null;
 	}
 	
@@ -51,7 +49,6 @@ public class Igra {
 		DisjointSet kopijaSkupineCrnih = DisjointSet.kopirajMnozico(igra.skupineCrnih);
 		this.skupineCrnih = kopijaSkupineCrnih;
 		
-		this.zmagovalec =  igra.zmagovalec;
 		
 	
 		// pomožna funkcija za kopiranje
@@ -249,30 +246,27 @@ public class Igra {
 			HashSet<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
 			if (sosedi.isEmpty()) {
 				igraVTeku = false;
-				zmagovalec = drugi(z.barva);
 				zajetaSkupina = skupineBelih.vrniSkupino(z);
-				stanje = false;}
+				stanje = Stanje.ZMAGA_CRNI;}
 		}
 		for (Zeton z: skupineCrnih.predstavniki) {
 			HashSet<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
 			if (sosedi.isEmpty()) {igraVTeku = false;
-			zmagovalec = drugi(z.barva);
 			zajetaSkupina = skupineCrnih.vrniSkupino(z);
-			stanje = false;}
+			stanje = Stanje.ZMAGA_BELI;}
 		}
 		if (igraVTeku == false) konecIgre(); // samo izpis, kasneje izbrišem
 		return igraVTeku;
 	}
 	
-		// vrnemo stanje igre
-		public Stanje stanje() {
-			Stanje st = Stanje.V_TEKU;
-			if (stanje != true) {
-				if (zmagovalec == Igralec.BELI) st = Stanje.ZMAGA_BELI;
-				else if (zmagovalec == Igralec.CRNI) st = Stanje.ZMAGA_CRNI;
-			}
-			return st;
+		// pomožna metoda, ki pove kdo je zmagal
+		public String zmagovalec() {
+			String zmagovalec = "";
+			if (stanje == Stanje.ZMAGA_CRNI) zmagovalec = "Črni";
+			if (stanje == Stanje.ZMAGA_BELI) zmagovalec = "Beli";
+			return zmagovalec;
 		}
+			
 	
 	
 		// metoda za izpis stanja igre - pomembna samo med testiranjem, kasneje izbrišem
@@ -292,7 +286,7 @@ public class Igra {
 		// metoda, ki izpiše rezultat igre, kasneje izbrišem
 		public void konecIgre() {
 			System.out.println("IGRE JE KONEC!");
-			System.out.println("ZMAGAL JE IGRALEC BARVE: " + zmagovalec);
+			System.out.println("ZMAGAL JE IGRALEC BARVE: " + zmagovalec());
 			System.out.println("ZAJEL JE SKUPINO: ");
 			sprintaj(zajetaSkupina);
 		}

@@ -24,6 +24,7 @@ import inteligenca.RandomIzbira;
 import logika.Igra;
 import logika.Igralec;
 import logika.Plosca;
+import logika.Stanje;
 import logika.Zeton;
 import splosno.Poteza;
 
@@ -58,8 +59,8 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	// mogoče spremenima kasneje, če bo treba
 	
 	
-	public static Inteligenca racunalnikovaInteligenca = new Alphabeta(9);
-	//public static Inteligenca racunalnikovaInteligenca = new RandomIzbira("random");
+	// public static Inteligenca racunalnikovaInteligenca = new Alphabeta(9);
+	public static Inteligenca racunalnikovaInteligenca = new RandomIzbira("random");
 	
 	public boolean igrajRacunalnikovoPotezo() {
 		Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
@@ -78,7 +79,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 			prviIgralec = "Človek";
 			drugiIgralec = "Računalnik";
 		}
-		while (prviIgralec == "Računalnik" && drugiIgralec == "Računalnik" && igra.stanje) {
+		while (prviIgralec == "Računalnik" && drugiIgralec == "Računalnik" && (igra.stanje != Stanje.V_TEKU)) {
 			igrajRacunalnikovoPotezo();
 			konecIgre();
 		}
@@ -87,7 +88,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	
 	public void konecIgre() {
 		if (!igra.aliJeKonec()) {
-			JOptionPane.showMessageDialog(null, "ZMAGAL JE IGRALEC BARVE: " + igra.zmagovalec, "IGRE JE KONEC!", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ZMAGAL JE IGRALEC BARVE: " + igra.zmagovalec(), "IGRE JE KONEC!", JOptionPane.PLAIN_MESSAGE);
 			int odgovor = JOptionPane.showConfirmDialog(null, "ŽELITE ZAČETI NOVO IGRO?");
 			if (odgovor == JOptionPane.YES_OPTION) {
 				this.igra = new Igra();
