@@ -13,7 +13,6 @@ public class DisjointSet {
 	protected static Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
 	protected Map<Zeton, Integer> rank;
 	public ArrayList<Zeton> predstavniki;
-	public static Map<Zeton, Integer> steviloProstihSosedov;
 	
 	
 
@@ -23,9 +22,24 @@ public class DisjointSet {
 		parent = new HashMap<>();
 		rank = new HashMap<>();
 		predstavniki = new ArrayList<Zeton>();
-		steviloProstihSosedov = new HashMap<>();
 	}
 	
+	public static DisjointSet kopirajMnozico(DisjointSet mnozica) {
+		DisjointSet kopija = new DisjointSet(mnozica.barva);
+		ArrayList<Zeton> vsebujeKopija = new ArrayList<>();
+		Map<Zeton, Zeton> parentKopija = new HashMap<>();
+		Map<Zeton, Integer> rankKopija = new HashMap<>();
+		ArrayList<Zeton> predstavnikiKopija = new ArrayList<Zeton>();
+		for (Zeton z : mnozica.vsebuje) {vsebujeKopija.add(z);};
+		for (Zeton z: mnozica.parent.keySet()) {parentKopija.put(z, mnozica.parent.get(z));};
+		for (Zeton z: mnozica.rank.keySet()) {rankKopija.put(z, mnozica.rank.get(z));};
+		for (Zeton z : mnozica.predstavniki) {predstavnikiKopija.add(z);};
+		kopija.vsebuje = vsebujeKopija;
+		kopija.parent = parentKopija;
+		kopija.rank = rankKopija;
+		kopija.predstavniki = predstavnikiKopija;
+		return kopija;
+	}
 	
 	// ustvarimo enojec, ki še ne obstaja
 	public void makeSet(Zeton z) {
