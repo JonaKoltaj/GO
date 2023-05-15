@@ -27,6 +27,7 @@ import logika.Plosca;
 import logika.Stanje;
 import logika.Zeton;
 import splosno.Poteza;
+import vodja.Vodja;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
@@ -71,31 +72,34 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	
 	//*********************************************************************
 	
-	//to je samo pomozna funkcija, da se lahko ureja kdo igra prvi/kako igra racunalnik proti racunalniku
-	public void spremeniIgralca() {
-		if (prviIgralec == "Računalnik" && drugiIgralec == "Človek") {
-			igrajRacunalnikovoPotezo();
-			konecIgre();
-			prviIgralec = "Človek";
-			drugiIgralec = "Računalnik";
-		}
-		while (prviIgralec == "Računalnik" && drugiIgralec == "Računalnik" && (igra.stanje != Stanje.V_TEKU)) {
-			igrajRacunalnikovoPotezo();
-			konecIgre();
-		}
-		repaint();
-	}
 	
-	public void konecIgre() {
-		if (!igra.aliJeKonec()) {
-			JOptionPane.showMessageDialog(null, "ZMAGAL JE IGRALEC BARVE: " + igra.zmagovalec(), "IGRE JE KONEC!", JOptionPane.PLAIN_MESSAGE);
-			int odgovor = JOptionPane.showConfirmDialog(null, "ŽELITE ZAČETI NOVO IGRO?");
-			if (odgovor == JOptionPane.YES_OPTION) {
-				this.igra = new Igra();
-				repaint();
-			}
-		}
-	}
+	// !!!! to bom prestavila v drug razred. zaenkrat samo zakomentiram - milka
+	
+	//to je samo pomozna funkcija, da se lahko ureja kdo igra prvi/kako igra racunalnik proti racunalniku
+//	public void spremeniIgralca() {
+//		if (prviIgralec == "Računalnik" && drugiIgralec == "Človek") {
+//			igrajRacunalnikovoPotezo();
+//			konecIgre();
+//			prviIgralec = "Človek";
+//			drugiIgralec = "Računalnik";
+//		}
+//		while (prviIgralec == "Računalnik" && drugiIgralec == "Računalnik" && (igra.stanje != Stanje.V_TEKU)) {
+//			igrajRacunalnikovoPotezo();
+//			konecIgre();
+//		}
+//		repaint();
+//	}
+//	
+//	public void konecIgre() {
+//		if (!igra.aliJeKonec()) {
+//			JOptionPane.showMessageDialog(null, "ZMAGAL JE IGRALEC BARVE: " + igra.zmagovalec(), "IGRE JE KONEC!", JOptionPane.PLAIN_MESSAGE);
+//			int odgovor = JOptionPane.showConfirmDialog(null, "ŽELITE ZAČETI NOVO IGRO?");
+//			if (odgovor == JOptionPane.YES_OPTION) {
+//				this.igra = new Igra();
+//				repaint();
+//			}
+//		}
+//	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -167,53 +171,89 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		
 	}
 
+	// nekaj se zgodi, samo če je bil na vrsti človek
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-        int y = e.getY();
-        
-        int sirina = getWidth();
-	    int visina = getHeight();
-	    int velikost = Math.min(sirina, visina) - 200;
-	    int marginSirina = sirina/2 - velikost/2;
-	    int marginVisina = visina/2 - velikost/2;
-	    int najmanjsaRazdalja = velikost/16;
-        
-        for (int i = 0; i < igra.plosca.velikost; ++i) {
-	    	for (int j = 0; j < igra.plosca.velikost; ++j) {
-	    		int poljex = marginSirina + i*((velikost)/8);
-	    		int poljey = marginVisina + j*((velikost)/8);
-	    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
-	    		
-	    		if (razdalja < najmanjsaRazdalja) {
-	    			if (prviIgralec == "Človek" && drugiIgralec == "Računalnik") {
-	    				boolean moznoClovek = igra.odigraj(new Poteza(i, j));
-	    				if (!moznoClovek) {
+		if (Vodja.clovekNaVrsti) {
+			int x = e.getX();
+	        int y = e.getY();
+	        
+	        int sirina = getWidth();
+		    int visina = getHeight();
+		    int velikost = Math.min(sirina, visina) - 200;
+		    int marginSirina = sirina/2 - velikost/2;
+		    int marginVisina = visina/2 - velikost/2;
+		    int najmanjsaRazdalja = velikost/16;
+	        
+	        for (int i = 0; i < igra.plosca.velikost; ++i) {
+		    	for (int j = 0; j < igra.plosca.velikost; ++j) {
+		    		int poljex = marginSirina + i*((velikost)/8);
+		    		int poljey = marginVisina + j*((velikost)/8);
+		    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
+		    		
+		    		if (razdalja < najmanjsaRazdalja) {
+		    			boolean mozno = Vodja.igra.odigraj(new Poteza(i, j));
+		    			if (!mozno) {
 	    					JOptionPane.showMessageDialog(null, "Poteza ni mogoča, izberi drugo polje", "Polje ni prosto", JOptionPane.ERROR_MESSAGE);
-	    					continue;
-	    				}
-	    				konecIgre();
-		    			boolean moznoRac = igrajRacunalnikovoPotezo();
-		    			while (!moznoRac) {
-		    				moznoRac = igrajRacunalnikovoPotezo();
-		    			}
-		    			konecIgre();
-	    			}
-	    			else if (prviIgralec == "Človek" && drugiIgralec == "Človek") {
-	    				boolean moznoClovek = igra.odigraj(new Poteza(i, j));
-	    				if (!moznoClovek) {
-	    					JOptionPane.showMessageDialog(null, "Polje je zapolnjeno, izberi drugega", "Zapolnjeno polje", JOptionPane.ERROR_MESSAGE);
-	    					continue;
-	    				}
-	    				konecIgre();
-	    			}
-	    			else continue;
-	    		}
-	    	}
-        }
-        repaint();
-		
+	    					continue;}
+		    			else {Vodja.clovekNaVrsti = false;
+		    				Vodja.igrajClovekovoPotezo(new Poteza(i, j));};
+		    		}
+		    	}
+	        }
+		}
 	}
+	
+	    		
+	    		
+	// jona
+//	@Override
+//	public void mouseClicked(MouseEvent e) {
+//		int x = e.getX();
+//        int y = e.getY();
+//        
+//        int sirina = getWidth();
+//	    int visina = getHeight();
+//	    int velikost = Math.min(sirina, visina) - 200;
+//	    int marginSirina = sirina/2 - velikost/2;
+//	    int marginVisina = visina/2 - velikost/2;
+//	    int najmanjsaRazdalja = velikost/16;
+//        
+//        for (int i = 0; i < igra.plosca.velikost; ++i) {
+//	    	for (int j = 0; j < igra.plosca.velikost; ++j) {
+//	    		int poljex = marginSirina + i*((velikost)/8);
+//	    		int poljey = marginVisina + j*((velikost)/8);
+//	    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));
+//	    		
+//	    		if (razdalja < najmanjsaRazdalja) {
+//	    			if (prviIgralec == "Človek" && drugiIgralec == "Računalnik") {
+//	    				boolean moznoClovek = igra.odigraj(new Poteza(i, j));
+//	    				if (!moznoClovek) {
+//	    					JOptionPane.showMessageDialog(null, "Poteza ni mogoča, izberi drugo polje", "Polje ni prosto", JOptionPane.ERROR_MESSAGE);
+//	    					continue;
+//	    				}
+//	    				konecIgre();
+//		    			boolean moznoRac = igrajRacunalnikovoPotezo();
+//		    			while (!moznoRac) {
+//		    				moznoRac = igrajRacunalnikovoPotezo();
+//		    			}
+//		    			konecIgre();
+//	    			}
+//	    			else if (prviIgralec == "Človek" && drugiIgralec == "Človek") {
+//	    				boolean moznoClovek = igra.odigraj(new Poteza(i, j));
+//	    				if (!moznoClovek) {
+//	    					JOptionPane.showMessageDialog(null, "Polje je zapolnjeno, izberi drugega", "Zapolnjeno polje", JOptionPane.ERROR_MESSAGE);
+//	    					continue;
+//	    				}
+//	    				konecIgre();
+//	    			}
+//	    			else continue;
+//	    		}
+//	    	}
+//        }
+//        repaint();
+		
+//	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {

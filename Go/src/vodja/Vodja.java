@@ -30,7 +30,7 @@ public class Vodja {
 	}
 	
 	public static void igramo() {
-		// okno.osveziGUI();
+		okno.osveziGUI();
 		switch (igra.stanje) {
 		case ZMAGA_CRNI: 
 		case ZMAGA_BELI: 
@@ -46,6 +46,7 @@ public class Vodja {
 				break;
 			}
 		}
+		
 	}
 	
 	public static Inteligenca racunalnikovaInteligenca = new Alphabeta(9);
@@ -73,7 +74,8 @@ public class Vodja {
 	}
 		
 	public static void igrajClovekovoPotezo(Poteza poteza) {
-		if (igra.odigraj(poteza)) clovekNaVrsti = false;
+//		boolean vrednost = igra.odigraj(poteza);
+//		if (vrednost) clovekNaVrsti = false;
 		igramo ();
 	}
 }

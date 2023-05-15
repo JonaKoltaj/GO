@@ -43,10 +43,10 @@ public class DisjointSet {
 	
 	// ustvarimo enojec, ki še ne obstaja
 	public void makeSet(Zeton z) {
-		if (z.barva == this.barva) vsebuje.add(z);
-		parent.put(z, z);
-		rank.put(z, 0);
-		
+		if (z.barva == this.barva) {
+			vsebuje.add(z);
+			parent.put(z, z);
+			rank.put(z, 0);}
 		}
 	
 	
