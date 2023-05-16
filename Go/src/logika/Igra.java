@@ -16,8 +16,8 @@ public class Igra {
 	public LinkedList<Poteza> moznePoteze;
 	public LinkedList<Zeton> zetoniPoVrsti;
 	public Igralec naVrsti; // kateri izmed igralcev mora narediti potezo
-	public DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
-	public DisjointSet skupineCrnih; // popravi na protected
+	public static DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
+	public static DisjointSet skupineCrnih; // popravi na protected
 	protected LinkedList<Zeton> zajetaSkupina;
 	
 
@@ -217,37 +217,32 @@ public class Igra {
 	// z uporabo razreda DisjointSet, ustavimo enojec in naredimo unijo s sosedi iste barve
 	public void prikljuciSkupini(Zeton z) {
 		Zeton[] sosedi = vrniSosede(z);
-		boolean aliImaSoseda = false;
-		for (Zeton s : sosedi) {if (s != null) { if (s.barva == z.barva) aliImaSoseda = true; }
-		}
+//		boolean aliImaSoseda = false;
+//		for (Zeton s : sosedi) {if (s != null) { if (s.barva == z.barva) aliImaSoseda = true; }
+//		}
+		
 		// če nima nobenega soseda iste barve, bomo samo ustvarili enojec
-		if (aliImaSoseda == false) {
-			if (z.barva == Igralec.BELI) {
-				skupineBelih.makeSet(z); 
-				// to raje naredimo drugje
-				//skupineBelih.predstavniki.add(z);
-				}
-			else {
-				skupineCrnih.makeSet(z); 
-				//skupineCrnih.predstavniki.add(z);
-				}
-			}
-		// sicer naredimo unijo z vsemi sosedi iste barve
-		else {
+		// sicer združimo še s sosedi
+		
+		// ustvarimo enojec
+		if (z.barva == Igralec.BELI) {skupineBelih.makeSet(z);}
+		else if (z.barva == Igralec.CRNI) {skupineCrnih.makeSet(z);};
+		
+		
+		// družimo s sosedi
+//		if (aliImaSoseda == true) {
 			for (Zeton s : sosedi) {
 				if (s != null) { // preskočimo prazna polja
 					if (s.barva == z.barva) {  
 						if (z.barva == Igralec.BELI) {
-							skupineBelih.makeSet(z); 
 							skupineBelih.union(z, s);
 							}
-						else {
-							skupineCrnih.makeSet(z); 
+						else if (z.barva == Igralec.CRNI)  {
 							skupineCrnih.union(z, s);
 						}
 					}
 				}
-			}
+//			}
 		}
 	}
 	
@@ -283,7 +278,7 @@ public class Igra {
 			postavitevZetona(novZeton);
 			moznePoteze.remove(poteza);
 			naVrsti = drugi(barva);
-			jeKonec();
+			konec();
 			return true;
 		}
 		else return false;
@@ -349,7 +344,7 @@ public class Igra {
 //		}
 	
 	// NOVA
-	public Integer prestejProsteSosede(Zeton s) {
+	public static Integer prestejProsteSosede(Zeton s) {
 		LinkedList<Zeton> sosedi = new LinkedList<Zeton>();
 		if (s.barva == Igralec.BELI) {
 			sosedi = skupineBelih.vrniSkupino(s);
@@ -376,7 +371,7 @@ public class Igra {
 				zajetaSkupina = skupineCrnih.vrniSkupino(z);
 				stanje = Stanje.ZMAGA_BELI;}
 			}
-		}
+		} 
 		
 	
 		

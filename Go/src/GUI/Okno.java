@@ -185,18 +185,27 @@ public class Okno extends JFrame implements ActionListener {
 	
 	// popravi to
 	public void osveziGUI() {
-//		if (Vodja.igra == null) {
-//			status.setText("Igra ni v teku.");
-//		}
-//		else {
-//			if (Vodja.igra.aliJeKonec()) {}
-//			else if (Vodja.igra.stanje == Stanje.ZMAGA_CRNI) {
-//				status.setText("Konec igre, zmagovalec je črni.");
-//			}
-//			else if (Vodja.igra.stanje == Stanje.ZMAGA_BELI) {
-//				status.setText("Konec igre, zmagovalec je beli.");
-//			}
-//		}
+		if (Vodja.igra == null) {
+			//status.setText("Igra ni v teku.");
+		}
+		else {
+			switch(Vodja.igra.stanje) {
+			case NEODLOCENO: //status.setText("Neodločeno!"); break;
+			case V_TEKU: 
+				//status.setText("Na potezi je " + Vodja.igra.naVrsti + 
+					//	" - " + Vodja.kdoIgra.get(Vodja.igra.naVrsti)); 
+				break;
+			case ZMAGA_CRNI: 
+				// status.setText("Zmagal je O - " + 
+					//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
+				
+				break;
+			case ZMAGA_BELI: 
+				// status.setText("Zmagal je X - " + 
+					//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
+				break;
+			}
+		}
 		Vodja.igra.konec();
 		Vodja.igra.jeKonec();
 		System.out.println("Ali igra še poteka" + Vodja.igra.jeKonec());
