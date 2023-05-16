@@ -9,7 +9,7 @@ import java.util.Set;
 public class DisjointSet {
 	// podatkovna struktura DisjointSet bo beležila skupine kamenčkov iste barve, ki se dotikajo
 	// vsaka taka skupina bo imela svojega predstavnika
-	protected static ArrayList<Zeton> vsebuje;
+	protected  ArrayList<Zeton> vsebuje;
 	protected Igralec barva;
 	protected static Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
 	protected Map<Zeton, Integer> rank;
@@ -18,6 +18,8 @@ public class DisjointSet {
 	public void sprintajMnozico() {
 		System.out.println("Skupina barve " + barva + " vsebuje žetone: "); 
 		sprintaj2(vsebuje);
+		System.out.println("PREDSTAVNIKI skupine " + barva + " so: "); 
+		sprintaj2(predstavniki);
 		System.out.println("Disjunktne množice so naslednje:  "); 
 		for (Zeton z: predstavniki) {
 			sprintaj(vrniSkupino(z));
@@ -36,9 +38,10 @@ public class DisjointSet {
 	// ustvarimo enojec, ki še ne obstaja
 	public void makeSet(Zeton z) {
 		if (z.barva == this.barva) {
-			vsebuje.add(z);
-			parent.put(z, z);
-			rank.put(z, 0);}
+			this.vsebuje.add(z);
+			this.parent.put(z, z);
+			this.rank.put(z, 0);
+			this.predstavniki.add(z);}
 		}
 	
 	
@@ -49,6 +52,8 @@ public class DisjointSet {
 	}
 	
 	// združi obstoječi množici, ki jima pripadata žetona z in w,, če sta ti množici disjunktni 
+	// popravi predstavnike!!
+	
 	public void union(Zeton z, Zeton w) {
 		Zeton x = find(z);
 		Zeton y = find(w); // to sta predstavnika množic
@@ -56,10 +61,11 @@ public class DisjointSet {
 		int ry = rank.get(y);
 		if (x.equals(y) == false) {
 			// System.out.println("Združili smo:" + "(" + z.i + " , " + z.j + ") + (" + w.i + " , " + w.j + ")");
-			if (rx < ry) parent.put(x, y);
-			else if  (rx > ry) parent.put(y, x);
+			if (rx < ry) {parent.put(x, y);predstavniki.remove(x);}
+			else if  (rx > ry) {parent.put(y, x); predstavniki.remove(y);}
 			else {
 				parent.put(y, x);
+				predstavniki.remove(y);
 				rank.put(x, rx + 1);
 			} 
 		}
@@ -85,7 +91,7 @@ public class DisjointSet {
 //	}
 	
 	// vrne seznam žetonov, ki so v isti skupini kot žeton z
-		public static LinkedList<Zeton> vrniSkupino(Zeton z) {
+		public LinkedList<Zeton> vrniSkupino(Zeton z) {
 			LinkedList<Zeton> sez = new LinkedList<Zeton>();
 			sez.add(z);
 			for (Zeton s : vsebuje) {

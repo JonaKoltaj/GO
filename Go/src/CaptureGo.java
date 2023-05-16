@@ -51,6 +51,11 @@ public class CaptureGo {
 //		igra.sprintajIgro();
 //		igra.odigraj(new Poteza(6,1), igra.naVrsti);
 //		igra.sprintajIgro();
+//		
+//		System.out.println("BELI VSEBUJEJO:");
+//		igra.skupineBelih.sprintajMnozico();
+//		System.out.println("ČRNI VSEBUJEJO:");
+//		igra.skupineCrnih.sprintajMnozico();
 //		Igra kopijaIgre = Igra.kopirajIgro(igra);
 //		System.out.println("SKOPIRANA IGRA JE");
 //		kopijaIgre.sprintajIgro();

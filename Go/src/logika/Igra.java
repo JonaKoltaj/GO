@@ -65,9 +65,9 @@ public class Igra {
 			System.out.println("_________________________________________________________"); 
 			System.out.println("Stanje igre je: " + stanje); 
 			System.out.println("Na vrsti je: " + naVrsti); 
-			System.out.println("Disjunktne množice belih so:"); 
+			System.out.println("----------------BELI------------------"); 
 			skupineBelih.sprintajMnozico();
-			System.out.println("Disjunktne množice črnih so:"); 
+			System.out.println("----------------ČRNI------------------"); 
 			skupineCrnih.sprintajMnozico();
 			System.out.println("_________________________________________________________");
 			System.out.println("Zajeta skupina je: ");
@@ -224,11 +224,12 @@ public class Igra {
 		if (aliImaSoseda == false) {
 			if (z.barva == Igralec.BELI) {
 				skupineBelih.makeSet(z); 
-				skupineBelih.predstavniki.add(z);
+				// to raje naredimo drugje
+				//skupineBelih.predstavniki.add(z);
 				}
 			else {
 				skupineCrnih.makeSet(z); 
-				skupineCrnih.predstavniki.add(z);
+				//skupineCrnih.predstavniki.add(z);
 				}
 			}
 		// sicer naredimo unijo z vsemi sosedi iste barve
@@ -348,8 +349,12 @@ public class Igra {
 //		}
 	
 	// NOVA
-	public static Integer prestejProsteSosede(Zeton s) {
-		LinkedList<Zeton> sosedi = DisjointSet.vrniSkupino(s);
+	public Integer prestejProsteSosede(Zeton s) {
+		LinkedList<Zeton> sosedi = new LinkedList<Zeton>();
+		if (s.barva == Igralec.BELI) {
+			sosedi = skupineBelih.vrniSkupino(s);
+		}
+		else sosedi = skupineCrnih.vrniSkupino(s);
 		LinkedList<Par> prostaSosescina = vrniProsta(sosedi);
 		return prostaSosescina.size();
 		}
@@ -390,6 +395,7 @@ public class Igra {
 				String zmagovalec = "";
 				if (stanje == Stanje.ZMAGA_CRNI) zmagovalec = "Zmagovalec je Črni";
 				if (stanje == Stanje.ZMAGA_BELI) zmagovalec = "Zmagovalec je Beli";
+				if (stanje == Stanje.NEODLOCENO) zmagovalec = "Neodločeno";
 				return zmagovalec;
 			}
 		
