@@ -1,3 +1,224 @@
+
+//
+//package GUI;
+//import java.awt.BasicStroke;
+//import java.awt.BorderLayout;
+//import java.awt.Container;
+//import java.awt.Dimension;
+//import java.awt.Font;
+//import java.awt.GridBagConstraints;
+//import java.awt.GridBagLayout;
+//import java.awt.Toolkit;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
+//import java.awt.event.WindowEvent;
+//import java.awt.image.BufferedImage;
+//import java.util.EnumMap;
+//
+//import javax.swing.ImageIcon;
+//import javax.swing.JFileChooser;
+//import javax.swing.JFrame;
+//import javax.swing.JLabel;
+//import javax.swing.JMenu;
+//import javax.swing.JMenuBar;
+//import javax.swing.JMenuItem;
+//import javax.swing.JOptionPane;
+//import javax.swing.JScrollPane;
+//
+//import logika.Igra;
+//import logika.Igralec;
+//import logika.Plosca;
+//import logika.Stanje;
+//import splosno.KdoIgra;
+//import vodja.Vodja;
+//import vodja.VrstaIgralca;
+//
+//@SuppressWarnings("serial")
+//public class Okno extends JFrame implements ActionListener {
+//	
+//	protected Platno platno;
+//	
+//	private JMenuItem menuOdpri, menuShrani, menuRestart;
+//	private JMenuItem menuIme, menuIgralec, menuAlgoritem;
+//	
+//	// Izbire v menujih
+//	private JMenuItem igraClovekRacunalnik;
+//	private JMenuItem igraRacunalnikClovek;
+//	private JMenuItem igraClovekClovek;
+//	private JMenuItem igraRacunalnikRacunalnik;
+//	
+//	// Statusna vrstica v spodnjem delu, ki izpiše stanje
+//	private JLabel status;
+//	
+//	public Okno() {
+//		super();
+//		setTitle("Capture Go");
+//		platno = new Platno(700, 700);
+//		platno.setLayout(new BorderLayout());
+//		add(platno);
+//		
+//		
+//		JMenuBar menubar = new JMenuBar();
+//		setJMenuBar(menubar);
+//		
+//		JMenu menuDatoteka = dodajMenu(menubar, "Datoteka");
+//		JMenu menuNastavitve = dodajMenu(menubar, "Nastavitve");
+//		JMenu menuNacinIgre = dodajMenu(menubar, "Način igre");
+//		
+//		menuOdpri = dodajMenuItem(menuDatoteka, "Odpri ...");
+//		menuShrani = dodajMenuItem(menuDatoteka, "Shrani ...");
+//		menuRestart = dodajMenuItem(menuDatoteka, "Začni ponovno ...");
+//		menuIme = dodajMenuItem(menuNastavitve, "Izberi ime ...");
+//		menuIgralec = dodajMenuItem(menuNastavitve, "Izberi igralca ...");
+//		menuAlgoritem = dodajMenuItem(menuNastavitve, "Izberi algoritem ...");
+//		
+//		
+//		igraClovekRacunalnik = new JMenuItem("Človek – računalnik");
+//		menuNacinIgre.add(igraClovekRacunalnik);
+//		igraClovekRacunalnik.addActionListener(this);
+//		
+//		igraRacunalnikClovek = new JMenuItem("Računalnik – človek");
+//		menuNacinIgre.add(igraRacunalnikClovek);
+//		igraRacunalnikClovek.addActionListener(this);
+//		
+//		igraClovekClovek = new JMenuItem("Človek – človek");
+//		menuNacinIgre.add(igraClovekClovek);
+//		igraClovekClovek.addActionListener(this);
+//		
+//		igraRacunalnikRacunalnik = new JMenuItem("Računalnik – računalnik");
+//		menuNacinIgre.add(igraRacunalnikRacunalnik);
+//		igraRacunalnikRacunalnik.addActionListener(this);
+//		
+//		
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		
+//		// statusna vrstica za sporočila
+////		status = new JLabel();
+////		status.setText("Izberite igro!");
+//		
+////		status.setFont(new Font(status.getFont().getName(),
+////			status.getFont().getStyle(), 20));
+////		GridBagConstraints status_layout = new GridBagConstraints();
+////		status_layout.gridx = 0;
+////		status_layout.gridy = 1;
+////		status_layout.anchor = GridBagConstraints.CENTER;
+////		getContentPane().add(status, status_layout);
+////		status.setText("Izberite igro!");
+//	}
+//	
+//	private JMenu dodajMenu(JMenuBar menubar, String naslov) {
+//		JMenu menu = new JMenu(naslov);
+//		menubar.add(menu);
+//		return menu;
+//	}
+//	
+//	private JMenuItem dodajMenuItem(JMenu menu, String naslov) {
+//		JMenuItem menuitem = new JMenuItem(naslov);
+//		menu.add(menuitem);
+//		menuitem.addActionListener(this);
+//		return menuitem;
+//	}
+//
+//	
+//	@Override
+//	public void actionPerformed(ActionEvent e) {
+//		Object objekt = e.getSource();
+//		if (objekt == menuOdpri) {
+//			JFileChooser dialog = new JFileChooser();
+//			int izbira = dialog.showOpenDialog(this);
+//			if (izbira == JFileChooser.APPROVE_OPTION) {
+//				String ime = dialog.getSelectedFile().getPath();
+//				Plosca plosca = Plosca.preberi(ime);
+//				platno.nastaviPlosco(plosca);
+//			}
+//		}
+//		else if (objekt == menuShrani) {
+//			JFileChooser dialog = new JFileChooser();
+//			int izbira = dialog.showSaveDialog(this);
+//			if (izbira == JFileChooser.APPROVE_OPTION) {
+//				String ime = dialog.getSelectedFile().getPath();
+//				platno.igra.plosca.shrani(ime);
+//			}
+//		}
+//		else if (objekt == menuRestart) {
+//			platno.igra = new Igra();
+//			platno.repaint();
+//		}
+//		else if (objekt == menuIme) {
+//			//to se pol lah napise, samo kako se izpise ime pac
+//		}
+//		
+//		// do sem je metoda ista kot prej
+//		if (objekt == igraClovekRacunalnik) {
+//			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
+//			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
+//			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
+//			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
+//			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("Človek")); 
+//			Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca);
+//			Vodja.igramoNovoIgro();
+//		} else if (e.getSource() == igraRacunalnikClovek) {
+//			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
+//			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
+//			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
+//			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
+//			Vodja.kdoIgra.put(Igralec.CRNI, Vodja.racunalnikovaInteligenca);
+//			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("Človek")); 
+//			Vodja.igramoNovoIgro();
+//		} else if (e.getSource() == igraClovekClovek) {
+//			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
+//			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
+//			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
+//			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
+//			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("Človek")); 
+//			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("Človek"));
+//			Vodja.igramoNovoIgro();
+//		} else if (e.getSource() == igraRacunalnikRacunalnik) {
+//			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
+//			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
+//			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
+//			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
+//			Vodja.kdoIgra.put(Igralec.CRNI, Vodja.racunalnikovaInteligenca);
+//			Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca); 
+//			Vodja.igramoNovoIgro();
+//		}
+//			
+//		}
+//	
+//	// popravi to
+//	public void osveziGUI() {
+//		if (Vodja.igra == null) {
+//			//status.setText("Igra ni v teku.");
+//		}
+//		else {
+//			switch(Vodja.igra.stanje) {
+//			case NEODLOCENO: //status.setText("Neodločeno!"); break;
+//			case V_TEKU: 
+//				//status.setText("Na potezi je " + Vodja.igra.naVrsti + 
+//					//	" - " + Vodja.kdoIgra.get(Vodja.igra.naVrsti)); 
+//				break;
+//			case ZMAGA_CRNI: 
+//				// status.setText("Zmagal je O - " + 
+//					//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
+//				
+//				break;
+//			case ZMAGA_BELI: 
+//				// status.setText("Zmagal je X - " + 
+//					//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
+//				break;
+//			}
+//		}
+//		Vodja.igra.konec();
+//		Vodja.igra.jeKonec();
+//		System.out.println("Ali igra še poteka" + Vodja.igra.jeKonec());
+//		Vodja.igra.sprintajIgro();
+//		platno.repaint();
+//	}
+//	
+//	
+//	}
+//	
+
 package GUI;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -183,7 +404,6 @@ public class Okno extends JFrame implements ActionListener {
 			
 		}
 	
-	// popravi to
 	public void osveziGUI() {
 		if (Vodja.igra == null) {
 			//status.setText("Igra ni v teku.");
@@ -212,11 +432,8 @@ public class Okno extends JFrame implements ActionListener {
 		Vodja.igra.sprintajIgro();
 		platno.repaint();
 	}
-	
-	
-	}
-	
-	
+}
+
 	// jona
 //	@Override
 //	public void actionPerformed(ActionEvent e) {

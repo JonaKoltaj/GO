@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import inteligenca.Inteligenca;
 import inteligenca.Minimax;
 import inteligenca.OceniPozicijo;
 import inteligenca.RandomIzbira;
+import logika.DisjointSet;
 import logika.Igra;
 import logika.Igralec;
 import logika.Par;
@@ -19,54 +21,135 @@ public class CaptureGo {
 
 	public static void main(String[] args) {
 		
-		// zaenkrat igro lahko igrata dva igralca tako, da izmenjajoče vnašata koordinate
-		// vedno začne črni
+	
 //		Inteligenca r1 = new RandomIzbira("random");
 //		Inteligenca r2 = new Minimax(9);
 //		Inteligenca r3 = new Alphabeta(9);
-		Okno okno = new Okno();
-		okno.pack();
-		okno.setVisible(true);
-		Vodja.okno = okno;
-////		
-//		Igra igra = new Igra();
-//		System.out.println("ZAČNEMO IGRO");
-//		igra.odigraj(new Poteza(0,0), igra.naVrsti);
+//		Okno okno = new Okno();
+//		okno.pack();
+//		okno.setVisible(true);
+//		Vodja.okno = okno;
+//////	
+		
+		
+		Igra igra = new Igra();
+		System.out.println("ZAČNEMO ORIGINALNO IGRO 1");
+		igra.odigraj(new Poteza(0,0));
 //		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(5,0), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(5,1), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(0,1), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(6,0), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(4,5), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(1,1), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(4,1), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(1,2), igra.naVrsti);
-//		igra.sprintajIgro();
-//		igra.odigraj(new Poteza(6,1), igra.naVrsti);
-//		igra.sprintajIgro();
-//		
-//		System.out.println("BELI VSEBUJEJO:");
-//		igra.skupineBelih.sprintajMnozico();
-//		System.out.println("ČRNI VSEBUJEJO:");
-//		igra.skupineCrnih.sprintajMnozico();
-//		Igra kopijaIgre = Igra.kopirajIgro(igra);
-//		System.out.println("SKOPIRANA IGRA JE");
-//		kopijaIgre.sprintajIgro();
-////		Poteza potencialna1 = new Poteza(1,1);
-////		Poteza potencialna2 = new Poteza(5,6);
-//		int ocena1 = OceniPozicijo.oceniPozicijo(igra, Igralec.CRNI);
-//		int ocena2 = OceniPozicijo.oceniPozicijo(igra, Igralec.BELI);
-//		System.out.println("Ocena pozicije črnega je: " + " " + ocena1 + ", Ocena poziicje belega je: " + ocena2);
+		igra.odigraj(new Poteza(6,0));
+		igra.sprintajIgro();
+		
+		
+		Igra igra2 = new Igra();
+		System.out.println("ZAČNEMO IGRO 2");
+		igra2.odigraj(new Poteza(4,4));
+		igra2.odigraj(new Poteza(8,8));
+		igra2.sprintajIgro();
+		
+		System.out.println("SPET PRVA IGRA");
+		igra.sprintajIgro();
 //		
 		
-	
+		
+//		Igra igra = new Igra();
+//		System.out.println("ZAČNEMO ORIGINALNO IGRO 1");
+//		igra.odigraj(new Poteza(0,0));
+////		igra.sprintajIgro();
+//		igra.odigraj(new Poteza(6,0));
+//		igra.sprintajIgro();
+//		
+//		
+//		
+////		
+////		
+////		
+////		
+////		
+////		
+//		System.out.println("KOPIJA 1");
+//		Igra kopija = new Igra(igra);
+//		System.out.println("ODIGRANA KOPIAJA");
+//		kopija.odigraj(new Poteza(8,8));
+//		kopija.sprintajIgro();
+//		System.out.println("ZAČNEMO ORIGINALNO IGRO 1");
+//		igra.sprintajIgro();
+		
+//		igra.sprintajIgro();
+//		System.out.println("");
+//		System.out.println("");
+//		System.out.println("KOPIJA IGRE");
+//		System.out.println("");
+//		System.out.println("");
+//		Igra novaIgra = new Igra(igra);
+//		novaIgra.sprintajIgro();
+//		System.out.println("");
+//		System.out.println("");
+//		System.out.println("KOPIJA NOVA POTEZA NA 8 , 8 IGRE");
+//		System.out.println("");
+//		System.out.println("");
+//		novaIgra.odigraj(new Poteza(8,8));
+//		novaIgra.sprintajIgro();
+//		System.out.println("");
+//		System.out.println("");
+//		System.out.println("STARA IGRA");
+//		System.out.println("");
+//		System.out.println("");
+//		igra.sprintajIgro();
+		
+		
+//		Igra igra = new Igra();
+//		System.out.println("ZAČNEMO ORIGINALNO IGRO 1");
+//		igra.odigraj(new Poteza(0,0));
+////		igra.sprintajIgro();
+//		igra.odigraj(new Poteza(6,0));
+////		igra.sprintajIgro();
+//		igra.odigraj(new Poteza(1,0));
+////		igra.sprintajIgro();
+//		igra.odigraj(new Poteza(5,1));
+//		igra.odigraj(new Poteza(2,2));
+////		igra.sprintajIgro();
+//		igra.odigraj(new Poteza(6,1));
+//		igra.sprintajIgro();
+//		
+//		Igra igra2 = new Igra();
+//		System.out.println("ZAČNEMO IGRO 2");
+////		igra.sprintajIgro();
+//		igra2.sprintajIgro();
+//		
+//		System.out.println("SPET PRVA IGRA");
+//		igra.sprintajIgro();
+//		System.out.println("KOPIJA 1");
+//		Igra kopija = new Igra(igra);
+//		kopija.sprintajIgro();
+//		System.out.println("ODIGRANA KOPIAJA");
+//		kopija.odigraj(new Poteza(8,8));
+//		kopija.sprintajIgro();
+//		
+//		igra.sprintajIgro();
+//		System.out.println("");
+//		System.out.println("");
+//		System.out.println("KOPIJA IGRE");
+//		System.out.println("");
+//		System.out.println("");
+//		Igra novaIgra = new Igra(igra);
+//		novaIgra.sprintajIgro();
+//		System.out.println("");
+//		System.out.println("");
+//		System.out.println("KOPIJA NOVA POTEZA NA 8 , 8 IGRE");
+//		System.out.println("");
+//		System.out.println("");
+//		novaIgra.odigraj(new Poteza(8,8));
+//		novaIgra.sprintajIgro();
+//		System.out.println("");
+//		System.out.println("");
+//		System.out.println("STARA IGRA");
+//		System.out.println("");
+//		System.out.println("");
+//		igra.sprintajIgro();
+//		
 	}
+	
+
+	
 
 }

@@ -9,22 +9,26 @@ import java.util.Set;
 public class DisjointSet {
 	// podatkovna struktura DisjointSet bo beležila skupine kamenčkov iste barve, ki se dotikajo
 	// vsaka taka skupina bo imela svojega predstavnika
-	protected  ArrayList<Zeton> vsebuje;
-	protected Igralec barva;
-	protected static Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
-	protected Map<Zeton, Integer> rank;
+	public  ArrayList<Zeton> vsebuje;
+	public Igralec barva;
+	public   Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
+	public Map<Zeton, Integer> rank;
 	public ArrayList<Zeton> predstavniki;
 	
+	// pomožna funkcija, ki sprinta množico 
 	public void sprintajMnozico() {
 		System.out.println("Skupina barve " + barva + " vsebuje žetone: "); 
 		sprintaj2(vsebuje);
 		System.out.println("PREDSTAVNIKI skupine " + barva + " so: "); 
 		sprintaj2(predstavniki);
+		System.out.println("Tabela staršev " + barva + " je: "); 
+		System.out.println(parent);
 		System.out.println("Disjunktne množice so naslednje:  "); 
 		for (Zeton z: predstavniki) {
 			sprintaj(vrniSkupino(z));
 		}
 	}
+	
 
 	public DisjointSet(Igralec barva) {
 		this.barva = barva;
@@ -35,6 +39,7 @@ public class DisjointSet {
 	}
 	
 
+	
 	// ustvarimo enojec, ki še ne obstaja
 	public void makeSet(Zeton z) {
 		if (z.barva == this.barva) {
@@ -45,14 +50,13 @@ public class DisjointSet {
 		}
 	
 	
+
 	// metoda najde prednika od žetona z
-	public static Zeton find(Zeton z) {
-		if (parent.get(z) == z) return z;
-		else return find(parent.get(z));
-	}
-	
-	// združi obstoječi množici, ki jima pripadata žetona z in w,, če sta ti množici disjunktni 
-	// popravi predstavnike!!
+		public  Zeton find(Zeton z) {
+			if (parent.get(z) == z) return z;
+			else return find(parent.get(z));
+		}
+		
 	
 	public void union(Zeton z, Zeton w) {
 		Zeton x = find(z);
@@ -71,43 +75,29 @@ public class DisjointSet {
 		}
 	}
 	
-	// STARA - IZBRIŠEM KASNEJE
-	// vrne seznam žetonov, ki so v isti skupini kot žeton z
-//	public static ArrayList<Zeton> vrniSkupino(Zeton z) {
-//		ArrayList<Zeton> sez = new ArrayList<Zeton>();
-//		sez.add(z);
-//		for (Zeton s : vsebuje) {
-//			if (s != z) {
-//				Zeton starsS = find(s);
-//				Zeton starsZ = find(z);
-//				if (starsS.enaka(starsZ)) sez.add(s); 
-//			}
-//		}
-//		// ta del bo kasneje nepotreben
-//		System.out.println("Disjuntkna množica, kateri pripada žeton" + "(" + z.i + " , " + z.j + ")" + " je: ");
-//		sprintaj2(sez);
-//		return sez;
-//		
-//	}
+	
 	
 	// vrne seznam žetonov, ki so v isti skupini kot žeton z
-		public LinkedList<Zeton> vrniSkupino(Zeton z) {
-			LinkedList<Zeton> sez = new LinkedList<Zeton>();
-			sez.add(z);
-			for (Zeton s : vsebuje) {
+		// popravim, da vrne skupino novih žetonov
+	public LinkedList<Zeton> vrniSkupino(Zeton z) {
+		LinkedList<Zeton> sez = new LinkedList<Zeton>();
+		sez.add(z);
+		for (Zeton s : vsebuje) {
 				if (s != z) {
 					Zeton starsS = find(s);
 					Zeton starsZ = find(z);
 					if (starsS.enaka(starsZ)) sez.add(s); 
-				}
 			}
-			// ta del bo kasneje nepotreben
-//			System.out.println("Disjuntkna množica, kateri pripada žeton" + "(" + z.i + " , " + z.j + ")" + " je: ");
-//			sprintaj2(sez);
-			return sez;
-			
 		}
+		// ta del bo kasneje nepotreben
+//		System.out.println("Disjuntkna množica, kateri pripada žeton" + "(" + z.i + " , " + z.j + ")" + " je: ");
+//		sprintaj2(sez);
+		return sez;
+
+	}
 	
+	
+
 		// samo pomožna metoda za izpis, kasneje zbrišem
 		public static void sprintaj(LinkedList<Zeton> sez) {
 			System.out.print("[");
@@ -129,3 +119,6 @@ public class DisjointSet {
 	
 
 }
+
+
+

@@ -20,7 +20,7 @@ public class OceniPozicijo {
 	// torej, če bomo mi imeli manj slabih polj kot naš nasprotnik, bomo dobili pozitivno oceno
 	public static int oceniPozicijo(Igra igra, Igralec jaz) {
 		int ocenaJaz = oceniPozicijoBarve(igra, jaz);
-		int ocenaNasprotnik = oceniPozicijoBarve(igra, Igra.drugi(jaz));
+		int ocenaNasprotnik = oceniPozicijoBarve(igra, igra.drugi(igra.naVrsti));
 //		System.out.println("Ocena igralca je " + (ocenaJaz - ocenaNasprotnik));
 		return ocenaJaz - ocenaNasprotnik;
 		
@@ -37,7 +37,7 @@ public class OceniPozicijo {
 		// sedaj gremo po predstavnikih in preštejemo sosede
 		int sosedi = 0;
 		for (Zeton z: raziskujemoSkupino.predstavniki) {
-			sosedi = Igra.prestejProsteSosede(z);
+			sosedi = igra.prestejProsteSosede(z);
 //			System.out.println("Zeton " +  z.i + "," +  z.j + " ima " +  sosedi + " prostih sosedov");
 			if (ogrozenost.containsKey(sosedi)) {ogrozenost.put(sosedi, ogrozenost.get(sosedi) + 1);}
 			else ogrozenost.put(sosedi, 1);

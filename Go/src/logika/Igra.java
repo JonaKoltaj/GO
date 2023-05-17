@@ -7,7 +7,7 @@ import splosno.Poteza;
 
 public class Igra {
 	
-	public static Plosca plosca;
+	public Plosca plosca;
 	public Stanje stanje; 
 	
 	// TO SPREMENIM V EN SAM SEZNAM LINKED LIST
@@ -16,46 +16,42 @@ public class Igra {
 	public LinkedList<Poteza> moznePoteze;
 	public LinkedList<Zeton> zetoniPoVrsti;
 	public Igralec naVrsti; // kateri izmed igralcev mora narediti potezo
-	public static DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
-	public static DisjointSet skupineCrnih; // popravi na protected
+	public  DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
+	public  DisjointSet skupineCrnih; // popravi na protected
 	protected LinkedList<Zeton> zajetaSkupina;
 	
-
 
 	public Igra() {
 		plosca = new Plosca(9);
 		stanje = Stanje.V_TEKU;
 		moznePoteze = seznamMoznihPotez();
 		zetoniPoVrsti = new LinkedList<Zeton>();
-		// morda kasneje zbrišem
-//		moznePotezeSeznam = arrayMoznihPotez();
 		naVrsti = Igralec.CRNI;
 		skupineBelih = new DisjointSet(Igralec.BELI);
 		skupineCrnih = new DisjointSet(Igralec.CRNI);
 		zajetaSkupina = null;
 	}
-//	
-	// metoda, ki prekopira igro
-		public static Igra kopirajIgro(Igra staraIgra) {
-			Igra novaIgra = new Igra();
-			int velikost = staraIgra.plosca.velikost;
-//			novaIgra.naVrsti = igra.naVrsti;
-//			novaIgra.stanje = igra.stanje;
-//			novaIgra.skupineBelih = new DisjointSet(Igralec.BELI);
-//			novaIgra.skupineCrnih = new DisjointSet(Igralec.CRNI);
-			System.out.println("Kopiramo igro");
-			// sedaj najprej na ploščo postavljamo žetone, ki so na stari plošči 
-			// žetone bomo ustvarjali na novo in jih dodajali v disjunktne množice
-			for (Zeton z : staraIgra.zetoniPoVrsti) {
-				int x = z.i;
-				int y = z.j;
-				Igralec barvaZ = z.barva;
-				novaIgra.odigraj(new Poteza(x, y), barvaZ);
-			}
-			
-			novaIgra.jeKonec();
-			return novaIgra;
-			}
+
+	
+	
+	// naredimo deep kopijo, popravi, da bo igralo v pravem vrstnem redu
+	public Igra(Igra staraIgra) {
+		plosca = new Plosca(9);
+		stanje = Stanje.V_TEKU;
+		moznePoteze = seznamMoznihPotez();
+		zetoniPoVrsti = new LinkedList<Zeton>();
+		naVrsti = Igralec.CRNI;
+		skupineBelih = new DisjointSet(Igralec.BELI);
+		skupineCrnih = new DisjointSet(Igralec.CRNI);
+		zajetaSkupina = null;
+		for (Zeton z: staraIgra.zetoniPoVrsti) {
+			int i = z.i;
+			int j = z.j;
+			this.odigraj(new Poteza(i, j));
+		}
+		
+	}
+	
 			
 		public void sprintajIgro() {
 			System.out.println("IGRA"); 
@@ -78,47 +74,6 @@ public class Igra {
 		}	
 			
 			
-		
-//			// pomožna funkcija za kopiranje
-//			ArrayList<Zeton> kopijaZajetaSkupina = null;
-//			if (igra.zajetaSkupina != null) {
-//				kopijaZajetaSkupina = new ArrayList<Zeton>();
-//				for (Zeton z: igra.zajetaSkupina) {kopijaZajetaSkupina.add(z);};
-//			}
-//			return novaIgra;
-//		}
-		
-	
-
-	// STARA
-//	// metoda, ki prekopira igro
-//	// TO JE NAROBE, MOREM POPRAVIT !!!
-//	public Igra(Igra igra) {
-//		this.plosca = Plosca.kopiraj(igra.plosca);
-//		this.stanje = igra.stanje;
-//		Set<Poteza> kopijaMoznePoteze = new HashSet<Poteza>();
-//		kopijaMoznePoteze.addAll(igra.moznePoteze);
-//		this.moznePoteze = kopijaMoznePoteze;
-//		ArrayList<Poteza> kopijaMoznePotezeSeznam = new ArrayList<Poteza>();
-//		for (Poteza p: igra.moznePotezeSeznam) {kopijaMoznePotezeSeznam.add(p);};
-//		this.moznePotezeSeznam = kopijaMoznePotezeSeznam;
-//		this.naVrsti = igra.naVrsti;
-//		
-//		DisjointSet kopijaSkupineBelih = DisjointSet.kopirajMnozico(igra.skupineBelih);
-//		this.skupineBelih = kopijaSkupineBelih;
-//		DisjointSet kopijaSkupineCrnih = DisjointSet.kopirajMnozico(igra.skupineCrnih);
-//		this.skupineCrnih = kopijaSkupineCrnih;
-//		
-//		
-//	
-//		// pomožna funkcija za kopiranje
-//		ArrayList<Zeton> kopijaZajetaSkupina = null;
-//		if (igra.zajetaSkupina != null) {
-//			kopijaZajetaSkupina = new ArrayList<Zeton>();
-//			for (Zeton z: igra.zajetaSkupina) {kopijaZajetaSkupina.add(z);};
-//		}
-//	}
-//	
 	
 	public LinkedList<Poteza> seznamMoznihPotez() {
 		LinkedList<Poteza> moznePoteze = new LinkedList<Poteza>();
@@ -131,38 +86,18 @@ public class Igra {
 		return moznePoteze;
 	}
 	
-//	// TI DVE METODI GRESTA STRAN ***************************
-//	// metoda, ki iz množice možnih potez vrne seznam možnih potez 
-//		public ArrayList<Poteza> arrayMoznihPotez() {
-//			ArrayList<Poteza> seznam = new ArrayList<Poteza>();
-//			seznam.addAll(seznamMoznihPotez());
-//			return seznam;
-//		}
-//	
-//	// metoda, ki vrne množico vseh možnih potez 
-//	public Set<Poteza> seznamMoznihPotez() {
-//		Set<Poteza> seznam = new HashSet<Poteza>();
-//		for (int i = 0; i < 9; ++i) {
-//			for (int j = 0; j < 9; ++j) {
-//				if (plosca.mreza[i][j] == null) seznam.add(new Poteza(i, j));
-//			}
-//		}
-//		return seznam;
-//	}
-//	//***************************
 	
-	
-	
-	// metoda, ki vrne barvo nasprotnega igralca - Sedaj to naredi nasprotnik()
-	public static Igralec drugi(Igralec barva) {
+	// metoda, ki vrne barvo nasprotnega igralca 
+	public  Igralec drugi(Igralec barva) {
 		Igralec nasprotnik = Igralec.BELI; // v primeru, ko je sedaj igralec črni, bo nasprotnik beli
 		if (barva == Igralec.BELI) nasprotnik = Igralec.CRNI;
 			return nasprotnik;
 		}
 	
+	
 	// vrne seznam velikosti 4, ki v smeri urinega kazalca beleži sosede
 	// element z indeksom 0 je tisti s koordinatami (i + 1, j)
-	public static Zeton[] vrniSosede(Zeton z) {
+	public  Zeton[] vrniSosede(Zeton z) {
 		int n = plosca.velikost;
 		Zeton[] seznamSosedov = {null, null, null, null};
 		if (z == null) return seznamSosedov;
@@ -248,36 +183,20 @@ public class Igra {
 	
 	
 
-	// STARA
-		// metoda, ki vzame željeno potezo, jo odigra, če je to mogoče, ter vrne true,
-		// če to ni mogoče, vrne false
-//		public boolean odigraj(Poteza poteza) {
-//			int i = poteza.x();
-//			int j = poteza.y();
-//			if (moznePoteze.contains(poteza)) {
-//				Zeton novZeton = new Zeton(i, j, naVrsti); // ustvarimo nov žeton
-//				System.out.println("Barva " + naVrsti + " na mesto: " +  "(" + novZeton.i + "," + novZeton.j + ")");
-//				plosca.postaviZeton(novZeton);
-//				prikljuciSkupini(novZeton);
-//				moznePoteze.remove(poteza);
-//				naVrsti = drugi(naVrsti);
-//				return true;
-//			}
-//			else return false;
-//		}
 	
 	// NOVA
 	// metoda, ki vzame željeno potezo, jo odigra, če je to mogoče, ter vrne true,
 	// če to ni mogoče, vrne false
-	public boolean odigraj(Poteza poteza, Igralec barva) {
+	public boolean odigraj(Poteza poteza) {
 		int i = poteza.x();
 		int j = poteza.y();
 		if (moznePoteze.contains(poteza)) {
-			Zeton novZeton = new Zeton(i, j, barva); 
+			Zeton novZeton = new Zeton(i, j, naVrsti); 
 			zetoniPoVrsti.add(novZeton);
-			postavitevZetona(novZeton);
+			plosca.postaviZeton(novZeton);
+			prikljuciSkupini(novZeton);
 			moznePoteze.remove(poteza);
-			naVrsti = drugi(barva);
+			naVrsti = drugi(naVrsti);
 			konec();
 			return true;
 		}
@@ -285,36 +204,12 @@ public class Igra {
 		
 	}
 	
-	// pomožna metoda, ki Zeton priključi pravi skupini in updejta Disjunktno množico
-	public void postavitevZetona(Zeton z) {
-		System.out.println("Barva " + naVrsti + " na mesto: " +  "(" + z.i + "," + z.j + ")");
-		plosca.postaviZeton(z);
-		prikljuciSkupini(z);
-	}
-	
-	// STARA
-	// metoda, ki sprejme seznam skupine žetonov in vrne prazen rob
-	// t.j. mesta, ki so še prosta na robu skupine
-//	public  HashSet<Par> vrniProsta(ArrayList<Zeton> seznam) {
-//		HashSet<Par> sez = new HashSet<Par>();
-//		int n = plosca.velikost;
-//			for (Zeton z : seznam) {
-//				Zeton[] sosediZetona = vrniSosede(z);
-//				if (sosediZetona[0] == null & z.i - 1 >= 0) sez.add(new Par(z.i - 1, z.j));
-//				if (sosediZetona[1] == null & z.j + 1 < n) sez.add(new Par(z.i, z.j + 1));
-//				if (sosediZetona[2] == null & z.i + 1 < n) sez.add(new Par(z.i + 1, z.j));
-//				// tu sem popravila >= ,prej ni bilo = ampak nisem opazila napake??
-//				if (sosediZetona[3] == null & z.j - 1 >= 0) sez.add(new Par(z.i, z.j - 1));
-//				}
-//			return sez;
-//	}
-//	
 
-	
+
 //	
 	// metoda, ki sprejme seznam skupine žetonov in vrne prazen rob
 	// t.j. mesta, ki so še prosta na robu skupine
-	public static  LinkedList<Par> vrniProsta(LinkedList<Zeton> seznam) {
+	public   LinkedList<Par> vrniProsta(LinkedList<Zeton> seznam) {
 		LinkedList<Par> sez = new LinkedList<Par>();
 		int n = plosca.velikost;
 			for (Zeton z : seznam) {
@@ -328,28 +223,15 @@ public class Igra {
 			return sez;
 	}
 	
-//	// STARA
-//	public static Integer prestejProsteSosede(Zeton s) {
-//		int v = 0;
-//		int n = plosca.velikost;
-//		ArrayList<Zeton> sosedi = DisjointSet.vrniSkupino(s);
-//		for (Zeton z : sosedi) {
-//			Zeton[] sosediZetona = vrniSosede(z);
-//			if (sosediZetona[0] == null & z.i - 1 >= 0) v += 1;
-//			if (sosediZetona[1] == null & z.j + 1 < n) v += 1;
-//			if (sosediZetona[2] == null & z.i + 1 < n) v += 1;
-//			if (sosediZetona[3] == null & z.j - 1 >= 0) v += 1;
-//			}
-//		return v;
-//		}
+
 	
 	// NOVA
-	public static Integer prestejProsteSosede(Zeton s) {
+	public  Integer prestejProsteSosede(Zeton s) {
 		LinkedList<Zeton> sosedi = new LinkedList<Zeton>();
 		if (s.barva == Igralec.BELI) {
 			sosedi = skupineBelih.vrniSkupino(s);
 		}
-		else sosedi = skupineCrnih.vrniSkupino(s);
+		else if (s.barva == Igralec.CRNI) {sosedi = skupineCrnih.vrniSkupino(s);}
 		LinkedList<Par> prostaSosescina = vrniProsta(sosedi);
 		return prostaSosescina.size();
 		}
@@ -394,63 +276,10 @@ public class Igra {
 				return zmagovalec;
 			}
 		
-	// STARA
-	// metoda, ki preveri ali je igre konec
-	// šli bomo po vseh predstavnikih in pogledali, ali imajo vse skupine še kakšno prosto mesto
-	// če kakšna skupina nima prostega roba, to pomeni, da jo je nasprotnik zajel, torej je igre konec
-//	public boolean aliJeKonec() {
-//		boolean igraVTeku = true;
-//		for (Zeton z: skupineBelih.predstavniki) {
-//			HashSet<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
-//			if (sosedi.isEmpty()) {
-//				igraVTeku = false;
-//				zajetaSkupina = skupineBelih.vrniSkupino(z);
-//				stanje = Stanje.ZMAGA_CRNI;}
-//		}
-//		for (Zeton z: skupineCrnih.predstavniki) {
-//			HashSet<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
-//			if (sosedi.isEmpty()) {igraVTeku = false;
-//			zajetaSkupina = skupineCrnih.vrniSkupino(z);
-//			stanje = Stanje.ZMAGA_BELI;}
-//		}
-//		if (igraVTeku == false) konecIgre(); // samo izpis, kasneje izbrišem
-//		return igraVTeku;
-//	}
-//	
-//		// pomožna metoda, ki pove kdo je zmagal
-//		public String zmagovalec() {
-//			String zmagovalec = "";
-//			if (stanje == Stanje.ZMAGA_CRNI) zmagovalec = "Črni";
-//			if (stanje == Stanje.ZMAGA_BELI) zmagovalec = "Beli";
-//			return zmagovalec;
-//		}
-//			
 	
-	
-//		// metoda za izpis stanja igre - pomembna samo med testiranjem, kasneje izbrišem
-//		public  void izpisStanja() {
-//			plosca.izpis();
-//			System.out.println("********************************************************************");
-//			aliJeKonec();
-//			System.out.println("********************************************************************");
-//		}
-	
-//		// pomožna metoda za izpis rezultata, kasneje izbrišem
-//		public static void sprintaj(ArrayList<Zeton> sez) {
-//			for (Zeton z : sez) System.out.print(" " + z.barva + "(" + z.i+ " , " + z.j + ") ");
-//			System.out.println("");
-//		}
-//		
-//		// metoda, ki izpiše rezultat igre, kasneje izbrišem
-//		public void konecIgre() {
-//			System.out.println("IGRE JE KONEC!");
-//			System.out.println("ZMAGAL JE IGRALEC BARVE: " + zmagovalec());
-//			System.out.println("ZAJEL JE SKUPINO: ");
-//			sprintaj(zajetaSkupina);
-//		}
 			
 			// samo pomožna metoda za izpis, kasneje zbrišem
-			public static void sprintajZ(LinkedList<Zeton> sez) {
+			public  void sprintajZ(LinkedList<Zeton> sez) {
 				if (sez != null) {
 					if (sez.isEmpty() == false) {
 						System.out.print("[");

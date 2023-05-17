@@ -12,11 +12,11 @@ import java.util.HashSet;
 // na vsakem mestu matrike se nahaja ena izmed naslednjih vrednosti: "White", "Black" ali null
 
 public class Plosca {
-		public int velikost;
-		public Zeton[][] mreza;
+		public  int velikost;
+		public  Zeton[][] mreza;
 		
 		// konstruiramo prazno ploščo velikosti n x n
-		public Plosca(int n) {
+		public  Plosca(int n) {
 			velikost = n;
 			mreza = new Zeton[n][n];
 			for (int i = 0; i < n; ++i) {
