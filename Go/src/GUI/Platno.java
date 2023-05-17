@@ -336,10 +336,6 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
         setFocusable(true);
 	}
 	
-//	public void nastaviPlosco(Zeton[][] p) {
-////		igra.plosca = p;
-//		repaint();
-//	}
 	
 	// **************************************************
 	// verjetno bi ta del moral biti v razredu VODJA (tako je mel prof. narjeno na primeru)
