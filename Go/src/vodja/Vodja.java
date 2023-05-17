@@ -620,7 +620,9 @@ public class Vodja {
 		okno.osveziGUI();
 		switch (igra.stanje) {
 		case ZMAGA_CRNI: 
-		case ZMAGA_BELI: 
+		case ZMAGA_BELI:
+		case NEODLOCENO: 
+			return; // odhajamo iz metode igramo
 		case V_TEKU: 
 			Igralec igralec = igra.naVrsti;
 			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
