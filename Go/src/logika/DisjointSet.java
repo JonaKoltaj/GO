@@ -6,9 +6,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+
+
+// podatkovna struktura DisjointSet bo beležila skupine kamenčkov iste barve, ki se dotikajo
+// vsaka taka skupina bo imela svojega predstavnika
+
 public class DisjointSet {
-	// podatkovna struktura DisjointSet bo beležila skupine kamenčkov iste barve, ki se dotikajo
-	// vsaka taka skupina bo imela svojega predstavnika
 	public  ArrayList<Zeton> vsebuje;
 	public Igralec barva;
 	public   Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
@@ -64,7 +67,6 @@ public class DisjointSet {
 		int rx = rank.get(x);
 		int ry = rank.get(y);
 		if (x.equals(y) == false) {
-			// System.out.println("Združili smo:" + "(" + z.i + " , " + z.j + ") + (" + w.i + " , " + w.j + ")");
 			if (rx < ry) {parent.put(x, y);predstavniki.remove(x);}
 			else if  (rx > ry) {parent.put(y, x); predstavniki.remove(y);}
 			else {
@@ -77,8 +79,7 @@ public class DisjointSet {
 	
 	
 	
-	// vrne seznam žetonov, ki so v isti skupini kot žeton z
-		// popravim, da vrne skupino novih žetonov
+	// vrne seznam žetonov, ki so v isti skupini kot žeton 
 	public LinkedList<Zeton> vrniSkupino(Zeton z) {
 		LinkedList<Zeton> sez = new LinkedList<Zeton>();
 		sez.add(z);
@@ -89,35 +90,26 @@ public class DisjointSet {
 					if (starsS.enaka(starsZ)) sez.add(s); 
 			}
 		}
-		// ta del bo kasneje nepotreben
-//		System.out.println("Disjuntkna množica, kateri pripada žeton" + "(" + z.i + " , " + z.j + ")" + " je: ");
-//		sprintaj2(sez);
 		return sez;
-
 	}
 	
 	
 
-		// samo pomožna metoda za izpis, kasneje zbrišem
-		public static void sprintaj(LinkedList<Zeton> sez) {
-			System.out.print("[");
-			for (Zeton z : sez) System.out.print(z);
-			//for (Zeton z : sez) System.out.print(" " + z.barva + "(" + z.i+ " , " + z.j + ") ");
-			System.out.print("]");
-			System.out.println("");
+	// samo pomožna metoda za izpis, kasneje zbrišem
+	public static void sprintaj(LinkedList<Zeton> sez) {
+		System.out.print("[");
+		for (Zeton z : sez) System.out.print(z);
+		System.out.print("]");
+		System.out.println("");
 		}
 		
 	// samo pomožna metoda za izpis, kasneje zbrišem
 	public static void sprintaj2(ArrayList<Zeton> sez) {
 		System.out.print("[");
 		for (Zeton z : sez) System.out.print(z);
-		//for (Zeton z : sez) System.out.print(" " + z.barva + "(" + z.i+ " , " + z.j + ") ");
 		System.out.print("]");
 		System.out.println("");
-		System.out.println("");
 	}
-	
-
 }
 
 

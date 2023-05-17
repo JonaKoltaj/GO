@@ -593,7 +593,6 @@ import javax.swing.SwingWorker;
 import GUI.Okno;
 import inteligenca.Alphabeta;
 import inteligenca.Inteligenca;
-import inteligenca.Minimax;
 import inteligenca.RandomIzbira;
 //import inteligenca.RandomIzbira;
 import logika.Igra;
@@ -667,7 +666,7 @@ public class Vodja {
 	public static void igrajClovekovoPotezo(Poteza poteza) {
 //		boolean vrednost = igra.odigraj(poteza);
 //		if (vrednost) clovekNaVrsti = false;
-		igramo ();
+		igramo();
 	}
 }
 

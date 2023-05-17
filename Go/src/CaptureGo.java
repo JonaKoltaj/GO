@@ -5,7 +5,6 @@ import java.util.Map;
 import GUI.Okno;
 import inteligenca.Alphabeta;
 import inteligenca.Inteligenca;
-import inteligenca.Minimax;
 import inteligenca.OceniPozicijo;
 import inteligenca.RandomIzbira;
 import logika.DisjointSet;
