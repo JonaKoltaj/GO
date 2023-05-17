@@ -1,5 +1,10 @@
 package logika;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -7,7 +12,14 @@ import splosno.Poteza;
 
 public class Igra {
 	
-	public Plosca plosca;
+	
+	// kot pri profesorju:
+	private Zeton[][] plosca;
+	
+	
+	
+	
+//	public Plosca plosca;
 	public Stanje stanje; 
 	
 	// TO SPREMENIM V EN SAM SEZNAM LINKED LIST
@@ -22,7 +34,14 @@ public class Igra {
 	
 
 	public Igra() {
-		plosca = new Plosca(9);
+		int n = 9;
+		plosca = new Zeton[n][n];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				plosca[i][j] = null;
+			}
+		}
+		//plosca = new Plosca(9);
 		stanje = Stanje.V_TEKU;
 		moznePoteze = seznamMoznihPotez();
 		zetoniPoVrsti = new LinkedList<Zeton>();
@@ -32,11 +51,22 @@ public class Igra {
 		zajetaSkupina = null;
 	}
 
-	
+	public Zeton[][] getPlosca() {
+		return plosca;
+	}
+	public LinkedList<Zeton> zajeti() {
+		return zajetaSkupina;
+	}
 	
 	// naredimo deep kopijo, popravi, da bo igralo v pravem vrstnem redu
 	public Igra(Igra staraIgra) {
-		plosca = new Plosca(9);
+		int n = 9;
+		plosca = new Zeton[n][n];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				plosca[i][j] = null;
+			}
+		}
 		stanje = Stanje.V_TEKU;
 		moznePoteze = seznamMoznihPotez();
 		zetoniPoVrsti = new LinkedList<Zeton>();
@@ -51,11 +81,34 @@ public class Igra {
 		}
 		
 	}
+	public void izpis(Zeton[][] mreza) {
+		if (mreza == null) System.out.println("Prazna plošča");
+		else {System.out.println("____________________________________________________________________");
+		for (int i = 0; i < 9; ++i) {
+					for (int j = 0; j < 9; ++j) {
+						if (mreza[i][j] == null) System.out.print(mreza[i][j] + "\t");
+						else System.out.print(mreza[i][j].barva + "\t");}
+					System.out.println();
+				}
+		System.out.println("____________________________________________________________________");
+		System.out.println("");
+			}
+	}
 	
+	// metoda na mrežo postavi žeton
+			public void postaviZeton(Zeton z) {
+				plosca[z.i][z.j] = z;
+			}
+			
+			
+			
+			public Zeton vrniZeton(int i, int j) {
+				return plosca[i][j];
+			}
 			
 		public void sprintajIgro() {
 			System.out.println("IGRA"); 
-			plosca.izpis();
+			izpis(plosca);
 			System.out.println("Vrstni red žetonov: ");
 			sprintajZ(zetoniPoVrsti);
 			System.out.println("_________________________________________________________"); 
@@ -80,7 +133,7 @@ public class Igra {
 		int n = 9;
 		for (int i = 0; i < n; ++i) {
 			for (int j = 0; j < n; ++j) {
-				if (plosca.mreza[i][j] == null) moznePoteze.add(new Poteza(i, j));
+				if (plosca[i][j] == null) moznePoteze.add(new Poteza(i, j));
 			}
 		}
 		return moznePoteze;
@@ -98,51 +151,51 @@ public class Igra {
 	// vrne seznam velikosti 4, ki v smeri urinega kazalca beleži sosede
 	// element z indeksom 0 je tisti s koordinatami (i + 1, j)
 	public  Zeton[] vrniSosede(Zeton z) {
-		int n = plosca.velikost;
+		int n = plosca.length;
 		Zeton[] seznamSosedov = {null, null, null, null};
 		if (z == null) return seznamSosedov;
 		else {
 		if (z.i > 0 & z.i < n - 1 & z.j > 0 & z.j < n - 1) {
-			seznamSosedov[0] = plosca.mreza[z.i - 1][z.j];
-			seznamSosedov[1] = plosca.mreza[z.i][z.j + 1];
-			seznamSosedov[2] = plosca.mreza[z.i + 1][z.j];
-			seznamSosedov[3] = plosca.mreza[z.i][z.j - 1];
+			seznamSosedov[0] = plosca[z.i - 1][z.j];
+			seznamSosedov[1] = plosca[z.i][z.j + 1];
+			seznamSosedov[2] = plosca[z.i + 1][z.j];
+			seznamSosedov[3] = plosca[z.i][z.j - 1];
 		}
 		else if (z.i == 0 & z.j == 0) {
-			seznamSosedov[1] = plosca.mreza[z.i][z.j + 1];
-			seznamSosedov[2] = plosca.mreza[z.i + 1][z.j];
+			seznamSosedov[1] = plosca[z.i][z.j + 1];
+			seznamSosedov[2] = plosca[z.i + 1][z.j];
 		}
 		else if (z.i == n - 1 & z.j == n - 1) {
-			seznamSosedov[0] = plosca.mreza[z.i - 1][z.j];
-			seznamSosedov[3] = plosca.mreza[z.i][z.j - 1];
+			seznamSosedov[0] = plosca[z.i - 1][z.j];
+			seznamSosedov[3] = plosca[z.i][z.j - 1];
 		}
 		else if (z.i == 0 & z.j == n - 1) {
-			seznamSosedov[2] = plosca.mreza[z.i + 1][z.j];
-			seznamSosedov[3] = plosca.mreza[z.i][z.j - 1];
+			seznamSosedov[2] = plosca[z.i + 1][z.j];
+			seznamSosedov[3] = plosca[z.i][z.j - 1];
 		}
 		else if (z.i == n - 1 & z.j == 0) {
-			seznamSosedov[0] = plosca.mreza[z.i - 1][z.j];
-			seznamSosedov[1] = plosca.mreza[z.i][z.j + 1];
+			seznamSosedov[0] = plosca[z.i - 1][z.j];
+			seznamSosedov[1] = plosca[z.i][z.j + 1];
 		}
 		else if (z.i == 0 & z.j != 0 & z.j != n - 1) {
-			seznamSosedov[1] = plosca.mreza[z.i][z.j + 1];
-			seznamSosedov[2] = plosca.mreza[z.i + 1][z.j];
-			seznamSosedov[3] = plosca.mreza[z.i][z.j - 1];
+			seznamSosedov[1] = plosca[z.i][z.j + 1];
+			seznamSosedov[2] = plosca[z.i + 1][z.j];
+			seznamSosedov[3] = plosca[z.i][z.j - 1];
 		} 
 		else if (z.i == n - 1 & z.j != 0 & z.j != n - 1) {
-			seznamSosedov[0] = plosca.mreza[z.i - 1][z.j];
-			seznamSosedov[1] = plosca.mreza[z.i][z.j + 1];
-			seznamSosedov[3] = plosca.mreza[z.i][z.j - 1];
+			seznamSosedov[0] = plosca[z.i - 1][z.j];
+			seznamSosedov[1] = plosca[z.i][z.j + 1];
+			seznamSosedov[3] = plosca[z.i][z.j - 1];
 		}
 		else if (z.j == 0 & z.i != 0 & z.i != n - 1) {
-			seznamSosedov[0] = plosca.mreza[z.i - 1][z.j];
-			seznamSosedov[1] = plosca.mreza[z.i][z.j + 1];
-			seznamSosedov[2] = plosca.mreza[z.i + 1][z.j];
+			seznamSosedov[0] = plosca[z.i - 1][z.j];
+			seznamSosedov[1] = plosca[z.i][z.j + 1];
+			seznamSosedov[2] = plosca[z.i + 1][z.j];
 		}
 		else if (z.j == n - 1 & z.i != 0 & z.i != n - 1) {
-			seznamSosedov[0] = plosca.mreza[z.i - 1][z.j];
-			seznamSosedov[2] = plosca.mreza[z.i + 1][z.j];
-			seznamSosedov[3] = plosca.mreza[z.i][z.j - 1];
+			seznamSosedov[0] = plosca[z.i - 1][z.j];
+			seznamSosedov[2] = plosca[z.i + 1][z.j];
+			seznamSosedov[3] = plosca[z.i][z.j - 1];
 		}
 		return seznamSosedov;
 		}
@@ -193,7 +246,7 @@ public class Igra {
 		if (moznePoteze.contains(poteza)) {
 			Zeton novZeton = new Zeton(i, j, naVrsti); 
 			zetoniPoVrsti.add(novZeton);
-			plosca.postaviZeton(novZeton);
+			postaviZeton(novZeton);
 			prikljuciSkupini(novZeton);
 			moznePoteze.remove(poteza);
 			naVrsti = drugi(naVrsti);
@@ -211,7 +264,7 @@ public class Igra {
 	// t.j. mesta, ki so še prosta na robu skupine
 	public   LinkedList<Par> vrniProsta(LinkedList<Zeton> seznam) {
 		LinkedList<Par> sez = new LinkedList<Par>();
-		int n = plosca.velikost;
+		int n = plosca.length;
 			for (Zeton z : seznam) {
 				Zeton[] sosediZetona = vrniSosede(z);
 				if (sosediZetona[0] == null & z.i - 1 >= 0) sez.add(new Par(z.i - 1, z.j));
@@ -237,24 +290,43 @@ public class Igra {
 		}
 		
 	
+//	
+//			
+	
 	// metoda, ki updata stanje igre oz. spremeni stanje, ko se igra konča
-	public void konec() {
-		if (stanje == Stanje.V_TEKU) {
-			// zapeljemo se po belih predstavnikih in pogledamo, če je kakšna skupina ujeta
-			for (Zeton z: skupineBelih.predstavniki) {
-				LinkedList<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
-				if (sosedi.isEmpty()) {
-					stanje = Stanje.ZMAGA_CRNI;}
-					zajetaSkupina = skupineBelih.vrniSkupino(z);}
-			}
-			for (Zeton z: skupineCrnih.predstavniki) {
-				LinkedList<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
-				if (sosedi.isEmpty()) {
-				zajetaSkupina = skupineCrnih.vrniSkupino(z);
-				stanje = Stanje.ZMAGA_BELI;}
-			}
-		} 
+		public void konec() {
+				// zapeljemo se po belih predstavnikih in pogledamo, če je kakšna skupina ujeta
+				for (Zeton z: skupineBelih.predstavniki) {
+					LinkedList<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
+					if (sosedi.isEmpty()) {
+						stanje = Stanje.ZMAGA_CRNI; zajetaSkupina = skupineBelih.vrniSkupino(z);}
+						}
+				for (Zeton z: skupineCrnih.predstavniki) {
+					LinkedList<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
+					if (sosedi.isEmpty()) {
+					zajetaSkupina = skupineCrnih.vrniSkupino(z);
+					stanje = Stanje.ZMAGA_BELI;}
+				}
+			} 
 		
+//	// metoda, ki updata stanje igre oz. spremeni stanje, ko se igra konča
+//	public void konec() {
+//		if (stanje == Stanje.V_TEKU) {
+//			// zapeljemo se po belih predstavnikih in pogledamo, če je kakšna skupina ujeta
+//			for (Zeton z: skupineBelih.predstavniki) {
+//				LinkedList<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
+//				if (sosedi.isEmpty()) {
+//					stanje = Stanje.ZMAGA_CRNI;}
+//					zajetaSkupina = skupineBelih.vrniSkupino(z);}
+//			}
+//			for (Zeton z: skupineCrnih.predstavniki) {
+//				LinkedList<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
+//				if (sosedi.isEmpty()) {
+//				zajetaSkupina = skupineCrnih.vrniSkupino(z);
+//				stanje = Stanje.ZMAGA_BELI;}
+//			}
+//		} 
+//		
 	
 		
 	
@@ -290,5 +362,74 @@ public class Igra {
 					}
 				}
 			}
+			
+			
+			// oprosti nekaj sem spreminjala, ker plošča ne sme več biti statična
+			
+//			public void shrani(String ime) {
+//				try {
+//					PrintWriter dat = new PrintWriter(new FileWriter(ime));
+//					int n = 9;
+//					if (plosca == null) dat.println("Prazna plošča");
+//					else {dat.println("____________________________________________________________________");
+//					for (int i = 0; i < 9; ++i) {
+//								for (int j = 0; j < 9; ++j) {
+//									if (plosca[i][j] == null) dat.print(plosca[i][j] + "\t");
+//									else dat.print(plosca[i][j].barva + "\t");}
+//								dat.println();
+//							}
+//					dat.println("____________________________________________________________________");
+//					}
+//					dat.close();
+//				}
+//				catch (IOException e){
+//					e.printStackTrace();
+//				}
+//			}
+//			
+//			public static  Zeton[][] preberi(String ime) {
+//		        try {
+//		            BufferedReader dat = new BufferedReader(new FileReader(ime));
+//		            int stevec = 0;
+//		            int stevecVrstica = 0;
+//		            String line;
+//		            while ((line = dat.readLine()) != null) {
+//		               if (!line.equals("____________________________________________________________________") && !line.equals("")) {
+//		            	   stevec +=1;
+//		               }
+//		            }
+//		            
+//		            int n = stevec;
+//		            Zeton [][] plosca = new Zeton[n][n];
+//		    		for (int i = 0; i < n; i++) {
+//		    			for (int j = 0; j < n; j++) {
+//		    				plosca[i][j] = null;
+//		    			}
+//		    		}
+//		            
+//		            
+//		            
+//		            while (dat.ready()) {
+//		                String vrstica = dat.readLine().trim();
+//		                if (!vrstica.equals("____________________________________________________________________") && !vrstica.equals("")) {
+//		                	String[] besede = vrstica.split(" ");
+//		                	int stevecStolpec = 0;
+//		                	for (String beseda : besede) {
+//		                		if (beseda == null) plosca[stevecVrstica][stevecStolpec] = null;
+//		                		else {Igralec barva = Igralec.pretvoriVIgralca(beseda);
+//		                			postaviZeton(new Zeton(stevecVrstica, stevecStolpec, barva));};
+//		                		stevecStolpec +=1;
+//		                	}
+//		                	stevecVrstica += 1;
+//		                }
+//		            }
+//		            dat.close();
+//					return plosca;
+//		        }
+//		        catch (Exception e) {
+//		            e.printStackTrace();
+//		            return null;
+//		        }
+//		    }
 			
 	}

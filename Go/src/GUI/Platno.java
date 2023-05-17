@@ -308,7 +308,8 @@ import inteligenca.Inteligenca;
 import inteligenca.RandomIzbira;
 import logika.Igra;
 import logika.Igralec;
-import logika.Plosca;
+//import logika.Plosca;
+//import logika.Polje;
 import logika.Stanje;
 import logika.Zeton;
 import splosno.Poteza;
@@ -323,7 +324,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	public Platno(int sirina, int visina) {
 		super();
 		igra = new Igra();
-		nastaviPlosco(igra.plosca);
+//		nastaviPlosco(igra.plosca);
 		setPreferredSize(new Dimension(sirina, visina));
 		
 		prviIgralec = "Človek";
@@ -335,10 +336,10 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
         setFocusable(true);
 	}
 	
-	public void nastaviPlosco(Plosca p) {
-		igra.plosca = p;
-		repaint();
-	}
+//	public void nastaviPlosco(Zeton[][] p) {
+////		igra.plosca = p;
+//		repaint();
+//	}
 	
 	// **************************************************
 	// verjetno bi ta del moral biti v razredu VODJA (tako je mel prof. narjeno na primeru)
@@ -386,9 +387,53 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 //		}
 //	}
 	
+//	@Override
+//	protected void paintComponent(Graphics g) {
+//		// izrisan go board tako da se prilagaja oknu ki ga odpremo
+//		int n = 9;
+//		int sirina = getWidth();
+//	    int visina = getHeight();
+//	    int velikost = Math.min(sirina, visina) - 200;
+//	    int marginSirina = sirina/2 - velikost/2;
+//	    int marginVisina = visina/2 - velikost/2;
+//	    super.paintComponent(g);
+//	    g.drawRect(marginSirina, marginVisina, velikost, velikost);
+//	    for(int i = 1; i <= 7; i++) {
+//	        g.drawLine(marginSirina + i*((velikost)/8), marginVisina, marginSirina + i*((velikost)/8), velikost + marginVisina);
+//	    }
+//	    for(int j = 1; j <= 7; j++) {
+//	    	g.drawLine(marginSirina, marginVisina + j*((velikost)/8), velikost + marginSirina, marginVisina + j*((velikost)/8));
+//	    }
+//	    //tukej je izrisanih tistih pet pikic na sredini
+//	    int polmerPikice = velikost/96;
+//	    g.fillOval(marginSirina - polmerPikice + 2*((velikost)/8), marginVisina - polmerPikice + 2*((velikost)/8), polmerPikice*2, polmerPikice*2);
+//	    g.fillOval(marginSirina - polmerPikice + 6*((velikost)/8), marginVisina - polmerPikice + 2*((velikost)/8), polmerPikice*2, polmerPikice*2);
+//	    g.fillOval(marginSirina - polmerPikice + 2*((velikost)/8), marginVisina - polmerPikice + 6*((velikost)/8), polmerPikice*2, polmerPikice*2);
+//	    g.fillOval(marginSirina - polmerPikice + 6*((velikost)/8), marginVisina - polmerPikice + 6*((velikost)/8), polmerPikice*2, polmerPikice*2);
+//	    g.fillOval(marginSirina - polmerPikice + 4*((velikost)/8), marginVisina - polmerPikice + 4*((velikost)/8), polmerPikice*2, polmerPikice*2);
+//	    
+//	    //izrisemo se zetone
+//	    int polmerZetona = velikost/16;
+//	    Zeton[][] plosca;
+//	    plosca = igra.getPlosca();
+//	    for (int i = 0; i < n; ++i) {
+//	    	for (int j = 0; j < n; ++j) {
+//	    		if (plosca[i][j] != null) {
+//	    			Igralec barva = plosca[i][j].barva;
+//	    			if (barva == Igralec.BELI) g.setColor(Color.WHITE);
+//	    			else g.setColor(Color.BLACK);
+//	    			g.fillOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+//	    			g.setColor(Color.BLACK);
+//	    			g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+//	    		}
+//	    	}
+//	    }
+//	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		// izrisan go board tako da se prilagaja oknu ki ga odpremo
+		int n = 9;
 		int sirina = getWidth();
 	    int visina = getHeight();
 	    int velikost = Math.min(sirina, visina) - 200;
@@ -412,18 +457,25 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    
 	    //izrisemo se zetone
 	    int polmerZetona = velikost/16;
-	    for (int i = 0; i < igra.plosca.velikost; ++i) {
-	    	for (int j = 0; j < igra.plosca.velikost; ++j) {
-	    		if (igra.plosca.mreza[i][j] != null) {
-	    			Igralec barva = igra.plosca.mreza[i][j].barva;
-	    			if (barva == Igralec.BELI) g.setColor(Color.WHITE);
-	    			else g.setColor(Color.BLACK);
-	    			g.fillOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
-	    			g.setColor(Color.BLACK);
-	    			g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
-	    		}
-	    	}
+	    
+	   
+	    if (Vodja.igra != null) {
+	    	Zeton[][] plosca;
+		    plosca = Vodja.igra.getPlosca();
+	    	for (int i = 0; i < n; ++i) {
+		    	for (int j = 0; j < n; ++j) {
+		    		if (plosca[i][j] != null) {
+		    			Igralec barva = plosca[i][j].barva;
+		    			if (barva == Igralec.BELI) g.setColor(Color.WHITE);
+		    			else g.setColor(Color.BLACK);
+		    			g.fillOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+		    			g.setColor(Color.BLACK);
+		    			g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+		    		}
+		    	}
+		    }
 	    }
+	    
 	}
 
 	@Override
@@ -462,6 +514,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		if (Vodja.clovekNaVrsti) {
 			int x = e.getX();
 	        int y = e.getY();
+	        int n = 9;
 	        
 	        int sirina = getWidth();
 		    int visina = getHeight();
@@ -470,8 +523,8 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		    int marginVisina = visina/2 - velikost/2;
 		    int najmanjsaRazdalja = velikost/16;
 	        
-	        for (int i = 0; i < igra.plosca.velikost; ++i) {
-		    	for (int j = 0; j < igra.plosca.velikost; ++j) {
+	        for (int i = 0; i < n; ++i) {
+		    	for (int j = 0; j < n; ++j) {
 		    		int poljex = marginSirina + i*((velikost)/8);
 		    		int poljey = marginVisina + j*((velikost)/8);
 		    		double razdalja = Math.sqrt((poljex - x)*(poljex - x) + (poljey - y)*(poljey - y));

@@ -12,7 +12,7 @@ import logika.DisjointSet;
 import logika.Igra;
 import logika.Igralec;
 import logika.Par;
-import logika.Plosca;
+//import logika.Plosca;
 import logika.Zeton;
 import splosno.Poteza;
 import vodja.Vodja;
@@ -22,32 +22,29 @@ public class CaptureGo {
 	public static void main(String[] args) {
 		
 	
-//		Inteligenca r1 = new RandomIzbira("random");
-//		Inteligenca r2 = new Minimax(9);
-//		Inteligenca r3 = new Alphabeta(9);
-//		Okno okno = new Okno();
-//		okno.pack();
-//		okno.setVisible(true);
-//		Vodja.okno = okno;
-//////	
+		Okno okno = new Okno();
+		okno.pack();
+		okno.setVisible(true);
+		Vodja.okno = okno;
+
 		
 		
-		Igra igra = new Igra();
-		System.out.println("ZAČNEMO ORIGINALNO IGRO 1");
-		igra.odigraj(new Poteza(0,0));
+//		Igra igra = new Igra();
+//		System.out.println("ZAČNEMO ORIGINALNO IGRO 1");
+//		igra.odigraj(new Poteza(0,0));
+////		igra.sprintajIgro();
+//		igra.odigraj(new Poteza(6,0));
 //		igra.sprintajIgro();
-		igra.odigraj(new Poteza(6,0));
-		igra.sprintajIgro();
-		
-		
-		Igra igra2 = new Igra();
-		System.out.println("ZAČNEMO IGRO 2");
-		igra2.odigraj(new Poteza(4,4));
-		igra2.odigraj(new Poteza(8,8));
-		igra2.sprintajIgro();
-		
-		System.out.println("SPET PRVA IGRA");
-		igra.sprintajIgro();
+//		
+//		
+//		Igra igra2 = new Igra();
+//		System.out.println("ZAČNEMO IGRO 2");
+//		igra2.odigraj(new Poteza(4,4));
+//		igra2.odigraj(new Poteza(8,8));
+//		igra2.sprintajIgro();
+//		
+//		System.out.println("SPET PRVA IGRA");
+//		igra.sprintajIgro();
 //		
 		
 		

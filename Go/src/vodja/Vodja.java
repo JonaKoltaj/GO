@@ -593,6 +593,7 @@ import javax.swing.SwingWorker;
 import GUI.Okno;
 import inteligenca.Alphabeta;
 import inteligenca.Inteligenca;
+import inteligenca.Minimax;
 import inteligenca.RandomIzbira;
 //import inteligenca.RandomIzbira;
 import logika.Igra;
@@ -635,7 +636,8 @@ public class Vodja {
 		
 	}
 	
-//	public static Inteligenca racunalnikovaInteligenca = new Alphabeta(9);
+
+//	public static Inteligenca racunalnikovaInteligenca = new Alphabeta(3);
 	public static Inteligenca racunalnikovaInteligenca = new RandomIzbira("random");
 	
 	public static void igrajRacunalnikovoPotezo() {
@@ -644,7 +646,7 @@ public class Vodja {
 			@Override
 			protected Poteza doInBackground() {
 				Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
-				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
+				try {TimeUnit.MILLISECONDS.sleep(100);} catch (Exception e) {};
 				return poteza;
 			}
 			@Override
