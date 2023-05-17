@@ -324,7 +324,6 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	public Platno(int sirina, int visina) {
 		super();
 		igra = new Igra();
-//		nastaviPlosco(igra.plosca);
 		setPreferredSize(new Dimension(sirina, visina));
 		
 		prviIgralec = "Človek";
@@ -337,23 +336,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	}
 	
 	
-	// **************************************************
-	// verjetno bi ta del moral biti v razredu VODJA (tako je mel prof. narjeno na primeru)
-	// mogoče spremenima kasneje, če bo treba
-	
-	
-////	 public static Inteligenca racunalnikovaInteligenca = new Alphabeta(9);
-//	public static Inteligenca racunalnikovaInteligenca = new RandomIzbira("random");
-//	
-//	public boolean igrajRacunalnikovoPotezo() {
-//		Poteza poteza = racunalnikovaInteligenca.izberiPotezo(igra);
-//		try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
-//		boolean vrednost = igra.odigraj(poteza);
-//		return vrednost;
-//	}
-	
-	//*********************************************************************
-	
+
 	
 	// !!!! to bom prestavila v drug razred. zaenkrat samo zakomentiram - milka
 	

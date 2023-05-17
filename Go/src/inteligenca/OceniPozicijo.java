@@ -11,7 +11,7 @@ import logika.Zeton;
 
 public class OceniPozicijo {
 
-	// metoda, ki oceni potezo za igralca	
+	// PRVA OCENA ZA OCENJEVANJE POZICIJE
 	
 	// več kot ima igralec ogroženih polj, slabše je zanj
 	// najbolj ogrožena polja, so tista, katerih skupina ima samo še 1 prosto polje
@@ -21,11 +21,11 @@ public class OceniPozicijo {
 	public static int oceniPozicijo(Igra igra, Igralec jaz) {
 		int ocenaJaz = oceniPozicijoBarve(igra, jaz);
 		int ocenaNasprotnik = oceniPozicijoBarve(igra, igra.drugi(igra.naVrsti));
-//		System.out.println("Ocena igralca je " + (ocenaJaz - ocenaNasprotnik));
 		return ocenaJaz - ocenaNasprotnik;
 		
 	}
 	
+	// tole verjetno deluje, ko smo proti koncu in imamo že veliko žetonov
 	public static int oceniPozicijoBarve(Igra igra, Igralec barva) {
 		// v slovar si shranimo "ogroženost" skupin
 		// ključ: število prostih sosedov neke skupine
