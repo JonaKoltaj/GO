@@ -11,7 +11,6 @@ import logika.Zeton;
 
 public class OceniPozicijo {
 
-	// PRVA OCENA ZA OCENJEVANJE POZICIJE
 	
 	// več kot ima igralec ogroženih polj, slabše je zanj
 	// najbolj ogrožena polja, so tista, katerih skupina ima samo še 1 prosto polje
@@ -25,7 +24,10 @@ public class OceniPozicijo {
 		
 	}
 	
-	// tole verjetno deluje, ko smo proti koncu in imamo že veliko žetonov
+	// PRVA OCENA ZA OCENJEVANJE POZICIJE igralca neke barve
+	
+	
+	
 	public static int oceniPozicijoBarve(Igra igra, Igralec barva) {
 		// v slovar si shranimo "ogroženost" skupin
 		// ključ: število prostih sosedov neke skupine
@@ -57,6 +59,23 @@ public class OceniPozicijo {
 //		System.out.println(ogrozenost);
 		return ocena;
 	}
+	
+//	// DRUGA OCENA ZA OCENJEVANJE POZICIJE igralca neke barve
+//	
+//	public static int oceniPozicijoBarve(Igra igra, Igralec barva) {
+//		// ta ocena samo prešteje kako velike proste sosesčine ima barva
+//		
+//		DisjointSet raziskujemoSkupino = igra.skupineBelih;
+//		if (barva == Igralec.CRNI) {raziskujemoSkupino = igra.skupineCrnih;}
+//		// sedaj gremo po predstavnikih in preštejemo sosede
+//		int sosedi = 0;
+//		for (Zeton z: raziskujemoSkupino.predstavniki) {
+//			sosedi += igra.prestejProsteSosede(z);
+//
+//		}
+//		
+//		return sosedi;
+//	}
 	
 	
 	

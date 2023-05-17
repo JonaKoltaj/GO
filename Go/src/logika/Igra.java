@@ -299,16 +299,27 @@ public class Igra {
 		if (stanje == Stanje.V_TEKU && moznePoteze.isEmpty()) stanje = Stanje.NEODLOCENO;
 		} 
 		
-	// metoda, ki preveri ali mora igralec, ki je na vrsti odigrati kakšno obvezno potezo
+	// metoda, ki preveri ali mora igralec, ki je na vrsti odigrati kakšno obvezno potezo, da se zaščiti ali da zmaga
 	public void obveznaPoteza() {
 		Par p = null;
-		DisjointSet skupina = skupineCrnih;
-		if (naVrsti == Igralec.BELI) {skupina = skupineBelih;}
-		for (Zeton z: skupina.predstavniki) {
+		DisjointSet skupina1 = skupineCrnih;
+		if (naVrsti == Igralec.BELI) {skupina1 = skupineBelih;}
+		// najprej preveri ali se mora v naslednji potezi zaščititi
+		for (Zeton z: skupina1.predstavniki) {
 			if (prestejProsteSosede(z) == 1) {
-				p = vrniProsta(skupina.vrniSkupino(z)).get(0);
+				p = vrniProsta(skupina1.vrniSkupino(z)).get(0);
 			}
 		}
+		
+		// potem preveri ali lahko v naslednji potezi zmaga
+		DisjointSet skupina2 = skupineBelih;
+		if (naVrsti == Igralec.BELI) {skupina2 = skupineCrnih;}
+		for (Zeton z: skupina2.predstavniki) {
+			if (prestejProsteSosede(z) == 1) {
+				p = vrniProsta(skupina2.vrniSkupino(z)).get(0);
+			}
+		}
+		
 		Poteza pot = null;
 		if (p != null) pot = new Poteza(p.i, p.j);
 		obveznaPoteza = pot;

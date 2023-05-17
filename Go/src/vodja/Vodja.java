@@ -638,7 +638,7 @@ public class Vodja {
 	}
 	
 
-	public static Inteligenca racunalnikovaInteligenca = new Alphabeta(3);
+	public static Inteligenca racunalnikovaInteligenca = new Alphabeta(4);
 //	public static Inteligenca racunalnikovaInteligenca = new RandomIzbira("random");
 	
 	public static void igrajRacunalnikovoPotezo() {
