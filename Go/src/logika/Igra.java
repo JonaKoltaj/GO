@@ -22,6 +22,7 @@ public class Igra {
 	public Igralec naVrsti; // kateri izmed igralcev mora narediti potezo
 	public  DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
 	public  DisjointSet skupineCrnih; // beležimo disjunktne množice belih žetonov
+	public Poteza obveznaPoteza; // obvezna poteza, za  tistega, ki je na vrsti
 	protected LinkedList<Zeton> zajetaSkupina;
 	
 	
@@ -44,6 +45,7 @@ public class Igra {
 		naVrsti = Igralec.CRNI;
 		skupineBelih = new DisjointSet(Igralec.BELI);
 		skupineCrnih = new DisjointSet(Igralec.CRNI);
+		obveznaPoteza = null;
 		zajetaSkupina = null;
 	}
 
@@ -64,6 +66,7 @@ public class Igra {
 		naVrsti = Igralec.CRNI;
 		skupineBelih = new DisjointSet(Igralec.BELI);
 		skupineCrnih = new DisjointSet(Igralec.CRNI);
+		obveznaPoteza = null;
 		zajetaSkupina = null;
 		for (Zeton z: staraIgra.zetoniPoVrsti) {
 			int i = z.i;
@@ -116,6 +119,7 @@ public class Igra {
 		System.out.println("_________________________________________________________");
 		System.out.println("Zajeta skupina je: ");
 		sprintajZ(zajetaSkupina);
+		System.out.println("Obvezna poteza je :  " + "    " + obveznaPoteza + "     ");
 		System.out.println("_________________________________________________________");
 		System.out.println("_________________________________________________________");
 		}	
@@ -239,6 +243,7 @@ public class Igra {
 			moznePoteze.remove(poteza);
 			naVrsti = drugi(naVrsti);
 			konec();
+			obveznaPoteza();
 			return true;
 		}
 		else return false;
@@ -294,6 +299,20 @@ public class Igra {
 		if (stanje == Stanje.V_TEKU && moznePoteze.isEmpty()) stanje = Stanje.NEODLOCENO;
 		} 
 		
+	// metoda, ki preveri ali mora igralec, ki je na vrsti odigrati kakšno obvezno potezo
+	public void obveznaPoteza() {
+		Par p = null;
+		DisjointSet skupina = skupineCrnih;
+		if (naVrsti == Igralec.BELI) {skupina = skupineBelih;}
+		for (Zeton z: skupina.predstavniki) {
+			if (prestejProsteSosede(z) == 1) {
+				p = vrniProsta(skupina.vrniSkupino(z)).get(0);
+			}
+		}
+		Poteza pot = null;
+		if (p != null) pot = new Poteza(p.i, p.j);
+		obveznaPoteza = pot;
+	}
 	
 	// vrne true ali false glede na to, ali igra še poteka
 	// če je true, tudi sprinta rezultat - zaenkrat
@@ -326,7 +345,8 @@ public class Igra {
 					}
 				}
 			}
-			
+	
+	
 			
 	
 			
