@@ -220,33 +220,21 @@
 //	
 
 package GUI;
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 
 import logika.Igra;
 import logika.Igralec;
-import logika.Stanje;
 import logika.Zeton;
 import splosno.KdoIgra;
 import vodja.Vodja;
@@ -275,7 +263,6 @@ public class Okno extends JFrame implements ActionListener {
 		platno = new Platno(700, 700);
 		platno.setLayout(new BorderLayout());
 		add(platno);
-		
 		
 		JMenuBar menubar = new JMenuBar();
 		setJMenuBar(menubar);
@@ -310,8 +297,7 @@ public class Okno extends JFrame implements ActionListener {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
+
 	}
 	
 	private JMenu dodajMenu(JMenuBar menubar, String naslov) {
@@ -332,30 +318,30 @@ public class Okno extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object objekt = e.getSource();
-//		if (objekt == menuOdpri) {
-//			JFileChooser dialog = new JFileChooser();
-//			int izbira = dialog.showOpenDialog(this);
-//			if (izbira == JFileChooser.APPROVE_OPTION) {
-//				String ime = dialog.getSelectedFile().getPath();
-//				Zeton[][] plosca = Igra.preberi(ime);
-//				platno.nastaviPlosco(plosca);
-//			}
-//		}
-//		else if (objekt == menuShrani) {
-//			JFileChooser dialog = new JFileChooser();
-//			int izbira = dialog.showSaveDialog(this);
-//			if (izbira == JFileChooser.APPROVE_OPTION) {
-//				String ime = dialog.getSelectedFile().getPath();
-//				platno.igra.shrani(ime);
-//			}
-//		}
-//		else if (objekt == menuRestart) {
-//			platno.igra = new Igra();
-//			platno.repaint();
-//		}
-//		else if (objekt == menuIme) {
-//			//to se pol lah napise, samo kako se izpise ime pac
-//		}
+		if (objekt == menuOdpri) {
+			JFileChooser dialog = new JFileChooser();
+			int izbira = dialog.showOpenDialog(this);
+			if (izbira == JFileChooser.APPROVE_OPTION) {
+				String ime = dialog.getSelectedFile().getPath();
+				Zeton[][] plosca = Igra.preberi(ime);
+				platno.nastaviPlosco(plosca);
+			}
+		}
+		else if (objekt == menuShrani) {
+			JFileChooser dialog = new JFileChooser();
+			int izbira = dialog.showSaveDialog(this);
+			if (izbira == JFileChooser.APPROVE_OPTION) {
+				String ime = dialog.getSelectedFile().getPath();
+				platno.igra.shrani(ime);
+			}
+		}
+		else if (objekt == menuRestart) {
+			platno.igra = new Igra();
+			platno.repaint();
+		}
+		else if (objekt == menuIme) {
+			//to se pol lah napise, samo kako se izpise ime pac
+		}
 		
 		// do sem je metoda ista kot prej
 		if (objekt == igraClovekRacunalnik) {

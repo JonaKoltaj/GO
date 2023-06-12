@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 
 
 
@@ -12,9 +11,9 @@ import java.util.Set;
 // vsaka taka skupina bo imela svojega predstavnika
 
 public class DisjointSet {
-	public  ArrayList<Zeton> vsebuje;
+	public ArrayList<Zeton> vsebuje;
 	public Igralec barva;
-	public   Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
+	public Map<Zeton, Zeton> parent; // levo žeton, desno starš od žetona
 	public Map<Zeton, Integer> rank;
 	public ArrayList<Zeton> predstavniki;
 	
@@ -55,7 +54,7 @@ public class DisjointSet {
 	
 
 	// metoda najde prednika od žetona z
-		public  Zeton find(Zeton z) {
+		public Zeton find(Zeton z) {
 			if (parent.get(z) == z) return z;
 			else return find(parent.get(z));
 		}
@@ -67,8 +66,8 @@ public class DisjointSet {
 		int rx = rank.get(x);
 		int ry = rank.get(y);
 		if (x.equals(y) == false) {
-			if (rx < ry) {parent.put(x, y);predstavniki.remove(x);}
-			else if  (rx > ry) {parent.put(y, x); predstavniki.remove(y);}
+			if (rx < ry) {parent.put(x, y); predstavniki.remove(x);}
+			else if (rx > ry) {parent.put(y, x); predstavniki.remove(y);}
 			else {
 				parent.put(y, x);
 				predstavniki.remove(y);
