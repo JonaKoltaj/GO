@@ -22,7 +22,7 @@ public class Zeton {
 	public String toString() {
 		String b = "B";
 		if (barva == Igralec.CRNI) b = "C";
-		return b + "(" + i + " , " + j + ") ";
+		return b + "(" + i + "," + j + ")";
 	}
 
 }

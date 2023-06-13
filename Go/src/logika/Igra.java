@@ -144,7 +144,7 @@ public class Igra {
 	
 	
 	// metoda, ki vrne barvo nasprotnega igralca 
-	public  Igralec drugi(Igralec barva) {
+	public Igralec drugi(Igralec barva) {
 		Igralec nasprotnik = Igralec.BELI; 
 		if (barva == Igralec.BELI) nasprotnik = Igralec.CRNI;
 			return nasprotnik;
@@ -153,7 +153,7 @@ public class Igra {
 	
 	// vrne seznam velikosti 4, ki v smeri urinega kazalca beleži sosede
 	// element z indeksom 0 je tisti s koordinatami (i + 1, j)
-	public  Zeton[] vrniSosede(Zeton z) {
+	public Zeton[] vrniSosede(Zeton z) {
 		int n = plosca.length;
 		Zeton[] seznamSosedov = {null, null, null, null};
 		if (z == null) return seznamSosedov;
@@ -252,7 +252,7 @@ public class Igra {
 	
 	// metoda, ki sprejme seznam skupine žetonov in vrne prazen rob
 	// t.j. vrne liberties
-	public   LinkedList<Par> vrniProsta(LinkedList<Zeton> seznam) {
+	public LinkedList<Par> vrniProsta(LinkedList<Zeton> seznam) {
 		LinkedList<Par> sez = new LinkedList<Par>();
 		int n = plosca.length;
 			for (Zeton z : seznam) {
@@ -266,7 +266,7 @@ public class Igra {
 	}
 	
 	
-	public  Integer prestejProsteSosede(Zeton s) {
+	public Integer prestejProsteSosede(Zeton s) {
 		LinkedList<Zeton> sosedi = new LinkedList<Zeton>();
 		if (s.barva == Igralec.BELI) {
 			sosedi = skupineBelih.vrniSkupino(s);
@@ -356,20 +356,18 @@ public class Igra {
 		}
 	}
 	
+	
 	//metoda za shranjevanje igre
 	public void shrani(String ime) {
 		try {
 			PrintWriter dat = new PrintWriter(new FileWriter(ime));
-			if (plosca == null) dat.println("Prazna plošča");
-			else {dat.println("____________________________________________________________________");
-			for (int i = 0; i < velikost; ++i) {
-						for (int j = 0; j < velikost; ++j) {
-							if (plosca[i][j] == null) dat.print(plosca[i][j] + "\t");
-							else dat.print(plosca[i][j].barva + "\t");}
-						dat.println();
-					}
-			dat.println("____________________________________________________________________");
+			dat.print("Žetoni: ");
+			for (Zeton z: zetoniPoVrsti) {
+				dat.print(z + " ");
 			}
+			dat.println();
+			dat.println("Stanje: " + stanje);
+			dat.println("NaVrsti: " + naVrsti);
 			dat.close();
 		}
 		catch (IOException e){
@@ -377,51 +375,57 @@ public class Igra {
 		}
 	}
 	
-	//metoda ki prebere igro nazaj
-	public Igra preberi(String ime) {
+//	stanje = Stanje.V_TEKU;
+//	moznePoteze = seznamMoznihPotez();
+//	zetoniPoVrsti = new ArrayList<Zeton>();
+//	naVrsti = Igralec.CRNI;
+//	skupineBelih = new DisjointSet(Igralec.BELI);
+//	skupineCrnih = new DisjointSet(Igralec.CRNI);
+//	obveznaPoteza = null;
+//	zajetaSkupina = null;
+	
+//	public Igra() {
+//	velikost = 9;
+//	plosca = ustvariMrezo(this.velikost);
+//	stanje = Stanje.V_TEKU;
+//	moznePoteze = seznamMoznihPotez();
+//	zetoniPoVrsti = new ArrayList<Zeton>();
+//	naVrsti = Igralec.CRNI;
+//	skupineBelih = new DisjointSet(Igralec.BELI);
+//	skupineCrnih = new DisjointSet(Igralec.CRNI);
+//	obveznaPoteza = null;
+//	zajetaSkupina = null;
+//}
+	
+	//metoda ki prebere igro nazaj v obliki "stZetonov(n) z1 ... zn stanje navrsti"
+	public String preberi(String ime) {
         try {
             BufferedReader dat = new BufferedReader(new FileReader(ime));
-            int stevec = 0;
-            int stevecVrstica = 0;
-            String line;
-            while ((line = dat.readLine()) != null) {
-               if (!line.equals("____________________________________________________________________") && !line.equals("")) {
-            	   stevec +=1;
-               }
-            }
-            velikost = stevec;
-            plosca = ustvariMrezo(this.velikost);
+            int n = 0;
+            String podatki = "";
             while (dat.ready()) {
-                String vrstica = dat.readLine().trim();
-                if (!vrstica.equals("____________________________________________________________________") && !vrstica.equals("")) {
-                	String[] besede = vrstica.split(" ");
-                	int stevecStolpec = 0;
-                	for (String beseda : besede) {
-                		if (beseda == null) plosca[stevecVrstica][stevecStolpec] = null;
-                		else {Igralec barva = Igralec.pretvoriVIgralca(beseda);
-                			plosca[stevecVrstica][stevecStolpec] = new Zeton(stevecVrstica, stevecStolpec, barva);
-                		stevecStolpec +=1;
+                String vrstica = dat.readLine();
+                if (!vrstica.equals("")) {
+                	String[] besede = vrstica.trim().split(" ");
+                	if (besede[0].equals("Žetoni:")) {
+                		//v besede je n+1 elementov ("zetoni" , z1, ..., zn)
+	                	n +=  besede.length - 1;
+	                	podatki += Integer.toString(n) + " ";
+                		for (int i = 1; i < n+1; i++) {
+                			podatki += besede[i] + " ";
+                		}
                 	}
-                	stevecVrstica += 1;
+                	else if (besede[0].equals("Stanje:")) {
+                		podatki += besede[1] + " ";
+                	}
+                	else if (besede[0].equals("NaVrsti:")) {
+                		podatki += besede[1];
+                	}
                 }
             }
-                
-            //okej tuki rabis zdej napisat odigraj v metodi shrani pa nekak inkorporitat stanja pa te stvari
-    		stanje = Stanje.V_TEKU;
-    		moznePoteze = seznamMoznihPotez();
-    		zetoniPoVrsti = new ArrayList<Zeton>();
-    		naVrsti = Igralec.CRNI;
-    		skupineBelih = new DisjointSet(Igralec.BELI);
-    		skupineCrnih = new DisjointSet(Igralec.CRNI);
-    		obveznaPoteza = null;
-    		zajetaSkupina = null;
-    		for (Zeton z: staraIgra.zetoniPoVrsti) {
-    			int i = z.i;
-    			int j = z.j;
-    			this.odigraj(new Poteza(i, j));
-    		}
             dat.close();
-			return plosca;
+            System.out.println(podatki);
+            return podatki;
         }
         catch (Exception e) {
             e.printStackTrace();

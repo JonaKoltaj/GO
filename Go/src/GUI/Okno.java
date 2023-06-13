@@ -323,16 +323,22 @@ public class Okno extends JFrame implements ActionListener {
 			int izbira = dialog.showOpenDialog(this);
 			if (izbira == JFileChooser.APPROVE_OPTION) {
 				String ime = dialog.getSelectedFile().getPath();
-				Zeton[][] plosca = Igra.preberi(ime);
-				platno.nastaviPlosco(plosca);
+				Vodja.igra = new Igra();
+				String podatki = Vodja.igra.preberi(ime);
+				//tukej zdej separatejas spet s split v String[], ki bo mel n+3 itemov, kjer je n podatki[0]
+				//pol dodas tej igri vse ze igrane zetone (od podatki[1] do, vkljucno z,  podatki[n]), z metodo vodja.igra.odigraj
+				//dodas stanje in kdo je na vrsti (podatki[n+1], podatki[n+2]
+				//ostale podatke pogruntas kasnej
 			}
 		}
-		else if (objekt == menuShrani) {
-			JFileChooser dialog = new JFileChooser();
-			int izbira = dialog.showSaveDialog(this);
-			if (izbira == JFileChooser.APPROVE_OPTION) {
-				String ime = dialog.getSelectedFile().getPath();
-				platno.igra.shrani(ime);
+		if (objekt == menuShrani) {
+			if (Vodja.igra != null) {
+				JFileChooser dialog = new JFileChooser();
+				int izbira = dialog.showSaveDialog(this);
+				if (izbira == JFileChooser.APPROVE_OPTION) {
+					String ime = dialog.getSelectedFile().getPath();
+					Vodja.igra.shrani(ime);
+				}
 			}
 		}
 		else if (objekt == menuRestart) {
