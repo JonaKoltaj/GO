@@ -225,6 +225,8 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -235,8 +237,10 @@ import javax.swing.JMenuItem;
 
 import logika.Igra;
 import logika.Igralec;
+import logika.Stanje;
 import logika.Zeton;
 import splosno.KdoIgra;
+import splosno.Poteza;
 import vodja.Vodja;
 import vodja.VrstaIgralca;
 
@@ -324,11 +328,28 @@ public class Okno extends JFrame implements ActionListener {
 			if (izbira == JFileChooser.APPROVE_OPTION) {
 				String ime = dialog.getSelectedFile().getPath();
 				Vodja.igra = new Igra();
-				String podatki = Vodja.igra.preberi(ime);
-				//tukej zdej separatejas spet s split v String[], ki bo mel n+3 itemov, kjer je n podatki[0]
-				//pol dodas tej igri vse ze igrane zetone (od podatki[1] do, vkljucno z,  podatki[n]), z metodo vodja.igra.odigraj
-				//dodas stanje in kdo je na vrsti (podatki[n+1], podatki[n+2]
-				//ostale podatke pogruntas kasnej
+				String[] podatki = Vodja.igra.preberi(ime).split(" ");
+				if (podatki.length != 0) {
+					int n = Integer.parseInt(podatki[0]);
+					for (int k = 1; k < n+1; k++) {
+						String zeton = podatki[k];
+						String pattern = "(.)\\((.),(.)";
+						Pattern r = Pattern.compile(pattern);
+						Matcher m = r.matcher(zeton);
+						if (m.find()) {
+							String barva = m.group(1);
+							if (barva.equals("B")) Vodja.igra.naVrsti = Igralec.BELI;
+							if (barva.equals("C")) Vodja.igra.naVrsti = Igralec.CRNI;
+							int i = Integer.parseInt(m.group(2));
+							int j = Integer.parseInt(m.group(3));
+							Vodja.igra.odigraj(new Poteza(i, j));
+						}
+					}
+					String naVrsti = podatki[n+2];
+					if (naVrsti.equals("Black")) Vodja.igra.naVrsti = Igralec.CRNI;
+					else if (naVrsti.equals("White")) Vodja.igra.naVrsti = Igralec.BELI;
+					Vodja.igramo();
+				}
 			}
 		}
 		if (objekt == menuShrani) {
@@ -337,7 +358,7 @@ public class Okno extends JFrame implements ActionListener {
 				int izbira = dialog.showSaveDialog(this);
 				if (izbira == JFileChooser.APPROVE_OPTION) {
 					String ime = dialog.getSelectedFile().getPath();
-					Vodja.igra.shrani(ime);
+					Vodja.shrani(ime);
 				}
 			}
 		}
@@ -348,9 +369,7 @@ public class Okno extends JFrame implements ActionListener {
 		else if (objekt == menuIme) {
 			//to se pol lah napise, samo kako se izpise ime pac
 		}
-		
-		// do sem je metoda ista kot prej
-		if (objekt == igraClovekRacunalnik) {
+		else if (objekt == igraClovekRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
@@ -358,7 +377,8 @@ public class Okno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
-		} else if (e.getSource() == igraRacunalnikClovek) {
+		}
+		else if (e.getSource() == igraRacunalnikClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
@@ -366,7 +386,8 @@ public class Okno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.CRNI, Vodja.racunalnikovaInteligenca);
 			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("Človek")); 
 			Vodja.igramoNovoIgro();
-		} else if (e.getSource() == igraClovekClovek) {
+		}
+		else if (e.getSource() == igraClovekClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
@@ -374,7 +395,8 @@ public class Okno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("Človek"));
 			Vodja.igramoNovoIgro();
-		} else if (e.getSource() == igraRacunalnikRacunalnik) {
+		}
+		else if (e.getSource() == igraRacunalnikRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
@@ -383,8 +405,7 @@ public class Okno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca); 
 			Vodja.igramoNovoIgro();
 		}
-			
-		}
+	}
 	
 	public void osveziGUI() {
 		if (Vodja.igra == null) {
