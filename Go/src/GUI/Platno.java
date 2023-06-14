@@ -32,16 +32,11 @@ import vodja.Vodja;
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 	protected Igra igra;
-	protected String prviIgralec;
-	protected String drugiIgralec;
 	
 	public Platno(int sirina, int visina) {
 		super();
 		igra = new Igra();
 		setPreferredSize(new Dimension(sirina, visina));
-		
-		prviIgralec = "Človek";
-		drugiIgralec = "Računalnik";
 		
 		addMouseListener(this);
         addMouseMotionListener(this);
@@ -152,16 +147,20 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		    			boolean mozno = Vodja.igra.odigraj(new Poteza(i, j));
 		    			if (!mozno) {
 	    					JOptionPane.showMessageDialog(null, "Poteza ni mogoča, izberi drugo polje", "Polje ni prosto", JOptionPane.ERROR_MESSAGE);
-	    					continue;}
-		    			else {Vodja.clovekNaVrsti = false;
-		    				Vodja.igrajClovekovoPotezo(new Poteza(i, j));};
+	    					continue;
+		    			}
+		    			else {
+		    				Vodja.clovekNaVrsti = false;
+		    				Vodja.igrajClovekovoPotezo(new Poteza(i, j));
+		    			}
 		    		}
 		    	}
 	        }
 		}
-		else {
+		else if (Vodja.igra.stanje == Stanje.V_TEKU){
 			JOptionPane.showMessageDialog(null, "Počakaj na drugo osebo, nisi na vrsti", "Nisi na vrsti", JOptionPane.ERROR_MESSAGE);
 		}
+		else JOptionPane.showMessageDialog(null, "Igra je zaključena, izberi novo", "Konec igre", JOptionPane.ERROR_MESSAGE);
 	}
 
 	
