@@ -274,18 +274,36 @@ public class Igra {
 		
 	
 	// metoda, ki updata stanje igre oz. spremeni stanje, ko se igra konča
+	// na dva primera je razdeljeno samo za posebne primere, ko bi lahko oba naenkrat zmagala
 	public void konec() {
-		for (Zeton z: skupineBelih.predstavniki) {
-			LinkedList<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
-			if (sosedi.isEmpty()) {
-				stanje = Stanje.ZMAGA_CRNI; zajetaSkupina = skupineBelih.vrniSkupino(z);
+		if (this.naVrsti == Igralec.BELI) {
+			for (Zeton z: skupineCrnih.predstavniki) {
+				LinkedList<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
+				if (sosedi.isEmpty()) {
+					zajetaSkupina = skupineCrnih.vrniSkupino(z);
+					stanje = Stanje.ZMAGA_BELI;
+				}
+			}
+			for (Zeton z: skupineBelih.predstavniki) {
+				LinkedList<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
+				if (sosedi.isEmpty()) {
+					stanje = Stanje.ZMAGA_CRNI; zajetaSkupina = skupineBelih.vrniSkupino(z);
+				}
 			}
 		}
-		for (Zeton z: skupineCrnih.predstavniki) {
-			LinkedList<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
-			if (sosedi.isEmpty()) {
-				zajetaSkupina = skupineCrnih.vrniSkupino(z);
-				stanje = Stanje.ZMAGA_BELI;
+		else if (this.naVrsti == Igralec.CRNI) {
+			for (Zeton z: skupineBelih.predstavniki) {
+				LinkedList<Par> sosedi = vrniProsta(skupineBelih.vrniSkupino(z));
+				if (sosedi.isEmpty()) {
+					stanje = Stanje.ZMAGA_CRNI; zajetaSkupina = skupineBelih.vrniSkupino(z);
+				}
+			}
+			for (Zeton z: skupineCrnih.predstavniki) {
+				LinkedList<Par> sosedi = vrniProsta(skupineCrnih.vrniSkupino(z));
+				if (sosedi.isEmpty()) {
+					zajetaSkupina = skupineCrnih.vrniSkupino(z);
+					stanje = Stanje.ZMAGA_BELI;
+				}
 			}
 		}
 		if (stanje == Stanje.V_TEKU && moznePoteze.isEmpty()) stanje = Stanje.NEODLOCENO;

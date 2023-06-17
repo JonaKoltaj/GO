@@ -112,8 +112,7 @@ public class Okno extends JFrame implements ActionListener {
 				Vodja.igra.stanje = Stanje.NEODLOCENO;
 			}
 		}
-		//TO DO poglej si mal se tocno kdaj so stvari v go neodlocene in kako to najin program gleda in ce bi se to pol sploh lah zgodil
-		//ce se to ne zgodi je dobr indikator za tole, ce ne pa rabimo mal spremenit samo
+		//ker se neodloceno ne zgodi nikoli v go, to lahko naredimo
 		else if (objekt == menuStart) {
 			if (Vodja.igra.stanje == Stanje.NEODLOCENO) {
 				Vodja.igra.stanje = Stanje.V_TEKU;
@@ -121,7 +120,11 @@ public class Okno extends JFrame implements ActionListener {
 			}
 		}
 		else if (objekt == menuIme) {
-			//TO DO pop up window kjer izberes ime, se zapise v KdoIgra
+			String ime1 = JOptionPane.showInputDialog("Izberi si ime za igralca s črnimi žetoni:");
+			String ime2 = JOptionPane.showInputDialog("Izberi si ime za igralca z belimi žetoni:");
+			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
+			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra(ime1)); 
+			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra(ime2));
 		}
 		//TO DO ampak ni nujno! to use lahko magari das pod menu Nastavitve, kot menu item Nacin Igre
 		//pa se ti ko to kliknes pokaze pop up window (glej cisto dno okno datoteke kako)
@@ -191,7 +194,7 @@ public class Okno extends JFrame implements ActionListener {
 		Vodja.igra.konec();
 		System.out.println("Ali igra še poteka " + Vodja.igra.jeKonec());
 		System.out.println("Vrsta: " + Vodja.vrstaIgralca);
-		System.out.println("KdoIgra: " + Vodja.kdoIgra);
+		System.out.println("KdoIgra: " + "Črni: " + Vodja.kdoIgra.get(Igralec.CRNI).ime() + ", Beli: " + Vodja.kdoIgra.get(Igralec.BELI).ime());
 		Vodja.igra.sprintajIgro();
 		platno.repaint();
 	}
