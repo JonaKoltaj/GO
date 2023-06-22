@@ -13,10 +13,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import inteligenca.Alphabeta;
 import inteligenca.Inteligenca;
@@ -31,6 +34,7 @@ import vodja.Vodja;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
+	
 	protected Igra igra;
 	
 	public Platno(int sirina, int visina) {

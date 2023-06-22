@@ -1,13 +1,16 @@
 
 package GUI;
 import java.awt.BorderLayout;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,13 +18,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
-import logika.Igra;
 import logika.Igralec;
 import logika.Stanje;
-import logika.Zeton;
 import splosno.KdoIgra;
-import splosno.Poteza;
 import vodja.Vodja;
 import vodja.VrstaIgralca;
 
@@ -39,15 +46,16 @@ public class Okno extends JFrame implements ActionListener {
 	private JMenuItem menuClovekClovek;
 	private JMenuItem menuRacunalnikRacunalnik;
 	
-	// Statusna vrstica v spodnjem delu, ki izpiše stanje
-	private JLabel status;
+	private JPanel statusBar;
 	
 	public Okno() {
 		super();
 		setTitle("Capture Go");
-		platno = new Platno(700, 700);
-		platno.setLayout(new BorderLayout());
-		add(platno);
+		//definirati rabimo skupno platno, da ga lahko potem razdelimo
+		JPanel skupnoPlatno = new JPanel();
+	    skupnoPlatno.setLayout(new BorderLayout());
+	    skupnoPlatno.setPreferredSize(new Dimension(700, 700));
+	    getContentPane().add(skupnoPlatno);
 		
 		JMenuBar menubar = new JMenuBar();
 		setJMenuBar(menubar);
@@ -68,8 +76,34 @@ public class Okno extends JFrame implements ActionListener {
 		menuClovekClovek = dodajMenuItem(menuNacinIgre, "Človek – človek");
 		menuRacunalnikRacunalnik = dodajMenuItem(menuNacinIgre, "Računalnik – računalnik");
 		
+		platno = new Platno(600, 600);
+		platno.setLayout(new BorderLayout());
+		
+		statusBar = dodajStatusBar();
+		
+		//tazdelimo platno na dvoje, da je bolj pregledno
+		JSplitPane razdelitev = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+	    skupnoPlatno.add(razdelitev, BorderLayout.CENTER);
+	    razdelitev.setLeftComponent(platno);
+	    razdelitev.setRightComponent(statusBar);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+	}
+	
+	//metoda ki nam doda statusno vrstico
+	private JPanel dodajStatusBar() {
+		JPanel statusBar = new JPanel();
+	    statusBar.setLayout(new BorderLayout());
+	    return statusBar;
+	}
+	
+	private JLabel napisiTekst(String niz) {
+		JLabel tekst = new JLabel(niz);
+	    tekst.setHorizontalAlignment(JLabel.CENTER);
+	    tekst.setVerticalAlignment(JLabel.CENTER);
+	    Border border = BorderFactory.createLineBorder(Color.BLACK);
+	    tekst.setBorder(border);
+	    return tekst;
 	}
 	
 	private JMenu dodajMenu(JMenuBar menubar, String naslov) {
@@ -170,25 +204,24 @@ public class Okno extends JFrame implements ActionListener {
 	//TO DO pogruntaj statuse za zmago poraz, neodloceno in da se vsakic v teku pokaze kdo je na vrti (ime in barva)
 	//po koncu pa se poleg stanje izpise se kdo je zmagu in kaj je ujel (mogoce to highlightej nekako, lahko inkorporiras zajete zetone v platno)
 	public void osveziGUI() {
-		if (Vodja.igra == null) {
-			//status.setText("Igra ni v teku.");
-		}
-		else {
+		if (Vodja.igra != null) {
 			switch(Vodja.igra.stanje) {
-			case NEODLOCENO: //status.setText("Neodločeno!"); break;
-			case V_TEKU: 
-				//status.setText("Na potezi je " + Vodja.igra.naVrsti + 
-					//	" - " + Vodja.kdoIgra.get(Vodja.igra.naVrsti)); 
-				break;
-			case ZMAGA_CRNI: 
-				// status.setText("Zmagal je O - " + 
-					//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
-				
-				break;
-			case ZMAGA_BELI: 
-				// status.setText("Zmagal je X - " + 
-					//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
-				break;
+				case NEODLOCENO: //status.setText("Neodločeno!"); break;
+				case V_TEKU: 
+					JLabel tekst = napisiTekst("POskus");
+				    statusBar.add(tekst);
+					//status.setText("Na potezi je " + Vodja.igra.naVrsti + 
+						//	" - " + Vodja.kdoIgra.get(Vodja.igra.naVrsti)); 
+					break;
+				case ZMAGA_CRNI: 
+					// status.setText("Zmagal je O - " + 
+						//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
+					
+					break;
+				case ZMAGA_BELI: 
+					// status.setText("Zmagal je X - " + 
+						//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
+					break;
 			}
 		}
 		Vodja.igra.konec();
@@ -197,6 +230,7 @@ public class Okno extends JFrame implements ActionListener {
 		System.out.println("KdoIgra: " + "Črni: " + Vodja.kdoIgra.get(Igralec.CRNI).ime() + ", Beli: " + Vodja.kdoIgra.get(Igralec.BELI).ime());
 		Vodja.igra.sprintajIgro();
 		platno.repaint();
+		statusBar.repaint();
 	}
 }
 
