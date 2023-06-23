@@ -30,13 +30,7 @@ public class Okno extends JFrame implements ActionListener {
 	private Platno platno;
 	
 	private JMenuItem menuOdpri, menuShrani, menuStop, menuStart;
-	private JMenuItem menuIme;
-	
-	// Izbire v menujih
-	private JMenuItem menuClovekRacunalnik;
-	private JMenuItem menuRacunalnikClovek;
-	private JMenuItem menuClovekClovek;
-	private JMenuItem menuRacunalnikRacunalnik;
+	private JMenuItem menuIme, menuNacinIgre;
 	
 	private JPanel statusBar;
 	private JLabel status;
@@ -55,19 +49,14 @@ public class Okno extends JFrame implements ActionListener {
 		
 		JMenu menuDatoteka = dodajMenu(menubar, "Datoteka");
 		JMenu menuNastavitve = dodajMenu(menubar, "Nastavitve");
-		JMenu menuNacinIgre = dodajMenu(menubar, "Način igre");
 		
 		menuOdpri = dodajMenuItem(menuDatoteka, "Odpri ...");
 		menuShrani = dodajMenuItem(menuDatoteka, "Shrani ...");
 		menuStop = dodajMenuItem(menuDatoteka, "Ustavi program ...");
 		menuStart = dodajMenuItem(menuDatoteka, "Nadaljuj s programom ...");
 		
+		menuNacinIgre = dodajMenuItem(menuNastavitve, "Izberi način igre");
 		menuIme = dodajMenuItem(menuNastavitve, "Izberi ime ...");
-		
-		menuClovekRacunalnik = dodajMenuItem(menuNacinIgre, "Človek – računalnik");
-		menuRacunalnikClovek = dodajMenuItem(menuNacinIgre, "Računalnik – človek");
-		menuClovekClovek = dodajMenuItem(menuNacinIgre, "Človek – človek");
-		menuRacunalnikRacunalnik = dodajMenuItem(menuNacinIgre, "Računalnik – računalnik");
 		
 		platno = new Platno(600, 600);
 		platno.setLayout(new BorderLayout());
@@ -76,7 +65,7 @@ public class Okno extends JFrame implements ActionListener {
 		status = napisiTekst("Igra se še ni začela!");
 		statusBar.add(status);
 		
-		//tazdelimo platno na dvoje, da je bolj pregledno
+		//razdelimo platno na dvoje, da je bolj pregledno
 		JSplitPane razdelitev = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 	    skupnoPlatno.add(razdelitev, BorderLayout.CENTER);
 	    razdelitev.setLeftComponent(platno);
@@ -114,6 +103,7 @@ public class Okno extends JFrame implements ActionListener {
 	}
 	
 	//metoda za izpis zajetih zetonov v statusni vrstici
+	//podobno kot v Igra
 	private String izpisiZajete(LinkedList<Zeton> sez) {
 		if (sez != null) {
 			String izpis = "";
@@ -149,12 +139,14 @@ public class Okno extends JFrame implements ActionListener {
 				}
 			}
 		}
+		//ce zelimo ustaviti igro v primeru ko igra racunalnik proti racunalniku
 		else if (objekt == menuStop) {
 			if (Vodja.vrstaIgralca.get(Igralec.BELI) == VrstaIgralca.R && Vodja.vrstaIgralca.get(Igralec.CRNI) == VrstaIgralca.R && Vodja.igra.stanje == Stanje.V_TEKU) {
 				Vodja.igra.stanje = Stanje.NEODLOCENO;
 			}
 		}
-		//ker se neodloceno ne zgodi nikoli v go, to lahko naredimo
+		//ce smo igro ustavili (ko sta bila oba igralca racunalnika)
+		//ker se neodloceno ne zgodi nikoli drugje v go, to lahko naredimo
 		else if (objekt == menuStart) {
 			if (Vodja.igra.stanje == Stanje.NEODLOCENO) {
 				Vodja.igra.stanje = Stanje.V_TEKU;
@@ -176,51 +168,42 @@ public class Okno extends JFrame implements ActionListener {
 				else Vodja.kdoIgra.put(Igralec.BELI, stari2);
 			}
 		}
-		//TO DO ampak ni nujno! to use lahko magari das pod menu Nastavitve, kot menu item Nacin Igre
-		//pa se ti ko to kliknes pokaze pop up window (glej cisto dno okno datoteke kako)
-		//mas uprasanje kdo bo crni pa dva gumba, pa kdo bo beli pa dva gumba
-		else if (objekt == menuClovekRacunalnik) {
+		//metoda ki nam odpre dve zaporedni okenci, kjer izberemo vrsto igralca za bele in crne zetone
+		//zgenerira imeni, ki ju potem lahko z menuIme sprememnimo
+		else if (objekt == menuNacinIgre) {
+			String[] buttons = {"Igralec", "Računalnik"};
+			int crni = JOptionPane.showOptionDialog(null, "Izberi ali boš črne igral ti ali računalnik:", "ČRNI", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
+			int beli = JOptionPane.showOptionDialog(null, "Izberi ali boš bele igral ti ali računalnik:", "BELI", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
-			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
-			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("UserCrni")); 
-			Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca);
-			Vodja.igramoNovoIgro();
-		}
-		else if (e.getSource() == menuRacunalnikClovek) {
-			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
-			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
-			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
-			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.CRNI, Vodja.racunalnikovaInteligenca);
-			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("UserBeli")); 
-			Vodja.igramoNovoIgro();
-		}
-		else if (e.getSource() == menuClovekClovek) {
-			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
-			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
-			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
-			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("UserCrni")); 
-			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("UserBeli"));
-			Vodja.igramoNovoIgro();
-		}
-		else if (e.getSource() == menuRacunalnikRacunalnik) {
-			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
-			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R); 
-			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
-			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.CRNI, Vodja.racunalnikovaInteligenca);
-			Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca); 
+			if (crni == 0) {
+				Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C);
+				Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("UserCrni"));
+			}
+			else {
+				Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R);
+				Vodja.kdoIgra.put(Igralec.CRNI, Vodja.racunalnikovaInteligenca);
+			}
+			if (beli == 0) {
+				Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
+				Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("UserBeli"));
+			}
+			else {
+				Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
+				Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca);
+			}
 			Vodja.igramoNovoIgro();
 		}
 	}
 	
+	//metoda ki nam tekom igranja izpisuje stanje igre
 	public void osveziGUI() {
 		if (Vodja.igra != null) {
 			switch(Vodja.igra.stanje) {
-				case NEODLOCENO: status.setText("Neodločeno!"); break;
+				//neodloceno samo v primeru ko program ustavimo
+				case NEODLOCENO: status.setText("Program ustavljen!"); break;
+				//ce je igra se v teku se bo izpisevalo besedilo oblike "Na vrsti je crni/beli (vrstaIgralca ImeIgralca)"
+				//v primeru ko obvezna poteza obstaja bo tudi to izpisalo v naslednji vrstici
 				case V_TEKU:
 					Igralec trenutni = Vodja.igra.naVrsti;
 					String barva = "";
@@ -233,13 +216,14 @@ public class Okno extends JFrame implements ActionListener {
 						status.setText("<html>" + podatkiOIgralcu + "<br>" + obveznaPoteza + "</html>");
 					}
 					break;
+				//ko nekdo zmaga se izpise kdo je zmagal ter katero skupino je zajel
 				case ZMAGA_CRNI: 
 					String zmagovalecCrni = "Čestitke! Zmagal je črni igralec " + Vodja.kdoIgra.get(Igralec.CRNI).ime() + "!";
 					String zajetoCrni = "Zajel je skupino žetonov: " + izpisiZajete(Vodja.igra.zajetaSkupina);
 					status.setText("<html>" + zmagovalecCrni + "<br>" + zajetoCrni + "</html>");
 					break;
 				case ZMAGA_BELI:
-					String zmagovalecBeli = "Čestitke! Zmagal je črni igralec " + Vodja.kdoIgra.get(Igralec.BELI).ime() + "!";
+					String zmagovalecBeli = "Čestitke! Zmagal je beli igralec " + Vodja.kdoIgra.get(Igralec.BELI).ime() + "!";
 					String zajetoBeli = "Zajel je skupino žetonov: " + izpisiZajete(Vodja.igra.zajetaSkupina);
 					status.setText("<html>" + zmagovalecBeli + "<br>" + zajetoBeli + "</html>");
 					break;
@@ -254,19 +238,4 @@ public class Okno extends JFrame implements ActionListener {
 		statusBar.repaint();
 	}
 }
-
-
-//		else if (objekt == menuIgralec) {
-//			String[] buttons = {"Igralec", "Računalnik"};
-//			int prviIgralec = JOptionPane.showOptionDialog(null, "Izberi ali boš igral ti ali računalnik:", "Človek ali računalnik prvi", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
-//			int drugiIgralec = JOptionPane.showOptionDialog(null, "Izberi ali boš igral ti ali računalnik:", "Človek ali računalnik drugi", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
-//			if (prviIgralec == 0) platno.prviIgralec = "Človek";
-//			else platno.prviIgralec = "Računalnik";
-//			if (drugiIgralec == 0) platno.drugiIgralec = "Človek";
-//			else platno.drugiIgralec = "Računalnik";
-//			platno.spremeniIgralca();
-//		}
-	
-	
-
 

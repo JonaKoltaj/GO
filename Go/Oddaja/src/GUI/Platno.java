@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -36,7 +37,6 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	}
 
 	
-	//TO DO oznaci zajete zetone
 	@Override
 	protected void paintComponent(Graphics g) {
 		// izrisan go board tako da se prilagaja oknu ki ga odpremo
@@ -66,6 +66,8 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	    int polmerZetona = velikost/16;
 	   
 	    if (Vodja.igra != null) {
+	    	//ko koncamo igro, ce je zeton v zajeti skupini je rdece oznacen
+	    	LinkedList<Zeton> zajetaSkupina = Vodja.igra.zajetaSkupina;
 	    	Zeton[][] plosca;
 		    plosca = Vodja.igra.getPlosca();
 	    	for (int i = 0; i < n; ++i) {
@@ -75,8 +77,20 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		    			if (barva == Igralec.BELI) g.setColor(Color.WHITE);
 		    			else g.setColor(Color.BLACK);
 		    			g.fillOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
-		    			g.setColor(Color.BLACK);
-		    			g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+		    			if (zajetaSkupina != null) {
+		    				if (zajetaSkupina.contains(plosca[i][j])) {
+			    				g.setColor(Color.RED);
+			    				g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+			    			}
+			    			else {
+			    				g.setColor(Color.BLACK);
+			    				g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+			    			}
+		    			}
+		    			else {
+		    				g.setColor(Color.BLACK);
+		    				g.drawOval(marginSirina - polmerZetona + i*((velikost)/8), marginVisina - polmerZetona + j*((velikost)/8), polmerZetona*2, polmerZetona*2);
+		    			}
 		    		}
 		    	}
 		    }
@@ -138,7 +152,6 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		    		if (razdalja < najmanjsaRazdalja) {
 		    			boolean mozno = Vodja.igra.odigraj(new Poteza(i, j));
 		    			if (!mozno) {
-	    					JOptionPane.showMessageDialog(null, "Poteza ni mogoča, izberi drugo polje", "Polje ni prosto", JOptionPane.ERROR_MESSAGE);
 	    					continue;
 		    			}
 		    			else {
@@ -149,10 +162,8 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		    	}
 	        }
 		}
-		else if (Vodja.igra.stanje == Stanje.V_TEKU){
-			JOptionPane.showMessageDialog(null, "Počakaj na drugo osebo, nisi na vrsti", "Nisi na vrsti", JOptionPane.ERROR_MESSAGE);
-		}
-		else JOptionPane.showMessageDialog(null, "Igra je zaključena, izberi novo", "Konec igre", JOptionPane.ERROR_MESSAGE);
+		//ce se je igra ze koncala in bomo probali na plosci klikati, bomo dobili error message
+		else if (Vodja.igra.stanje != Stanje.V_TEKU) JOptionPane.showMessageDialog(null, "Igra je zaključena, začni ponovno!", "Konec igre", JOptionPane.ERROR_MESSAGE);
 	}
 
 	
