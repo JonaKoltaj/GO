@@ -1,29 +1,16 @@
 package GUI;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Stroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowEvent;
-import java.util.concurrent.TimeUnit;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
-import inteligenca.Alphabeta;
-import inteligenca.Inteligenca;
-import inteligenca.RandomIzbira;
 import logika.Igra;
 import logika.Igralec;
 
@@ -49,6 +36,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 	}
 
 	
+	//TO DO oznaci zajete zetone
 	@Override
 	protected void paintComponent(Graphics g) {
 		// izrisan go board tako da se prilagaja oknu ki ga odpremo
@@ -124,7 +112,7 @@ public class Platno extends JPanel implements MouseListener, MouseMotionListener
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	// nekaj se zgodi, samo če je bil na vrsti človek
 	@Override
 	public void mouseClicked(MouseEvent e) {

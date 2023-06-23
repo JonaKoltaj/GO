@@ -159,7 +159,7 @@ public class Vodja {
 				String beli = podatki[st+2];
 				if (beli.equals("človek")) {
 					vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
-					kdoIgra.put(Igralec.BELI, new KdoIgra("Človek")); 
+					kdoIgra.put(Igralec.BELI, new KdoIgra("UserBeli")); 
 				}
 				else if (beli.equals("řačunalnik")) {
 					vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
@@ -168,7 +168,7 @@ public class Vodja {
 				String crni = podatki[st+3];
 				if (crni.equals("človek")) {
 					vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C);
-					kdoIgra.put(Igralec.CRNI, new KdoIgra("Človek"));
+					kdoIgra.put(Igralec.CRNI, new KdoIgra("UserCrni"));
 				}
 				else if (crni.equals("řačunalnik")) {
 					vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.R);

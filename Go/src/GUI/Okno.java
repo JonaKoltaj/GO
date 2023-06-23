@@ -1,16 +1,12 @@
 
 package GUI;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.LinkedList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,14 +16,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import logika.Igralec;
 import logika.Stanje;
+import logika.Zeton;
 import splosno.KdoIgra;
 import vodja.Vodja;
 import vodja.VrstaIgralca;
@@ -47,6 +39,7 @@ public class Okno extends JFrame implements ActionListener {
 	private JMenuItem menuRacunalnikRacunalnik;
 	
 	private JPanel statusBar;
+	private JLabel status;
 	
 	public Okno() {
 		super();
@@ -80,6 +73,8 @@ public class Okno extends JFrame implements ActionListener {
 		platno.setLayout(new BorderLayout());
 		
 		statusBar = dodajStatusBar();
+		status = napisiTekst("Igra se še ni začela!");
+		statusBar.add(status);
 		
 		//tazdelimo platno na dvoje, da je bolj pregledno
 		JSplitPane razdelitev = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -97,12 +92,11 @@ public class Okno extends JFrame implements ActionListener {
 	    return statusBar;
 	}
 	
+	//metoda ki nam doda jlabel v statusno vrstico
 	private JLabel napisiTekst(String niz) {
 		JLabel tekst = new JLabel(niz);
 	    tekst.setHorizontalAlignment(JLabel.CENTER);
 	    tekst.setVerticalAlignment(JLabel.CENTER);
-	    Border border = BorderFactory.createLineBorder(Color.BLACK);
-	    tekst.setBorder(border);
 	    return tekst;
 	}
 	
@@ -117,6 +111,20 @@ public class Okno extends JFrame implements ActionListener {
 		menu.add(menuitem);
 		menuitem.addActionListener(this);
 		return menuitem;
+	}
+	
+	//metoda za izpis zajetih zetonov v statusni vrstici
+	private String izpisiZajete(LinkedList<Zeton> sez) {
+		if (sez != null) {
+			String izpis = "";
+			if (sez.isEmpty() == false) {
+				izpis += "[";
+				for (Zeton z : sez) izpis += z;
+				izpis += "]";
+			}
+		return izpis;
+		}
+		else return null;
 	}
 
 	
@@ -153,12 +161,20 @@ public class Okno extends JFrame implements ActionListener {
 				Vodja.igramo();
 			}
 		}
+		//metoda ki spremeni ime belega in crnega igralca
+		//ce kliknemo "cancel" ostanejo imena ista kot prej
 		else if (objekt == menuIme) {
-			String ime1 = JOptionPane.showInputDialog("Izberi si ime za igralca s črnimi žetoni:");
-			String ime2 = JOptionPane.showInputDialog("Izberi si ime za igralca z belimi žetoni:");
-			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra(ime1)); 
-			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra(ime2));
+			if (Vodja.igra != null) {
+				String ime1 = JOptionPane.showInputDialog("Izberi si ime za igralca s črnimi žetoni:");
+				String ime2 = JOptionPane.showInputDialog("Izberi si ime za igralca z belimi žetoni:");
+				KdoIgra stari1 = Vodja.kdoIgra.get(Igralec.CRNI);
+				KdoIgra stari2 = Vodja.kdoIgra.get(Igralec.BELI);
+				Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
+				if (ime1 != null) Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra(ime1));
+				else Vodja.kdoIgra.put(Igralec.CRNI, stari1);
+				if (ime2 != null) Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra(ime2));
+				else Vodja.kdoIgra.put(Igralec.BELI, stari2);
+			}
 		}
 		//TO DO ampak ni nujno! to use lahko magari das pod menu Nastavitve, kot menu item Nacin Igre
 		//pa se ti ko to kliknes pokaze pop up window (glej cisto dno okno datoteke kako)
@@ -168,7 +184,7 @@ public class Okno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.R);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("Človek")); 
+			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("UserCrni")); 
 			Vodja.kdoIgra.put(Igralec.BELI, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
 		}
@@ -178,7 +194,7 @@ public class Okno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
 			Vodja.kdoIgra.put(Igralec.CRNI, Vodja.racunalnikovaInteligenca);
-			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("Človek")); 
+			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("UserBeli")); 
 			Vodja.igramoNovoIgro();
 		}
 		else if (e.getSource() == menuClovekClovek) {
@@ -186,8 +202,8 @@ public class Okno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.CRNI, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.BELI, VrstaIgralca.C);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("Človek")); 
-			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("Človek"));
+			Vodja.kdoIgra.put(Igralec.CRNI, new KdoIgra("UserCrni")); 
+			Vodja.kdoIgra.put(Igralec.BELI, new KdoIgra("UserBeli"));
 			Vodja.igramoNovoIgro();
 		}
 		else if (e.getSource() == menuRacunalnikRacunalnik) {
@@ -201,26 +217,31 @@ public class Okno extends JFrame implements ActionListener {
 		}
 	}
 	
-	//TO DO pogruntaj statuse za zmago poraz, neodloceno in da se vsakic v teku pokaze kdo je na vrti (ime in barva)
-	//po koncu pa se poleg stanje izpise se kdo je zmagu in kaj je ujel (mogoce to highlightej nekako, lahko inkorporiras zajete zetone v platno)
 	public void osveziGUI() {
 		if (Vodja.igra != null) {
 			switch(Vodja.igra.stanje) {
-				case NEODLOCENO: //status.setText("Neodločeno!"); break;
-				case V_TEKU: 
-					JLabel tekst = napisiTekst("POskus");
-				    statusBar.add(tekst);
-					//status.setText("Na potezi je " + Vodja.igra.naVrsti + 
-						//	" - " + Vodja.kdoIgra.get(Vodja.igra.naVrsti)); 
+				case NEODLOCENO: status.setText("Neodločeno!"); break;
+				case V_TEKU:
+					Igralec trenutni = Vodja.igra.naVrsti;
+					String barva = "";
+					if (trenutni == Igralec.BELI) barva += "beli";
+					else if (trenutni == Igralec.CRNI) barva += "črni";
+					String podatkiOIgralcu = "Na vrsti je "+barva+" ("+Vodja.vrstaIgralca.get(trenutni).toString()+" "+Vodja.kdoIgra.get(trenutni).ime()+").";
+					status.setText(podatkiOIgralcu);
+					if (Vodja.igra.obveznaPoteza != null) {
+						String obveznaPoteza = "Obvezna poteza je ("+Integer.toString(Vodja.igra.obveznaPoteza.x())+","+Integer.toString(Vodja.igra.obveznaPoteza.y())+").";
+						status.setText("<html>" + podatkiOIgralcu + "<br>" + obveznaPoteza + "</html>");
+					}
 					break;
 				case ZMAGA_CRNI: 
-					// status.setText("Zmagal je O - " + 
-						//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
-					
+					String zmagovalecCrni = "Čestitke! Zmagal je črni igralec " + Vodja.kdoIgra.get(Igralec.CRNI).ime() + "!";
+					String zajetoCrni = "Zajel je skupino žetonov: " + izpisiZajete(Vodja.igra.zajetaSkupina);
+					status.setText("<html>" + zmagovalecCrni + "<br>" + zajetoCrni + "</html>");
 					break;
-				case ZMAGA_BELI: 
-					// status.setText("Zmagal je X - " + 
-						//	Vodja.kdoIgra.get(Vodja.igra.naVrsti.nasprotnik()));
+				case ZMAGA_BELI:
+					String zmagovalecBeli = "Čestitke! Zmagal je črni igralec " + Vodja.kdoIgra.get(Igralec.BELI).ime() + "!";
+					String zajetoBeli = "Zajel je skupino žetonov: " + izpisiZajete(Vodja.igra.zajetaSkupina);
+					status.setText("<html>" + zmagovalecBeli + "<br>" + zajetoBeli + "</html>");
 					break;
 			}
 		}

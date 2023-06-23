@@ -16,7 +16,7 @@ public class Igra {
 	public DisjointSet skupineBelih; // beležimo disjunktne množice belih žetonov
 	public DisjointSet skupineCrnih; // beležimo disjunktne množice belih žetonov
 	public Poteza obveznaPoteza; // obvezna poteza, za  tistega, ki je na vrsti
-	protected LinkedList<Zeton> zajetaSkupina;
+	public LinkedList<Zeton> zajetaSkupina;
 	
 	
 	public Zeton[][] ustvariMrezo(int n) {
